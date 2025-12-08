@@ -4,16 +4,585 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard Skrining TBC</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- TAMBAHKAN LIBRARY JSPDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <!-- Menggunakan CSS kustom sebagai pengganti Tailwind CDN -->
     <style>
+      /* iOS-style design dengan tampilan yang lebih menarik */
+      :root {
+        --primary-color: #007AFF;
+        --primary-hover: #0066CC;
+        --success-color: #34C759;
+        --warning-color: #FF9500;
+        --danger-color: #FF3B30;
+        --gray-50: #F2F2F7;
+        --gray-100: #E5E5EA;
+        --gray-200: #D1D1D6;
+        --gray-300: #C7C7CC;
+        --gray-400: #8E8E93;
+        --gray-500: #636366;
+        --gray-600: #48484A;
+        --gray-700: #3A3A3C;
+        --gray-800: #2C2C2E;
+        --gray-900: #1C1C1E;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-success: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+        --gradient-danger: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      }
+      
+      * {
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-attachment: fixed;
+        color: var(--gray-900);
+        margin: 0;
+        padding: 0;
+        line-height: 1.5;
+        min-height: 100vh;
+      }
+      
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+      
+      @media (min-width: 640px) {
+        .container {
+          padding: 0 1.5rem;
+        }
+      }
+      
+      @media (min-width: 1024px) {
+        .container {
+          padding: 0 2rem;
+        }
+      }
+      
+      .flex {
+        display: flex;
+      }
+      
+      .items-center {
+        align-items: center;
+      }
+      
+      .justify-between {
+        justify-content: space-between;
+      }
+      
+      .justify-center {
+        justify-content: center;
+      }
+      
+      .text-center {
+        text-align: center;
+      }
+      
+      .text-left {
+        text-align: left;
+      }
+      
+      .space-x-2 > * + * {
+        margin-left: 0.5rem;
+      }
+      
+      .space-x-3 > * + * {
+        margin-left: 0.75rem;
+      }
+      
+      .space-x-4 > * + * {
+        margin-left: 1rem;
+      }
+      
+      .space-y-2 > * + * {
+        margin-top: 0.5rem;
+      }
+      
+      .space-y-3 > * + * {
+        margin-top: 0.75rem;
+      }
+      
+      .space-y-4 > * + * {
+        margin-top: 1rem;
+      }
+      
+      .space-y-6 > * + * {
+        margin-top: 1.5rem;
+      }
+      
+      .grid {
+        display: grid;
+      }
+      
+      .grid-cols-1 {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+      }
+      
+      @media (min-width: 768px) {
+        .md\:grid-cols-2 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      
+      .rounded-lg {
+        border-radius: 0.5rem;
+      }
+      
+      .rounded-xl {
+        border-radius: 0.75rem;
+      }
+      
+      .rounded-full {
+        border-radius: 9999px;
+      }
+      
+      .bg-white {
+        background-color: white;
+      }
+      
+      .bg-gray-50 {
+        background-color: var(--gray-50);
+      }
+      
+      .bg-blue-50 {
+        background-color: rgba(0, 122, 255, 0.1);
+      }
+      
+      .bg-green-50 {
+        background-color: rgba(52, 199, 89, 0.1);
+      }
+      
+      .text-white {
+        color: white;
+      }
+      
+      .text-gray-500 {
+        color: var(--gray-400);
+      }
+      
+      .text-gray-600 {
+        color: var(--gray-500);
+      }
+      
+      .text-gray-700 {
+        color: var(--gray-600);
+      }
+      
+      .text-gray-800 {
+        color: var(--gray-700);
+      }
+      
+      .text-gray-900 {
+        color: var(--gray-900);
+      }
+      
+      .text-blue-600 {
+        color: var(--primary-color);
+      }
+      
+      .text-green-600 {
+        color: var(--success-color);
+      }
+      
+      .text-sm {
+        font-size: 0.875rem;
+      }
+      
+      .text-lg {
+        font-size: 1.125rem;
+      }
+      
+      .text-xl {
+        font-size: 1.25rem;
+      }
+      
+      .text-2xl {
+        font-size: 1.5rem;
+      }
+      
+      .text-4xl {
+        font-size: 2.25rem;
+      }
+      
+      .font-semibold {
+        font-weight: 600;
+      }
+      
+      .font-bold {
+        font-weight: 700;
+      }
+      
+      .p-4 {
+        padding: 1rem;
+      }
+      
+      .p-6 {
+        padding: 1.5rem;
+      }
+      
+      .p-8 {
+        padding: 2rem;
+      }
+      
+      .px-3 {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+      
+      .px-4 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      
+      .px-6 {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+      
+      .py-2 {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+      
+      .py-3 {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+      }
+      
+      .py-4 {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
+      
+      .py-8 {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+      }
+      
+      .mb-2 {
+        margin-bottom: 0.5rem;
+      }
+      
+      .mb-4 {
+        margin-bottom: 1rem;
+      }
+      
+      .mb-6 {
+        margin-bottom: 1.5rem;
+      }
+      
+      .mb-8 {
+        margin-bottom: 2rem;
+      }
+      
+      .mb-12 {
+        margin-bottom: 3rem;
+      }
+      
+      .mt-2 {
+        margin-top: 0.5rem;
+      }
+      
+      .mt-4 {
+        margin-top: 1rem;
+      }
+      
+      .mt-6 {
+        margin-top: 1.5rem;
+      }
+      
+      .mr-2 {
+        margin-right: 0.5rem;
+      }
+      
+      .mr-3 {
+        margin-right: 0.75rem;
+      }
+      
+      .ml-2 {
+        margin-left: 0.5rem;
+      }
+      
+      .ml-4 {
+        margin-left: 1rem;
+      }
+      
+      .h-8 {
+        height: 2rem;
+      }
+      
+      .h-10 {
+        height: 2.5rem;
+      }
+      
+      .h-16 {
+        height: 4rem;
+      }
+      
+      .w-8 {
+        width: 2rem;
+      }
+      
+      .w-10 {
+        width: 2.5rem;
+      }
+      
+      .w-16 {
+        width: 4rem;
+      }
+      
+      .w-auto {
+        width: auto;
+      }
+      
+      .w-full {
+        width: 100%;
+      }
+      
+      .max-w-7xl {
+        max-width: 80rem;
+      }
+      
+      .max-w-500 {
+        max-width: 500px;
+      }
+      
+      .overflow-hidden {
+        overflow: hidden;
+      }
+      
+      .overflow-x-auto {
+        overflow-x: auto;
+      }
+      
+      .overflow-y-auto {
+        overflow-y: auto;
+      }
+      
+      .shadow-sm {
+        box-shadow: var(--shadow-sm);
+      }
+      
+      .shadow {
+        box-shadow: var(--shadow);
+      }
+      
+      .shadow-md {
+        box-shadow: var(--shadow-md);
+      }
+      
+      .shadow-lg {
+        box-shadow: var(--shadow-lg);
+      }
+      
+      .shadow-xl {
+        box-shadow: var(--shadow-xl);
+      }
+      
+      .border-b {
+        border-bottom: 1px solid var(--gray-200);
+      }
+      
+      .hidden {
+        display: none;
+      }
+      
+      .block {
+        display: block;
+      }
+      
+      .relative {
+        position: relative;
+      }
+      
+      .absolute {
+        position: absolute;
+      }
+      
+      .fixed {
+        position: fixed;
+      }
+      
+      .top-0 {
+        top: 0;
+      }
+      
+      .left-0 {
+        left: 0;
+      }
+      
+      .right-0 {
+        right: 0;
+      }
+      
+      .bottom-0 {
+        bottom: 0;
+      }
+      
+      .z-50 {
+        z-index: 50;
+      }
+      
+      .z-1000 {
+        z-index: 1000;
+      }
+      
+      .transition {
+        transition: all 0.3s ease;
+      }
+      
+      .card {
+        background: linear-gradient(145deg, #ffffff, #f8f9fa);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 1px 8px rgba(0, 0, 0, 0.06);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      .card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      .card:hover::before {
+        opacity: 1;
+      }
+      
+      .tab-button {
+        position: relative;
+        transition: all 0.3s ease;
+        background: transparent;
+        border: none;
+        outline: none;
+      }
+      
+      .tab-button.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+        border-radius: 4px 4px 0 0;
+        animation: slideIn 0.3s ease;
+      }
+      
+      @keyframes slideIn {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
+      }
+      
+      .ios-button {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+        color: white;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 4px 15px rgba(0, 122, 255, 0.4);
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .ios-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+      }
+      
+      .ios-button:hover::before {
+        left: 100%;
+      }
+      
+      .ios-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 122, 255, 0.5);
+      }
+      
+      .ios-button-secondary {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        color: var(--primary-color);
+        border-radius: 12px;
+        padding: 8px 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--gray-200);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .ios-button-secondary:hover {
+        background: linear-gradient(135deg, #e9ecef, #dee2e6);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      
+      .status-badge {
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      
+      .status-terduga {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        color: white;
+      }
+      
+      .status-kontak {
+        background: linear-gradient(135deg, #feca57, #ff9ff3);
+        color: #2c2c2e;
+      }
+      
+      .status-bukan {
+        background: linear-gradient(135deg, #48dbfb, #0abde3);
+        color: white;
+      }
+      
       /* Animasi sederhana untuk loader */
       .loader {
-        border-top-color: #10b981;
+        border-top-color: var(--primary-color);
         animation: spin 1s linear infinite;
       }
+      
       @keyframes spin {
         0% {
           transform: rotate(0deg);
@@ -22,95 +591,311 @@
           transform: rotate(360deg);
         }
       }
+      
+      /* Smooth transitions */
+      .fade-in {
+        animation: fadeIn 0.6s ease-in-out;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      /* Table styling */
+      .ios-table {
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+      
+      .ios-table th {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        color: var(--gray-600);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        padding: 16px;
+        border-bottom: 2px solid var(--gray-200);
+      }
+      
+      .ios-table td {
+        padding: 16px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        background: white;
+      }
+      
+      .ios-table tr:last-child td {
+        border-bottom: none;
+      }
+      
+      .ios-table tr:hover td {
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+      }
+      
+      /* Modal styling */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(5px);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .modal.active {
+        display: flex;
+        animation: fadeIn 0.3s ease;
+      }
+      
+      .modal-content {
+        background: white;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 500px;
+        max-height: 80%;
+        overflow-y: auto;
+        padding: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      @keyframes slideUp {
+        from { transform: translateY(100px) scale(0.9); opacity: 0; }
+        to { transform: translateY(0) scale(1); opacity: 1; }
+      }
+      
+      .border-gray-200 {
+        border-bottom: 1px solid var(--gray-200);
+      }
+      
+      .last\:border-0:last-child {
+        border-bottom: none;
+      }
+      
+      .whitespace-nowrap {
+        white-space: nowrap;
+      }
+      
+      .fa-spin {
+        animation: spin 1s linear infinite;
+      }
+      
+      .error-message {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        color: white;
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        animation: shake 0.5s ease;
+      }
+      
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+      }
+      
+      .success-message {
+        background: linear-gradient(135deg, #48dbfb, #0abde3);
+        color: white;
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 12px rgba(72, 219, 251, 0.3);
+      }
+      
+      /* Glassmorphism effect */
+      .glass {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      /* Pulse animation for refresh button */
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+      
+      .pulse {
+        animation: pulse 2s infinite;
+      }
+      
+      /* Animasi untuk counter */
+      .counter {
+        display: inline-block;
+        position: relative;
+      }
+      
+      .counter-value {
+        display: inline-block;
+        transition: all 0.5s ease;
+      }
+      
+      .counter-value.animate {
+        animation: countUp 1s ease-out;
+      }
+      
+      @keyframes countUp {
+        0% {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      
+      /* Perbaikan jarak antar card */
+      .grid-gap-6 {
+        gap: 2rem;
+      }
+      
+      /* Animasi untuk card kasus terduga */
+      .stat-card {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .stat-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+      
+      .stat-card:hover::after {
+        opacity: 1;
+      }
+      
+      .stat-icon {
+        transition: all 0.3s ease;
+      }
+      
+      .stat-card:hover .stat-icon {
+        transform: scale(1.1);
+      }
+      
+      /* Animasi untuk angka kasus */
+      .stat-number {
+        position: relative;
+        display: inline-block;
+      }
+      
+      .stat-number.animate {
+        animation: numberPulse 1.5s ease-out;
+      }
+      
+      @keyframes numberPulse {
+        0% {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
     </style>
+    <!-- TAMBAHKAN LIBRARY JSPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
   <body class="bg-gray-50 min-h-screen font-sans">
     <!-- Header -->
-    <header class="bg-white shadow-sm border-b">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <header class="glass shadow-lg">
+      <div class="container py-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-4">
             <img
               src="https://pkmtrenggalek.github.io/SIPP/Assets/pkmtglk.jpeg"
               alt="Logo"
-              class="h-10 w-auto"
+              class="h-10 w-auto rounded-lg shadow-md"
             />
             <h1 class="text-xl font-bold text-gray-900">
               Dashboard Skrining TBC
             </h1>
           </div>
-          <p class="text-sm text-gray-500">PKM Trenggalek</p>
+          <div class="flex items-center space-x-4">
+            <button id="refreshButton" class="ios-button-secondary">
+              <i class="fas fa-sync-alt mr-2"></i>Refresh
+            </button>
+            <p class="text-sm text-gray-500">PKM Trenggalek</p>
+          </div>
         </div>
       </div>
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="container py-8">
       <!-- Aksi Section -->
-      <section class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Pilih Aksi</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <section class="mb-12 fade-in">
+        <h2 class="text-2xl font-bold text-white mb-6">Pilih Aksi</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 grid-gap-6">
           <!-- Card Skrining Anak -->
-          <div
-            class="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-300"
-          >
+          <div class="card p-8 text-center">
             <div class="flex justify-center mb-4">
-              <svg
-                class="h-12 w-12 text-blue-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                ></path>
-              </svg>
+              <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center shadow-lg">
+                <i class="fas fa-child text-blue-600 text-2xl"></i>
+              </div>
             </div>
-            <h3 class="text-lg font-semibold text-blue-900 mb-2">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">
               Skrining TBC Anak
             </h3>
-            <p class="text-blue-700 mb-4">
+            <p class="text-gray-600 mb-6">
               Isi kuesioner skrining untuk pasien anak.
             </p>
             <a
               href="anak.html"
-              class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+              class="ios-button"
             >
+              <i class="fas fa-arrow-right mr-2"></i>
               Mulai Skrining
             </a>
           </div>
           <!-- Card Skrining Dewasa -->
-          <div
-            class="bg-green-50 border border-green-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-300"
-          >
+          <div class="card p-8 text-center">
             <div class="flex justify-center mb-4">
-              <svg
-                class="h-12 w-12 text-green-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                ></path>
-              </svg>
+              <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center shadow-lg">
+                <i class="fas fa-user text-green-600 text-2xl"></i>
+              </div>
             </div>
-            <h3 class="text-lg font-semibold text-green-900 mb-2">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">
               Skrining TBC Dewasa
             </h3>
-            <p class="text-green-700 mb-4">
+            <p class="text-gray-600 mb-6">
               Isi kuesioner skrining untuk pasien dewasa.
             </p>
             <a
               href="dewasa.html"
-              class="inline-flex items-center px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
+              class="ios-button"
             >
+              <i class="fas fa-arrow-right mr-2"></i>
               Mulai Skrining
             </a>
           </div>
@@ -118,49 +903,63 @@
       </section>
 
       <!-- RINGKASAN TERDUGA TBC -->
-      <section class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">
+      <section class="mb-12 fade-in">
+        <h2 class="text-2xl font-bold text-white mb-6">
           Ringkasan Kasus Terduga TBC
         </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div
-            class="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center"
-          >
-            <h3 class="text-lg font-semibold text-blue-800 mb-2">
+        <div class="grid grid-cols-1 md:grid-cols-2 grid-gap-6">
+          <div class="card stat-card p-6 text-center">
+            <div class="flex justify-center mb-4">
+              <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center shadow-lg stat-icon">
+                <i class="fas fa-child text-blue-600 text-2xl"></i>
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">
               Jumlah Kasus Anak
             </h3>
-            <p class="text-4xl font-bold text-blue-600" id="countAnak">0</p>
+            <p class="text-4xl font-bold text-blue-600 stat-number" id="countAnak">0</p>
           </div>
-          <div
-            class="bg-green-50 border border-green-200 rounded-xl p-6 text-center"
-          >
-            <h3 class="text-lg font-semibold text-green-800 mb-2">
+          <div class="card stat-card p-6 text-center">
+            <div class="flex justify-center mb-4">
+              <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center shadow-lg stat-icon">
+                <i class="fas fa-user text-green-600 text-2xl"></i>
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">
               Jumlah Kasus Dewasa
             </h3>
-            <p class="text-4xl font-bold text-green-600" id="countDewasa">0</p>
+            <p class="text-4xl font-bold text-green-600 stat-number" id="countDewasa">0</p>
           </div>
         </div>
       </section>
 
       <!-- Results Section -->
-      <section>
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">
-          Data Hasil Skrining
-        </h2>
-        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+      <section class="fade-in">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold text-white">
+            Data Hasil Skrining
+          </h2>
+          <div class="flex space-x-2">
+            <button id="exportButton" class="ios-button-secondary">
+              <i class="fas fa-download mr-2"></i>Export Data
+            </button>
+          </div>
+        </div>
+        
+        <div class="card overflow-hidden">
           <!-- Tab Navigation -->
           <div class="flex border-b">
             <button
               id="tabAnak"
               onclick="switchTabAndFetch('Anak')"
-              class="flex-1 px-6 py-3 text-center font-semibold text-blue-600 bg-blue-50 border-b-2 border-blue-600 focus:outline-none transition"
+              class="tab-button active flex-1 px-6 py-4 text-center font-semibold text-blue-600 focus:outline-none transition"
             >
               Data Anak
             </button>
             <button
               id="tabDewasa"
               onclick="switchTabAndFetch('Dewasa')"
-              class="flex-1 px-6 py-3 text-center font-semibold text-gray-500 hover:text-gray-700 focus:outline-none transition"
+              class="tab-button flex-1 px-6 py-4 text-center font-semibold text-gray-500 focus:outline-none transition"
             >
               Data Dewasa
             </button>
@@ -168,6 +967,18 @@
 
           <!-- Tab Content -->
           <div class="p-6">
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message hidden">
+              <i class="fas fa-exclamation-triangle mr-2"></i>
+              <span id="errorText">Gagal memuat data. Pastikan Anda memiliki izin akses ke spreadsheet.</span>
+            </div>
+            
+            <!-- Success Message -->
+            <div id="successMessage" class="success-message hidden">
+              <i class="fas fa-check-circle mr-2"></i>
+              <span id="successText">Data berhasil dimuat.</span>
+            </div>
+            
             <!-- Loader -->
             <div id="loader" class="hidden text-center py-8">
               <div
@@ -179,44 +990,34 @@
             <!-- Data Anak Table -->
             <div id="contentAnak">
               <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
+                <table class="ios-table min-w-full">
+                  <thead>
                     <tr>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
+                      <th class="px-6 py-3 text-left">
                         Tanggal
                       </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
+                      <th class="px-6 py-3 text-left">
                         Nama
                       </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
+                      <th class="px-6 py-3 text-left">
                         Jenis Kelamin
                       </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
+                      <th class="px-6 py-3 text-left">
                         Posyandu
                       </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
+                      <th class="px-6 py-3 text-left">
                         Klasifikasi
                       </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
+                      <th class="px-6 py-3 text-left">
                         Tindak Lanjut
+                      </th>
+                      <th class="px-6 py-3 text-center">
+                        Aksi
                       </th>
                     </tr>
                   </thead>
                   <tbody
                     id="tableBodyAnak"
-                    class="bg-white divide-y divide-gray-200"
                   >
                     <!-- Data akan dimuat di sini oleh JavaScript -->
                   </tbody>
@@ -227,50 +1028,34 @@
             <!-- Data Dewasa Table -->
             <div id="contentDewasa" class="hidden">
               <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
+                <table class="ios-table min-w-full">
+                  <thead>
                     <tr>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
+                      <th class="px-6 py-3 text-left">
                         Tanggal
                       </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
+                      <th class="px-6 py-3 text-left">
                         Nama
                       </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
+                      <th class="px-6 py-3 text-left">
                         Usia
                       </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
+                      <th class="px-6 py-3 text-left">
                         Pekerjaan
                       </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
+                      <th class="px-6 py-3 text-left">
                         Klasifikasi
                       </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
+                      <th class="px-6 py-3 text-left">
                         Tindak Lanjut
                       </th>
-                      <!-- KOLOM PDF BARU -->
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
+                      <th class="px-6 py-3 text-center">
                         Aksi
                       </th>
                     </tr>
                   </thead>
                   <tbody
                     id="tableBodyDewasa"
-                    class="bg-white divide-y divide-gray-200"
                   >
                     <!-- Data akan dimuat di sini oleh JavaScript -->
                   </tbody>
@@ -281,6 +1066,21 @@
         </div>
       </section>
     </main>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="modal">
+      <div class="modal-content">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold text-gray-900">Detail Pasien</h3>
+          <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        <div id="modalContent">
+          <!-- Detail akan dimuat di sini -->
+        </div>
+      </div>
+    </div>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -296,35 +1096,39 @@
         const tableBodyDewasa = document.getElementById("tableBodyDewasa");
         const countAnakEl = document.getElementById("countAnak");
         const countDewasaEl = document.getElementById("countDewasa");
+        const refreshButton = document.getElementById("refreshButton");
+        const exportButton = document.getElementById("exportButton");
+        const detailModal = document.getElementById("detailModal");
+        const closeModal = document.getElementById("closeModal");
+        const modalContent = document.getElementById("modalContent");
+        const errorMessage = document.getElementById("errorMessage");
+        const errorText = document.getElementById("errorText");
+        const successMessage = document.getElementById("successMessage");
+        const successText = document.getElementById("successText");
 
         // Variabel global untuk menyimpan data
         let dataAnak = [];
         let dataDewasa = [];
+        let currentTab = "Anak";
 
-        // FUNGSI BARU: Format Tanggal
+        // FUNGSI: Format Tanggal
         function formatDate(dateString) {
           if (!dateString || dateString === "-") return "-";
           const options = { day: "numeric", month: "numeric", year: "numeric" };
           return new Date(dateString).toLocaleDateString("id-ID", options);
         }
 
-        // FUNGSI BARU: Generate PDF
+        // FUNGSI: Generate PDF
         window.generatePDFForRow = function (rowData) {
           const { jsPDF } = window.jspdf;
           const doc = new jsPDF();
 
-          // Tentukan font (gunakan font bawaan yang mendukung Unicode)
-          doc.addFont(
-            "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
-            "Roboto",
-            "normal"
+          // Header
+          doc.addImage(
+            "https://pkmtrenggalek.github.io/SIPP/Assets/pkmtglk.jpeg",
+            "JPEG",
+            15, 10, 30, 30
           );
-          doc.setFont("Roboto");
-
-          // --- Header ---
-          const logoUrl =
-            "https://pkmtrenggalek.github.io/SIPP/Assets/pkmtglk.jpeg";
-          doc.addImage(logoUrl, "JPEG", 15, 10, 30, 30);
           doc.setFontSize(20);
           doc.text("LEMBAR SKRINING TBC DEWASA", 105, 20, { align: "center" });
           doc.setFontSize(12);
@@ -334,7 +1138,7 @@
 
           let yPosition = 45;
 
-          // --- Fungsi Helper untuk Membuat Section ---
+          // Fungsi Helper untuk Membuat Section
           function addSection(title, data) {
             doc.setFontSize(14);
             doc.setFont(undefined, "bold");
@@ -354,7 +1158,7 @@
             yPosition += 5; // Jarak antar section
           }
 
-          // --- Data Identitas ---
+          // Data Identitas
           addSection("IDENTITAS", {
             nama: rowData.nama,
             alamat: rowData.alamat,
@@ -367,7 +1171,7 @@
             email: rowData.email,
           });
 
-          // --- Data Pemeriksaan ---
+          // Data Pemeriksaan
           addSection("PEMERIKSAAN FISIK", {
             "berat badan": rowData.berat_badan + " kg",
             "tinggi badan": rowData.tinggi_badan + " cm",
@@ -375,28 +1179,28 @@
             imt: rowData.imt,
           });
 
-          // --- Data Riwayat Kontak ---
+          // Data Riwayat Kontak
           addSection("RIWAYAT KONTAK", {
             "riwayat kontak tbc": rowData.riwayat_kontak_tbc,
-            "pernah terdiagnosa": rowData.pernah_terdiagnosa_tbc,
-            "pernah berobat tbc": rowData.pernah_berobat_tbc,
-            "nama obat": rowData.nama_obat,
+            "nama kontak": rowData.nama_kontak_tbc,
+            "hubungan": rowData.hubungan_kontak,
           });
 
-          // --- Data Gejala ---
+          // Data Gejala
           const gejala = {
-            "gejala utama (batuk)": rowData.gejala_utama_batuk,
-            "bb turun": rowData.gejala_bb_turun,
-            demam: rowData.gejala_demam,
-            "badan lemas": rowData.gejala_lemas,
-            "berkeringat malam": rowData.gejala_keringat_malam,
-            "sesak napas": rowData.gejala_sesak,
-            "pembesaran kelenjar": rowData.gejala_kelenjar,
-            lainnya: rowData.gejala_lainnya,
+            "gejala utama (batuk)": rowData.skrining_gejala_utama_batuk,
+            "bb turun": rowData.skrining_gejala_tambahan_bb,
+            demam: rowData.skrining_gejala_tambahan_demam,
+            "badan lemas": rowData.skrining_gejala_tambahan_lemas,
+            "berkeringat malam": rowData.skrining_gejala_tambahan_keringat,
+            "sesak napas": rowData.skrining_gejala_tambahan_sesak,
+            "pembesaran kelenjar": rowData.skrining_gejala_tambahan_getah_bening,
+            lainnya: rowData.skrining_gejala_tambahan_lainnya,
+            "detail gejala": rowData.skrining_gejala_lainnya_detail,
           };
           addSection("GEJALA", gejala);
 
-          // --- Hasil Skrining ---
+          // Hasil Skrining
           doc.setLineWidth(0.5);
           doc.line(10, yPosition - 5, 200, yPosition - 5);
           addSection("HASIL SKRINING", {
@@ -404,7 +1208,7 @@
             "tindak lanjut": rowData.tindak_lanjut,
           });
 
-          // --- Footer ---
+          // Footer
           const tanggalCetak = new Date().toLocaleDateString("id-ID");
           doc.setFontSize(10);
           doc.text(`Dicetak pada: ${tanggalCetak}`, 105, 285, {
@@ -416,33 +1220,176 @@
           doc.save(fileName);
         };
 
+        // FUNGSI: Show detail modal
+        window.showDetailModal = function (rowData, type) {
+          modalContent.innerHTML = "";
+          
+          // Create detail sections
+          const sections = [
+            {
+              title: "Informasi Dasar",
+              fields: type === "Anak" 
+                ? [
+                    { label: "Nama", value: rowData.nama },
+                    { label: "Tanggal Lahir", value: formatDate(rowData.tanggal_lahir) },
+                    { label: "Jenis Kelamin", value: rowData.jenis_kelamin },
+                    { label: "Posyandu", value: rowData.posyandu },
+                    { label: "Tanggal Skrining", value: formatDate(rowData.tanggal_skrining) }
+                  ]
+                : [
+                    { label: "Nama", value: rowData.nama },
+                    { label: "Tanggal Lahir", value: formatDate(rowData.tanggal_lahir) },
+                    { label: "Usia", value: rowData.usia + " Tahun" },
+                    { label: "Jenis Kelamin", value: rowData.jenis_kelamin },
+                    { label: "Pekerjaan", value: rowData.pekerjaan },
+                    { label: "Tanggal Skrining", value: formatDate(rowData.tanggal_skrining) }
+                  ]
+            },
+            {
+              title: "Hasil Skrining",
+              fields: [
+                { label: "Klasifikasi", value: rowData.klasifikasi },
+                { label: "Tindak Lanjut", value: rowData.tindak_lanjut }
+              ]
+            }
+          ];
+          
+          // Add additional sections for Dewasa
+          if (type === "Dewasa") {
+            sections.splice(1, 0, {
+              title: "Pemeriksaan Fisik",
+              fields: [
+                { label: "Berat Badan", value: rowData.berat_badan + " kg" },
+                { label: "Tinggi Badan", value: rowData.tinggi_badan + " cm" },
+                { label: "IMT", value: rowData.imt },
+                { label: "Tekanan Darah", value: rowData.tekanan_darah }
+              ]
+            });
+            
+            sections.push({
+              title: "Riwayat Kontak",
+              fields: [
+                { label: "Riwayat Kontak TBC", value: rowData.riwayat_kontak_tbc },
+                { label: "Nama Kontak", value: rowData.nama_kontak_tbc },
+                { label: "Hubungan", value: rowData.hubungan_kontak }
+              ]
+            });
+            
+            sections.push({
+              title: "Gejala",
+              fields: [
+                { label: "Batuk", value: rowData.skrining_gejala_utama_batuk },
+                { label: "BB Turun", value: rowData.skrining_gejala_tambahan_bb },
+                { label: "Demam", value: rowData.skrining_gejala_tambahan_demam },
+                { label: "Badan Lemas", value: rowData.skrining_gejala_tambahan_lemas },
+                { label: "Berkeringat Malam", value: rowData.skrining_gejala_tambahan_keringat },
+                { label: "Sesak Napas", value: rowData.skrining_gejala_tambahan_sesak },
+                { label: "Pembesaran Kelenjar", value: rowData.skrining_gejala_tambahan_getah_bening },
+                { label: "Gejala Lainnya", value: rowData.skrining_gejala_tambahan_lainnya },
+                { label: "Detail Gejala", value: rowData.skrining_gejala_lainnya_detail }
+              ]
+            });
+          }
+          
+          // Build modal content
+          sections.forEach(section => {
+            const sectionEl = document.createElement("div");
+            sectionEl.className = "mb-6";
+            
+            const titleEl = document.createElement("h4");
+            titleEl.className = "text-lg font-semibold text-gray-900 mb-3";
+            titleEl.textContent = section.title;
+            sectionEl.appendChild(titleEl);
+            
+            const fieldsEl = document.createElement("div");
+            fieldsEl.className = "bg-gray-50 rounded-lg p-4";
+            
+            section.fields.forEach(field => {
+              const fieldEl = document.createElement("div");
+              fieldEl.className = "flex justify-between py-2 border-gray-200 last:border-0";
+              
+              const labelEl = document.createElement("span");
+              labelEl.className = "text-sm font-medium text-gray-600";
+              labelEl.textContent = field.label + ":";
+              
+              const valueEl = document.createElement("span");
+              valueEl.className = "text-sm text-gray-900";
+              valueEl.textContent = field.value || "-";
+              
+              fieldEl.appendChild(labelEl);
+              fieldEl.appendChild(valueEl);
+              fieldsEl.appendChild(fieldEl);
+            });
+            
+            sectionEl.appendChild(fieldsEl);
+            modalContent.appendChild(sectionEl);
+          });
+          
+          // Add action buttons
+          const actionsEl = document.createElement("div");
+          actionsEl.className = "flex justify-end space-x-3 mt-6";
+          
+          if (type === "Dewasa") {
+            const pdfButton = document.createElement("button");
+            pdfButton.className = "ios-button-secondary";
+            pdfButton.innerHTML = '<i class="fas fa-file-pdf mr-2"></i>Cetak PDF';
+            pdfButton.onclick = () => generatePDFForRow(rowData);
+            actionsEl.appendChild(pdfButton);
+          }
+          
+          const closeButton = document.createElement("button");
+          closeButton.className = "ios-button";
+          closeButton.textContent = "Tutup";
+          closeButton.onclick = () => {
+            detailModal.classList.remove("active");
+          };
+          actionsEl.appendChild(closeButton);
+          
+          modalContent.appendChild(actionsEl);
+          
+          // Show modal
+          detailModal.classList.add("active");
+        };
+
         // Fungsi untuk berpindah tab dan memuat data
         window.switchTabAndFetch = function (type) {
           const tabAnak = document.getElementById("tabAnak");
           const tabDewasa = document.getElementById("tabDewasa");
 
           if (type === "Anak") {
-            tabAnak.className =
-              "flex-1 px-6 py-3 text-center font-semibold text-blue-600 bg-blue-50 border-b-2 border-blue-600 focus:outline-none transition";
-            tabDewasa.className =
-              "flex-1 px-6 py-3 text-center font-semibold text-gray-500 hover:text-gray-700 focus:outline-none transition";
+            tabAnak.classList.add("active");
+            tabAnak.classList.remove("text-gray-500");
+            tabAnak.classList.add("text-blue-600");
+            
+            tabDewasa.classList.remove("active");
+            tabDewasa.classList.add("text-gray-500");
+            tabDewasa.classList.remove("text-blue-600");
+            
             contentAnak.classList.remove("hidden");
             contentDewasa.classList.add("hidden");
+            
+            currentTab = "Anak";
             // Panggil fetch untuk data Anak
             fetchData("TBCDataAnak");
           } else {
-            tabDewasa.className =
-              "flex-1 px-6 py-3 text-center font-semibold text-green-600 bg-green-50 border-b-2 border-green-600 focus:outline-none transition";
-            tabAnak.className =
-              "flex-1 px-6 py-3 text-center font-semibold text-gray-500 hover:text-gray-700 focus:outline-none transition";
+            tabDewasa.classList.add("active");
+            tabDewasa.classList.remove("text-gray-500");
+            tabDewasa.classList.add("text-blue-600");
+            
+            tabAnak.classList.remove("active");
+            tabAnak.classList.add("text-gray-500");
+            tabAnak.classList.remove("text-blue-600");
+            
             contentDewasa.classList.remove("hidden");
             contentAnak.classList.add("hidden");
+            
+            currentTab = "Dewasa";
             // Panggil fetch untuk data Dewasa
             fetchData("TBCDataDewasa");
           }
         };
 
-        // Fungsi untuk memperbarui jumlah kasus
+        // Fungsi untuk memperbarui jumlah kasus dengan animasi
         function updateSummaryCounts() {
           const countAnak = dataAnak.filter(
             (row) => row.klasifikasi === "Terduga TBC"
@@ -451,39 +1398,102 @@
             (row) => row.klasifikasi === "Terduga TBC"
           ).length;
 
-          countAnakEl.textContent = countAnak;
-          countDewasaEl.textContent = countDewasa;
+          // Animasi counter untuk anak
+          animateCounter(countAnakEl, countAnak);
+          
+          // Animasi counter untuk dewasa
+          animateCounter(countDewasaEl, countDewasa);
+        }
+        
+        // Fungsi untuk animasi counter
+        function animateCounter(element, targetValue) {
+          // Tambahkan kelas animasi
+          element.classList.add("animate");
+          
+          // Hapus kelas animasi setelah selesai
+          setTimeout(() => {
+            element.classList.remove("animate");
+          }, 1500);
+          
+          // Update nilai
+          element.textContent = targetValue;
         }
 
-        // Fungsi untuk mengambil data dari Google Sheet
-        async function fetchData(sheetName) {
+        // Fungsi untuk mengambil data dari Google Sheet menggunakan Google Apps Script
+        function fetchData(sheetName) {
           loader.classList.remove("hidden");
-          try {
-            const response = await fetch(
-              `${GAS_WEB_APP_URL}?sheet=${sheetName}`
-            );
-            const result = await response.json();
-
-            if (result.status === "success") {
-              // Simpan data ke variabel global
-              if (sheetName === "TBCDataAnak") {
-                dataAnak = result.data;
+          errorMessage.classList.add("hidden");
+          successMessage.classList.add("hidden");
+          
+          // Gunakan XMLHttpRequest dengan JSONP untuk menghindari masalah CORS
+          const timestamp = new Date().getTime();
+          const callbackName = `jsonpCallback_${sheetName}_${timestamp}`;
+          
+          // Buat fungsi callback global
+          window[callbackName] = function(result) {
+            try {
+              // Hapus fungsi callback setelah digunakan
+              delete window[callbackName];
+              
+              // Proses hasil
+              if (result.status === "success") {
+                // Simpan data ke variabel global
+                if (sheetName === "TBCDataAnak") {
+                  dataAnak = result.data || [];
+                } else {
+                  dataDewasa = result.data || [];
+                }
+                renderTable(result.data || [], sheetName);
+                updateSummaryCounts(); // Perbarui ringkasan setelah data dimuat
+                
+                // Tampilkan pesan sukses
+                successText.textContent = `Data ${sheetName === "TBCDataAnak" ? "Anak" : "Dewasa"} berhasil dimuat.`;
+                successMessage.classList.remove("hidden");
+                
+                // Sembunyikan pesan sukses setelah 3 detik
+                setTimeout(() => {
+                  successMessage.classList.add("hidden");
+                }, 3000);
               } else {
-                dataDewasa = result.data;
+                throw new Error(result.message || "Unknown error");
               }
-              renderTable(result.data, sheetName);
-              updateSummaryCounts(); // Perbarui ringkasan setelah data dimuat
-            } else {
-              throw new Error(result.message);
+            } catch (error) {
+              console.error("Error processing data:", error);
+              const targetTableBody =
+                sheetName === "TBCDataAnak" ? tableBodyAnak : tableBodyDewasa;
+              targetTableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-4 text-center text-red-500">Gagal memproses data. Coba refresh halaman.</td></tr>`;
+              
+              // Tampilkan pesan error
+              errorText.textContent = `Gagal memproses data ${sheetName === "TBCDataAnak" ? "Anak" : "Dewasa"}: ${error.message}`;
+              errorMessage.classList.remove("hidden");
+            } finally {
+              loader.classList.add("hidden");
             }
-          } catch (error) {
-            console.error("Error fetching data:", error);
+          };
+          
+          // Buat URL dengan parameter callback
+          const url = `${GAS_WEB_APP_URL}?action=getData&sheet=${sheetName}&t=${timestamp}&callback=${callbackName}`;
+          
+          // Buat elemen script untuk JSONP
+          const script = document.createElement('script');
+          script.src = url;
+          script.onerror = function() {
+            // Hapus fungsi callback
+            delete window[callbackName];
+            
+            console.error("Error loading script");
             const targetTableBody =
               sheetName === "TBCDataAnak" ? tableBodyAnak : tableBodyDewasa;
-            targetTableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-4 text-center text-red-500">Gagal memuat data. Periksa konsol.</td></tr>`;
-          } finally {
+            targetTableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-4 text-center text-red-500">Gagal memuat data. Coba refresh halaman.</td></tr>`;
+            
+            // Tampilkan pesan error
+            errorText.textContent = `Gagal memuat data ${sheetName === "TBCDataAnak" ? "Anak" : "Dewasa"}. Pastikan Anda memiliki izin akses ke spreadsheet.`;
+            errorMessage.classList.remove("hidden");
             loader.classList.add("hidden");
-          }
+          };
+          
+          // Tambahkan script ke halaman
+          document.body.appendChild(script);
         }
 
         // Fungsi untuk merender data ke dalam tabel
@@ -493,16 +1503,22 @@
           targetTableBody.innerHTML = ""; // Kosongkan tabel sebelumnya
 
           if (data.length === 0) {
-            const colspan = sheetName === "TBCDataDewasa" ? "7" : "6";
+            const colspan = "7";
             targetTableBody.innerHTML = `<tr><td colspan="${colspan}" class="px-6 py-4 text-center text-gray-500">Belum ada data.</td></tr>`;
             return;
           }
 
-          data.forEach((row) => {
+          data.forEach((row, index) => {
             const tr = document.createElement("tr");
-            tr.className = "hover:bg-gray-50"; // Efek hover pada baris
+            tr.className = "hover:bg-gray-50 fade-in";
+            tr.style.animationDelay = `${index * 0.05}s`;
 
             if (sheetName === "TBCDataAnak") {
+              // Status badge untuk klasifikasi
+              let statusClass = "status-bukan";
+              if (row.klasifikasi === "Terduga TBC") statusClass = "status-terduga";
+              else if (row.klasifikasi === "Kontak Erat") statusClass = "status-kontak";
+              
               tr.innerHTML = `
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatDate(
                   row.tanggal_skrining
@@ -516,15 +1532,29 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
                   row.posyandu || "-"
                 }</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                  row.klasifikasi || "-"
-                }</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                  <span class="status-badge ${statusClass}">${row.klasifikasi || "-"}</span>
+                </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
                   row.tindak_lanjut || "-"
                 }</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                  <button onclick="showDetailModal(${JSON.stringify(
+                    row
+                  ).replace(
+                    /"/g,
+                    "&quot;"
+                  )}, 'Anak')" class="ios-button-secondary">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </td>
               `;
             } else {
-              // TBCDataDewasa
+              // Status badge untuk klasifikasi
+              let statusClass = "status-bukan";
+              if (row.klasifikasi === "Terduga TBC") statusClass = "status-terduga";
+              else if (row.klasifikasi === "Kontak Erat") statusClass = "status-kontak";
+              
               tr.innerHTML = `
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatDate(
                   row.tanggal_skrining
@@ -538,20 +1568,28 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
                   row.pekerjaan || "-"
                 }</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                  row.klasifikasi || "-"
-                }</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                  <span class="status-badge ${statusClass}">${row.klasifikasi || "-"}</span>
+                </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
                   row.tindak_lanjut || "-"
                 }</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                  <button onclick="showDetailModal(${JSON.stringify(
+                    row
+                  ).replace(
+                    /"/g,
+                    "&quot;"
+                  )}, 'Dewasa')" class="ios-button-secondary mr-2">
+                    <i class="fas fa-eye"></i>
+                  </button>
                   <button onclick="generatePDFForRow(${JSON.stringify(
                     row
                   ).replace(
                     /"/g,
                     "&quot;"
-                  )})" class="text-green-600 hover:text-green-900 font-semibold">
-                    Cetak PDF
+                  )})" class="ios-button-secondary">
+                    <i class="fas fa-file-pdf"></i>
                   </button>
                 </td>
               `;
@@ -560,8 +1598,78 @@
           });
         }
 
-        // Muat data untuk tab yang aktif saat pertama kali dibuka
-        fetchData("TBCDataAnak");
+        // Event listeners
+        refreshButton.addEventListener("click", function() {
+          this.querySelector("i").classList.add("fa-spin");
+          this.classList.add("pulse");
+          fetchData(currentTab === "Anak" ? "TBCDataAnak" : "TBCDataDewasa")
+            .finally(() => {
+              setTimeout(() => {
+                this.querySelector("i").classList.remove("fa-spin");
+                this.classList.remove("pulse");
+              }, 1000);
+            });
+        });
+
+        exportButton.addEventListener("click", function() {
+          const data = currentTab === "Anak" ? dataAnak : dataDewasa;
+          const csvContent = generateCSV(data, currentTab);
+          downloadCSV(csvContent, `Data_TBC_${currentTab}_${new Date().toISOString().split('T')[0]}.csv`);
+        });
+
+        closeModal.addEventListener("click", function() {
+          detailModal.classList.remove("active");
+        });
+
+        // Fungsi untuk generate CSV
+        function generateCSV(data, type) {
+          let csv = '';
+          
+          // Header
+          if (type === "Anak") {
+            csv = 'Tanggal,Nama,Jenis Kelamin,Posyandu,Klasifikasi,Tindak Lanjut\n';
+          } else {
+            csv = 'Tanggal,Nama,Usia,Pekerjaan,Klasifikasi,Tindak Lanjut\n';
+          }
+          
+          // Data rows
+          data.forEach(row => {
+            if (type === "Anak") {
+              csv += `${formatDate(row.tanggal_skrining)},${row.nama},${row.jenis_kelamin},${row.posyandu},${row.klasifikasi},${row.tindak_lanjut}\n`;
+            } else {
+              csv += `${formatDate(row.tanggal_skrining)},${row.nama},${row.usia},${row.pekerjaan},${row.klasifikasi},${row.tindak_lanjut}\n`;
+            }
+          });
+          
+          return csv;
+        }
+
+        // Fungsi untuk download CSV
+        function downloadCSV(csvContent, fileName) {
+          const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          const link = document.createElement("a");
+          const url = URL.createObjectURL(blob);
+          link.setAttribute("href", url);
+          link.setAttribute("download", fileName);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+
+        // Jalankan semua fungsi saat halaman dimuat
+        function initializeApp() {
+          // Muat data untuk tab Anak
+          fetchData("TBCDataAnak");
+          
+          // Setelah 500ms, muat data Dewasa juga
+          setTimeout(() => {
+            fetchData("TBCDataDewasa");
+          }, 500);
+        }
+        
+        // Jalankan inisialisasi
+        initializeApp();
       });
     </script>
   </body>

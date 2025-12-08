@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kuesioner Skrining TBC Anak</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
       /* Custom style untuk radio dan checkbox */
       input[type="radio"]:checked + span::before {
@@ -29,11 +30,99 @@
         background-position: center;
         background-repeat: no-repeat;
       }
+      
+      /* Animasi untuk modal */
+      .modal-transition {
+        transition: all 0.3s ease;
+      }
+      
+      /* Animasi untuk tombol */
+      .btn-hover {
+        transition: all 0.2s ease;
+      }
+      
+      /* Animasi untuk loading spinner */
+      .spinner {
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top: 3px solid white;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Tooltip style */
+      .tooltip {
+        position: relative;
+      }
+      
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 200px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 12px;
+      }
+      
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+      
+      /* Validasi error style */
+      .error-input {
+        border-color: #ef4444 !important;
+        box-shadow: 0 0 0 1px #ef4444 !important;
+      }
+      
+      /* Success notification */
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        z-index: 1000;
+        transform: translateX(120%);
+        transition: transform 0.3s ease;
+      }
+      
+      .notification.show {
+        transform: translateX(0);
+      }
+      
+      .notification.success {
+        background-color: #10b981;
+      }
+      
+      .notification.error {
+        background-color: #ef4444;
+      }
     </style>
   </head>
   <body
     class="bg-gradient-to-br from-blue-50 to-indigo-100 font-sans min-h-screen flex items-center justify-center p-4"
   >
+    <!-- Notification Container -->
+    <div id="notification" class="notification"></div>
+    
     <div
       class="w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden"
     >
@@ -58,7 +147,7 @@
 
       <!-- Form Container -->
       <div class="p-8 space-y-8">
-        <form id="tbcForm" class="space-y-8">
+        <form id="tbcForm" class="space-y-8" novalidate>
           <!-- Data Diri Anak -->
           <section class="bg-blue-50 rounded-xl p-5 border border-blue-200">
             <h2 class="text-xl font-bold text-blue-800 mb-5">
@@ -69,25 +158,28 @@
                 <label
                   for="nama"
                   class="block text-sm font-medium text-gray-700"
-                  >Nama Lengkap</label
+                  >Nama Lengkap <span class="text-red-500">*</span></label
                 >
                 <input
                   type="text"
                   id="nama"
                   name="nama"
+                  required
                   class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
+                <p class="text-red-500 text-xs mt-1 hidden" id="nama-error">Nama harus diisi</p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700"
-                  >Jenis Kelamin</label
-                >
+                <label class="block text-sm font-medium text-gray-700">
+                  Jenis Kelamin <span class="text-red-500">*</span>
+                </label>
                 <div class="mt-2 flex space-x-4">
-                  <label class="flex items-center">
+                  <label class="flex items-center cursor-pointer">
                     <input
                       type="radio"
                       name="jenis_kelamin"
                       value="Laki-laki"
+                      required
                       class="peer sr-only"
                     />
                     <span
@@ -95,11 +187,12 @@
                     ></span>
                     <span class="ml-2 text-sm text-gray-700">Laki-laki</span>
                   </label>
-                  <label class="flex items-center">
+                  <label class="flex items-center cursor-pointer">
                     <input
                       type="radio"
                       name="jenis_kelamin"
                       value="Perempuan"
+                      required
                       class="peer sr-only"
                     />
                     <span
@@ -108,32 +201,37 @@
                     <span class="ml-2 text-sm text-gray-700">Perempuan</span>
                   </label>
                 </div>
+                <p class="text-red-500 text-xs mt-1 hidden" id="jk-error">Jenis kelamin harus dipilih</p>
               </div>
               <div>
                 <label
                   for="tanggal_lahir"
                   class="block text-sm font-medium text-gray-700"
-                  >Tanggal Lahir</label
+                  >Tanggal Lahir <span class="text-red-500">*</span></label
                 >
                 <input
                   type="date"
                   id="tanggal_lahir"
                   name="tanggal_lahir"
+                  required
                   class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
+                <p class="text-red-500 text-xs mt-1 hidden" id="ttl-error">Tanggal lahir harus diisi</p>
               </div>
               <div>
                 <label
                   for="posyandu"
                   class="block text-sm font-medium text-gray-700"
-                  >Posyandu</label
+                  >Posyandu <span class="text-red-500">*</span></label
                 >
                 <input
                   type="text"
                   id="posyandu"
                   name="posyandu"
+                  required
                   class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
+                <p class="text-red-500 text-xs mt-1 hidden" id="posyandu-error">Posyandu harus diisi</p>
               </div>
               <div class="md:col-span-2">
                 <label
@@ -157,6 +255,10 @@
             <div class="bg-gray-50 rounded-xl p-5 border border-gray-200">
               <h3 class="text-lg font-semibold text-gray-800 mb-4">
                 A. Apakah tinggal serumah dengan pasien TBC?
+                <span class="tooltip ml-2">
+                  <i class="fas fa-info-circle text-blue-500 text-sm"></i>
+                  <span class="tooltiptext">Pilih Ya jika anak tinggal dalam rumah yang sama dengan penderita TBC</span>
+                </span>
               </h3>
               <div class="space-y-3">
                 <label
@@ -166,6 +268,7 @@
                     type="radio"
                     name="q_a"
                     value="ya"
+                    required
                     class="peer sr-only"
                   />
                   <span
@@ -180,6 +283,7 @@
                     type="radio"
                     name="q_a"
                     value="tidak"
+                    required
                     class="peer sr-only"
                   />
                   <span
@@ -188,10 +292,15 @@
                   <span class="font-medium text-gray-700">Tidak</span>
                 </label>
               </div>
+              <p class="text-red-500 text-xs mt-1 hidden" id="q_a-error">Pilihan harus dipilih</p>
             </div>
             <div class="bg-gray-50 rounded-xl p-5 border border-gray-200">
               <h3 class="text-lg font-semibold text-gray-800 mb-4">
                 B. Apakah kontak erat dengan pasien TBC?
+                <span class="tooltip ml-2">
+                  <i class="fas fa-info-circle text-blue-500 text-sm"></i>
+                  <span class="tooltiptext">Pilih Ya jika anak sering berinteraksi dekat dengan penderita TBC</span>
+                </span>
               </h3>
               <div class="space-y-3">
                 <label
@@ -201,6 +310,7 @@
                     type="radio"
                     name="q_b"
                     value="ya"
+                    required
                     class="peer sr-only"
                   />
                   <span
@@ -215,6 +325,7 @@
                     type="radio"
                     name="q_b"
                     value="tidak"
+                    required
                     class="peer sr-only"
                   />
                   <span
@@ -223,10 +334,15 @@
                   <span class="font-medium text-gray-700">Tidak</span>
                 </label>
               </div>
+              <p class="text-red-500 text-xs mt-1 hidden" id="q_b-error">Pilihan harus dipilih</p>
             </div>
             <div class="bg-gray-50 rounded-xl p-5 border border-gray-200">
               <h3 class="text-lg font-semibold text-gray-800 mb-4">
                 C. Apakah memiliki gejala-gejala TBC berikut?
+                <span class="tooltip ml-2">
+                  <i class="fas fa-info-circle text-blue-500 text-sm"></i>
+                  <span class="tooltiptext">Pilih semua gejala yang dialami anak</span>
+                </span>
               </h3>
               <div class="space-y-3">
                 <label
@@ -270,8 +386,8 @@
                     class="relative w-5 h-5 border-2 border-gray-400 rounded peer-checked:border-blue-500 peer-checked:bg-blue-500 transition"
                   ></span>
                   <span class="text-gray-700"
-                    >Berat badan tidak naik atau turun dalam 2 bulan
-                    berturut-turut meskipun sudah diberikan asupan gizi yang
+                    >Berat badan tidak naik atau turun dalam 2 bulan 
+                    berturut-turut <br> meskipun sudah diberikan asupan gizi yang
                     adekuat</span
                   >
                 </label>
@@ -299,9 +415,10 @@
       <div class="px-8 pb-8">
         <button
           id="submitBtn"
-          class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition-all duration-300 transform hover:scale-105"
+          class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition-all duration-300 transform hover:scale-105 btn-hover flex items-center justify-center"
         >
-          Lihat Hasil Skrining
+          <span id="btnText">Lihat Hasil Skrining</span>
+          <div id="btnSpinner" class="spinner ml-2 hidden"></div>
         </button>
       </div>
     </div>
@@ -312,7 +429,7 @@
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50 transition-opacity"
     >
       <div
-        class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 relative transform transition-transform scale-95 opacity-0"
+        class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 relative modal-transition"
         id="modalContent"
       >
         <button
@@ -398,22 +515,153 @@
       </div>
     </div>
 
+    <!-- Confirmation Modal -->
+    <div
+      id="confirmModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50 transition-opacity"
+    >
+      <div
+        class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative modal-transition"
+      >
+        <div class="text-center">
+          <div
+            class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 mb-4"
+          >
+            <i class="fas fa-exclamation-triangle text-yellow-600"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-800 mb-2">
+            Konfirmasi
+          </h3>
+          <p class="text-gray-600 mb-6">
+            Data sedang disimpan. Apakah Anda yakin ingin menutup jendela ini?
+          </p>
+          <div class="flex space-x-4 justify-center">
+            <button
+              id="cancelCloseBtn"
+              class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition"
+            >
+              Batal
+            </button>
+            <button
+              id="confirmCloseBtn"
+              class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+            >
+              Ya, Tutup
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const GAS_WEB_APP_URL =
           "https://script.google.com/macros/s/AKfycbwlI9BTFcV3rkaVwQXKhxPAKkhp283G1kERqqDM8GgNB7al1Rw6P848mWoQjEG-xSnDVw/exec";
 
         const submitBtn = document.getElementById("submitBtn");
+        const btnText = document.getElementById("btnText");
+        const btnSpinner = document.getElementById("btnSpinner");
         const resultModal = document.getElementById("resultModal");
         const modalContent = document.getElementById("modalContent");
+        const confirmModal = document.getElementById("confirmModal");
         const saveStatusEl = document.getElementById("saveStatus");
         const okBtn = document.getElementById("okBtn");
+        const closeModalBtn = document.getElementById("closeModalBtn");
+        const cancelCloseBtn = document.getElementById("cancelCloseBtn");
+        const confirmCloseBtn = document.getElementById("confirmCloseBtn");
         const form = document.getElementById("tbcForm");
+        
+        let isDataSaving = false;
 
         // SET tanggal hari ini
         document.getElementById("tanggal_skrining").value = new Date()
           .toISOString()
           .split("T")[0];
+
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, type) {
+          const notification = document.getElementById("notification");
+          notification.textContent = message;
+          notification.className = `notification ${type}`;
+          notification.classList.add("show");
+          
+          setTimeout(() => {
+            notification.classList.remove("show");
+          }, 3000);
+        }
+
+        // Fungsi validasi form
+        function validateForm() {
+          let isValid = true;
+          
+          // Validasi nama
+          const nama = document.getElementById("nama");
+          const namaError = document.getElementById("nama-error");
+          if (!nama.value.trim()) {
+            nama.classList.add("error-input");
+            namaError.classList.remove("hidden");
+            isValid = false;
+          } else {
+            nama.classList.remove("error-input");
+            namaError.classList.add("hidden");
+          }
+          
+          // Validasi jenis kelamin
+          const jk = document.querySelector('input[name="jenis_kelamin"]:checked');
+          const jkError = document.getElementById("jk-error");
+          if (!jk) {
+            jkError.classList.remove("hidden");
+            isValid = false;
+          } else {
+            jkError.classList.add("hidden");
+          }
+          
+          // Validasi tanggal lahir
+          const ttl = document.getElementById("tanggal_lahir");
+          const ttlError = document.getElementById("ttl-error");
+          if (!ttl.value) {
+            ttl.classList.add("error-input");
+            ttlError.classList.remove("hidden");
+            isValid = false;
+          } else {
+            ttl.classList.remove("error-input");
+            ttlError.classList.add("hidden");
+          }
+          
+          // Validasi posyandu
+          const posyandu = document.getElementById("posyandu");
+          const posyanduError = document.getElementById("posyandu-error");
+          if (!posyandu.value.trim()) {
+            posyandu.classList.add("error-input");
+            posyanduError.classList.remove("hidden");
+            isValid = false;
+          } else {
+            posyandu.classList.remove("error-input");
+            posyanduError.classList.add("hidden");
+          }
+          
+          // Validasi pertanyaan A
+          const qA = document.querySelector('input[name="q_a"]:checked');
+          const qAError = document.getElementById("q_a-error");
+          if (!qA) {
+            qAError.classList.remove("hidden");
+            isValid = false;
+          } else {
+            qAError.classList.add("hidden");
+          }
+          
+          // Validasi pertanyaan B
+          const qB = document.querySelector('input[name="q_b"]:checked');
+          const qBError = document.getElementById("q_b-error");
+          if (!qB) {
+            qBError.classList.remove("hidden");
+            isValid = false;
+          } else {
+            qBError.classList.add("hidden");
+          }
+          
+          return isValid;
+        }
 
         function urlEncodeData(obj) {
           return Object.keys(obj)
@@ -424,10 +672,22 @@
         }
 
         function evaluateForm() {
-          okBtn.classList.add("hidden"); // jangan muncul dulu
+          if (!validateForm()) {
+            showNotification("Mohon lengkapi semua field yang wajib diisi", "error");
+            return;
+          }
+          
+          // Tampilkan loading state
+          btnText.textContent = "Memproses...";
+          btnSpinner.classList.remove("hidden");
+          submitBtn.disabled = true;
+          
+          // Tampilkan modal dengan status loading
+          okBtn.classList.add("hidden");
           saveStatusEl.textContent = "⏳ Menyimpan data, mohon tunggu...";
           resultModal.classList.remove("hidden");
           modalContent.classList.add("scale-100", "opacity-100");
+          isDataSaving = true;
 
           const nama = document.getElementById("nama").value || "Tidak diisi";
           const jkEl = document.querySelector(
@@ -463,13 +723,13 @@
             tindak = "Tidak perlu tindakan";
           }
 
-          modalNama.textContent = nama;
-          modalJk.textContent = jk;
-          modalTtl.textContent = ttl;
-          modalPosyandu.textContent = pos;
-          modalTgl.textContent = tgl;
-          hasilKlasifikasi.textContent = klasifikasi;
-          hasilTindakLanjut.textContent = tindak;
+          document.getElementById("modalNama").textContent = nama;
+          document.getElementById("modalJk").textContent = jk;
+          document.getElementById("modalTtl").textContent = ttl;
+          document.getElementById("modalPosyandu").textContent = pos;
+          document.getElementById("modalTgl").textContent = tgl;
+          document.getElementById("hasilKlasifikasi").textContent = klasifikasi;
+          document.getElementById("hasilTindakLanjut").textContent = tindak;
 
           const data = {
             targetSheet: "TBCDataAnak",
@@ -482,26 +742,41 @@
             tindak_lanjut: tindak,
           };
 
+          // Simpan data ke Google Apps Script
           fetch(GAS_WEB_APP_URL, {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: urlEncodeData(data),
           })
-            .then((res) => res.json())
+            .then((res) => {
+              if (!res.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return res.json();
+            })
             .then((d) => {
               if (d.status === "success") {
                 saveStatusEl.textContent = "✅ Data berhasil disimpan";
                 saveStatusEl.className =
                   "text-sm text-green-600 font-semibold mt-4";
                 okBtn.classList.remove("hidden");
+                isDataSaving = false;
               } else {
-                throw new Error();
+                throw new Error("Server returned error");
               }
             })
-            .catch(() => {
+            .catch((error) => {
+              console.error("Error:", error);
               saveStatusEl.textContent = "❌ Gagal menyimpan data, coba ulangi";
               saveStatusEl.className =
                 "text-sm text-red-600 font-semibold mt-4";
+              isDataSaving = false;
+            })
+            .finally(() => {
+              // Kembalikan tombol submit ke keadaan normal
+              btnText.textContent = "Lihat Hasil Skrining";
+              btnSpinner.classList.add("hidden");
+              submitBtn.disabled = false;
             });
         }
 
@@ -510,10 +785,50 @@
           evaluateForm();
         });
 
-        // klik OK → modal tutup + reset form
+        // Event listener untuk tombol OK di modal hasil
         okBtn.addEventListener("click", () => {
           resultModal.classList.add("hidden");
           form.reset();
+          showNotification("Form telah direset", "success");
+        });
+
+        // Event listener untuk tombol close di modal hasil
+        closeModalBtn.addEventListener("click", () => {
+          if (isDataSaving) {
+            resultModal.classList.add("hidden");
+            confirmModal.classList.remove("hidden");
+          } else {
+            resultModal.classList.add("hidden");
+          }
+        });
+
+        // Event listener untuk tombol batal di modal konfirmasi
+        cancelCloseBtn.addEventListener("click", () => {
+          confirmModal.classList.add("hidden");
+          resultModal.classList.remove("hidden");
+        });
+
+        // Event listener untuk tombol konfirmasi di modal konfirmasi
+        confirmCloseBtn.addEventListener("click", () => {
+          confirmModal.classList.add("hidden");
+          resultModal.classList.add("hidden");
+        });
+
+        // Event listener untuk menutup modal dengan klik di luar modal
+        resultModal.addEventListener("click", (e) => {
+          if (e.target === resultModal && !isDataSaving) {
+            resultModal.classList.add("hidden");
+          } else if (e.target === resultModal && isDataSaving) {
+            resultModal.classList.add("hidden");
+            confirmModal.classList.remove("hidden");
+          }
+        });
+
+        confirmModal.addEventListener("click", (e) => {
+          if (e.target === confirmModal) {
+            confirmModal.classList.add("hidden");
+            resultModal.classList.remove("hidden");
+          }
         });
       });
     </script>

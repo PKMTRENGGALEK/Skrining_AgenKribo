@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard Skrining TBC</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- TAMBAHKAN LIBRARY JSPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <style>
       /* Animasi sederhana untuk loader */
       .loader {
@@ -114,7 +117,7 @@
         </div>
       </section>
 
-      <!-- RINGKASAN TERDUGA TBC (BARU) -->
+      <!-- RINGKASAN TERDUGA TBC -->
       <section class="mb-12">
         <h2 class="text-2xl font-bold text-gray-800 mb-6">
           Ringkasan Kasus Terduga TBC
@@ -257,6 +260,12 @@
                       >
                         Tindak Lanjut
                       </th>
+                      <!-- KOLOM PDF BARU -->
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Aksi
+                      </th>
                     </tr>
                   </thead>
                   <tbody
@@ -292,7 +301,122 @@
         let dataAnak = [];
         let dataDewasa = [];
 
-        // Fungsi untuk berpindah tab dan memuat data (DIPERBAIKI)
+        // FUNGSI BARU: Format Tanggal
+        function formatDate(dateString) {
+          if (!dateString || dateString === "-") return "-";
+          const options = { day: "numeric", month: "numeric", year: "numeric" };
+          return new Date(dateString).toLocaleDateString("id-ID", options);
+        }
+
+        // FUNGSI BARU: Generate PDF
+        window.generatePDFForRow = function (rowData) {
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF();
+
+          // Tentukan font (gunakan font bawaan yang mendukung Unicode)
+          doc.addFont(
+            "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
+            "Roboto",
+            "normal"
+          );
+          doc.setFont("Roboto");
+
+          // --- Header ---
+          const logoUrl =
+            "https://pkmtrenggalek.github.io/SIPP/Assets/pkmtglk.jpeg";
+          doc.addImage(logoUrl, "JPEG", 15, 10, 30, 30);
+          doc.setFontSize(20);
+          doc.text("LEMBAR SKRINING TBC DEWASA", 105, 20, { align: "center" });
+          doc.setFontSize(12);
+          doc.text("Posyandu & Puskesmas", 105, 27, { align: "center" });
+          doc.setLineWidth(0.5);
+          doc.line(10, 35, 200, 35);
+
+          let yPosition = 45;
+
+          // --- Fungsi Helper untuk Membuat Section ---
+          function addSection(title, data) {
+            doc.setFontSize(14);
+            doc.setFont(undefined, "bold");
+            doc.text(title, 15, yPosition);
+            yPosition += 7;
+            doc.setFont(undefined, "normal");
+            doc.setFontSize(11);
+
+            Object.entries(data).forEach(([key, value]) => {
+              const label = key
+                .replace(/_/g, " ")
+                .replace(/\b\w/g, (l) => l.toUpperCase());
+              const text = `${label}: ${value || "-"}`;
+              doc.text(text, 15, yPosition);
+              yPosition += 6;
+            });
+            yPosition += 5; // Jarak antar section
+          }
+
+          // --- Data Identitas ---
+          addSection("IDENTITAS", {
+            nama: rowData.nama,
+            alamat: rowData.alamat,
+            nik: rowData.nik,
+            pekerjaan: rowData.pekerjaan,
+            "tanggal lahir": rowData.tanggal_lahir,
+            usia: rowData.usia + " Tahun",
+            "jenis kelamin": rowData.jenis_kelamin,
+            "no hp": rowData.no_hp,
+            email: rowData.email,
+          });
+
+          // --- Data Pemeriksaan ---
+          addSection("PEMERIKSAAN FISIK", {
+            "berat badan": rowData.berat_badan + " kg",
+            "tinggi badan": rowData.tinggi_badan + " cm",
+            "tekanan darah": rowData.tekanan_darah,
+            imt: rowData.imt,
+          });
+
+          // --- Data Riwayat Kontak ---
+          addSection("RIWAYAT KONTAK", {
+            "riwayat kontak tbc": rowData.riwayat_kontak_tbc,
+            "pernah terdiagnosa": rowData.pernah_terdiagnosa_tbc,
+            "pernah berobat tbc": rowData.pernah_berobat_tbc,
+            "nama obat": rowData.nama_obat,
+          });
+
+          // --- Data Gejala ---
+          const gejala = {
+            "gejala utama (batuk)": rowData.gejala_utama_batuk,
+            "bb turun": rowData.gejala_bb_turun,
+            demam: rowData.gejala_demam,
+            "badan lemas": rowData.gejala_lemas,
+            "berkeringat malam": rowData.gejala_keringat_malam,
+            "sesak napas": rowData.gejala_sesak,
+            "pembesaran kelenjar": rowData.gejala_kelenjar,
+            lainnya: rowData.gejala_lainnya,
+          };
+          addSection("GEJALA", gejala);
+
+          // --- Hasil Skrining ---
+          doc.setLineWidth(0.5);
+          doc.line(10, yPosition - 5, 200, yPosition - 5);
+          addSection("HASIL SKRINING", {
+            klasifikasi: rowData.klasifikasi,
+            "tindak lanjut": rowData.tindak_lanjut,
+          });
+
+          // --- Footer ---
+          const tanggalCetak = new Date().toLocaleDateString("id-ID");
+          doc.setFontSize(10);
+          doc.text(`Dicetak pada: ${tanggalCetak}`, 105, 285, {
+            align: "center",
+          });
+
+          // Simpan PDF
+          const fileName = `Skrining_TBC_Dewasa_${rowData.nama}_${rowData.tanggal_skrining}.pdf`;
+          doc.save(fileName);
+        };
+
+        // Fungsi untuk berpindah tab dan memuat data
         window.switchTabAndFetch = function (type) {
           const tabAnak = document.getElementById("tabAnak");
           const tabDewasa = document.getElementById("tabDewasa");
@@ -318,7 +442,7 @@
           }
         };
 
-        // Fungsi untuk memperbarui jumlah kasus (BARU)
+        // Fungsi untuk memperbarui jumlah kasus
         function updateSummaryCounts() {
           const countAnak = dataAnak.filter(
             (row) => row.klasifikasi === "Terduga TBC"
@@ -356,7 +480,7 @@
             console.error("Error fetching data:", error);
             const targetTableBody =
               sheetName === "TBCDataAnak" ? tableBodyAnak : tableBodyDewasa;
-            targetTableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-4 text-center text-red-500">Gagal memuat data. Periksa konsol.</td></tr>`;
+            targetTableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-4 text-center text-red-500">Gagal memuat data. Periksa konsol.</td></tr>`;
           } finally {
             loader.classList.add("hidden");
           }
@@ -369,55 +493,68 @@
           targetTableBody.innerHTML = ""; // Kosongkan tabel sebelumnya
 
           if (data.length === 0) {
-            targetTableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Belum ada data.</td></tr>`;
+            const colspan = sheetName === "TBCDataDewasa" ? "7" : "6";
+            targetTableBody.innerHTML = `<tr><td colspan="${colspan}" class="px-6 py-4 text-center text-gray-500">Belum ada data.</td></tr>`;
             return;
           }
 
           data.forEach((row) => {
             const tr = document.createElement("tr");
-            tr.className = "hover:bg-gray-50";
+            tr.className = "hover:bg-gray-50"; // Efek hover pada baris
+
             if (sheetName === "TBCDataAnak") {
               tr.innerHTML = `
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${
-                              row.tanggal_skrining || "-"
-                            }</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${
-                              row.nama || "-"
-                            }</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                              row.jenis_kelamin || "-"
-                            }</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                              row.posyandu || "-"
-                            }</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                              row.klasifikasi || "-"
-                            }</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                              row.tindak_lanjut || "-"
-                            }</td>
-                        `;
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatDate(
+                  row.tanggal_skrining
+                )}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${
+                  row.nama || "-"
+                }</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
+                  row.jenis_kelamin || "-"
+                }</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
+                  row.posyandu || "-"
+                }</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
+                  row.klasifikasi || "-"
+                }</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
+                  row.tindak_lanjut || "-"
+                }</td>
+              `;
             } else {
+              // TBCDataDewasa
               tr.innerHTML = `
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${
-                              row.tanggal_skrining || "-"
-                            }</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${
-                              row.nama || "-"
-                            }</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                              row.usia ? row.usia + " Tahun" : "-"
-                            }</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                              row.pekerjaan || "-"
-                            }</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                              row.klasifikasi || "-"
-                            }</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                              row.tindak_lanjut || "-"
-                            }</td>
-                        `;
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatDate(
+                  row.tanggal_skrining
+                )}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${
+                  row.nama || "-"
+                }</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
+                  row.usia ? row.usia + " Tahun" : "-"
+                }</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
+                  row.pekerjaan || "-"
+                }</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
+                  row.klasifikasi || "-"
+                }</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
+                  row.tindak_lanjut || "-"
+                }</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                  <button onclick="generatePDFForRow(${JSON.stringify(
+                    row
+                  ).replace(
+                    /"/g,
+                    "&quot;"
+                  )})" class="text-green-600 hover:text-green-900 font-semibold">
+                    Cetak PDF
+                  </button>
+                </td>
+              `;
             }
             targetTableBody.appendChild(tr);
           });

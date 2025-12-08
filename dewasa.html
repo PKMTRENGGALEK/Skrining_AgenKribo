@@ -29,11 +29,71 @@
         background-position: center;
         background-repeat: no-repeat;
       }
+      
+      /* Animasi untuk modal */
+      .modal-transition {
+        transition: all 0.3s ease;
+      }
+      
+      /* Animasi untuk tombol */
+      .btn-hover {
+        transition: all 0.2s ease;
+      }
+      
+      /* Animasi untuk loading spinner */
+      .spinner {
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top: 3px solid white;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Validasi error style */
+      .error-input {
+        border-color: #ef4444 !important;
+        box-shadow: 0 0 0 1px #ef4444 !important;
+      }
+      
+      /* Success notification */
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        z-index: 1000;
+        transform: translateX(120%);
+        transition: transform 0.3s ease;
+      }
+      
+      .notification.show {
+        transform: translateX(0);
+      }
+      
+      .notification.success {
+        background-color: #10b981;
+      }
+      
+      .notification.error {
+        background-color: #ef4444;
+      }
     </style>
   </head>
   <body
     class="bg-gradient-to-br from-green-50 to-emerald-100 font-sans min-h-screen p-4"
   >
+    <!-- Notification Container -->
+    <div id="notification" class="notification"></div>
+    
     <div
       class="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden"
     >
@@ -56,71 +116,93 @@
         </div>
       </header>
 
-      <form id="tbcForm" class="p-8 space-y-8">
+      <form id="tbcForm" class="p-8 space-y-8" novalidate>
+        <!-- Hidden field untuk tanggal skrining -->
+        <input type="hidden" id="tanggal_skrining" name="tanggal_skrining" />
+
         <!-- IDENTITAS -->
         <section class="bg-green-50 rounded-xl p-6 border border-green-200">
           <h2 class="text-2xl font-bold text-green-800 mb-6">IDENTITAS</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div class="md:col-span-2 lg:col-span-1">
-              <label for="nama" class="block text-sm font-medium text-gray-700"
-                >Nama Lengkap</label
-              ><input
+              <label for="nama" class="block text-sm font-medium text-gray-700">
+                Nama Lengkap <span class="text-red-500">*</span>
+              </label>
+              <input
                 type="text"
                 id="nama"
                 name="nama"
+                required
                 class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
+              <p class="text-red-500 text-xs mt-1 hidden" id="nama-error">Nama harus diisi</p>
             </div>
             <div class="md:col-span-2 lg:col-span-1">
               <label
                 for="alamat"
                 class="block text-sm font-medium text-gray-700"
-                >Alamat</label
-              ><input
+              >
+                Alamat <span class="text-red-500">*</span>
+              </label>
+              <input
                 type="text"
                 id="alamat"
                 name="alamat"
+                required
                 class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
+              <p class="text-red-500 text-xs mt-1 hidden" id="alamat-error">Alamat harus diisi</p>
             </div>
             <div>
-              <label for="nik" class="block text-sm font-medium text-gray-700"
-                >NIK</label
-              ><input
+              <label for="nik" class="block text-sm font-medium text-gray-700">
+                NIK <span class="text-red-500">*</span>
+              </label>
+              <input
                 type="text"
                 id="nik"
                 name="nik"
+                required
                 class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
+              <p class="text-red-500 text-xs mt-1 hidden" id="nik-error">NIK harus diisi</p>
             </div>
             <div>
               <label
                 for="pekerjaan"
                 class="block text-sm font-medium text-gray-700"
-                >Pekerjaan</label
-              ><input
+              >
+                Pekerjaan <span class="text-red-500">*</span>
+              </label>
+              <input
                 type="text"
                 id="pekerjaan"
                 name="pekerjaan"
+                required
                 class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
+              <p class="text-red-500 text-xs mt-1 hidden" id="pekerjaan-error">Pekerjaan harus diisi</p>
             </div>
             <div>
               <label
                 for="tanggal_lahir"
                 class="block text-sm font-medium text-gray-700"
-                >Tanggal Lahir</label
-              ><input
+              >
+                Tanggal Lahir <span class="text-red-500">*</span>
+              </label>
+              <input
                 type="date"
                 id="tanggal_lahir"
                 name="tanggal_lahir"
+                required
                 class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
+              <p class="text-red-500 text-xs mt-1 hidden" id="tanggal_lahir-error">Tanggal lahir harus diisi</p>
             </div>
             <div>
-              <label for="usia" class="block text-sm font-medium text-gray-700"
-                >Usia (Tahun)</label
-              ><input
+              <label for="usia" class="block text-sm font-medium text-gray-700">
+                Usia (Tahun)
+              </label>
+              <input
                 type="text"
                 id="usia"
                 name="usia"
@@ -129,51 +211,57 @@
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Jenis Kelamin</label
-              >
+              <label class="block text-sm font-medium text-gray-700">
+                Jenis Kelamin <span class="text-red-500">*</span>
+              </label>
               <div class="mt-2 flex space-x-4">
-                <label class="flex items-center"
-                  ><input
+                <label class="flex items-center cursor-pointer">
+                  <input
                     type="radio"
                     name="jenis_kelamin"
                     value="Laki-laki"
+                    required
                     class="peer sr-only"
-                  /><span
+                  />
+                  <span
                     class="relative w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
-                  ></span
-                  ><span class="ml-2 text-sm text-gray-700"
-                    >Laki-laki</span
-                  ></label
-                ><label class="flex items-center"
-                  ><input
+                  ></span>
+                  <span class="ml-2 text-sm text-gray-700">Laki-laki</span>
+                </label>
+                <label class="flex items-center cursor-pointer">
+                  <input
                     type="radio"
                     name="jenis_kelamin"
                     value="Perempuan"
+                    required
                     class="peer sr-only"
-                  /><span
+                  />
+                  <span
                     class="relative w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
-                  ></span
-                  ><span class="ml-2 text-sm text-gray-700"
-                    >Perempuan</span
-                  ></label
-                >
+                  ></span>
+                  <span class="ml-2 text-sm text-gray-700">Perempuan</span>
+                </label>
               </div>
+              <p class="text-red-500 text-xs mt-1 hidden" id="jenis_kelamin-error">Jenis kelamin harus dipilih</p>
             </div>
             <div>
-              <label for="no_hp" class="block text-sm font-medium text-gray-700"
-                >No. HP</label
-              ><input
+              <label for="no_hp" class="block text-sm font-medium text-gray-700">
+                No. HP <span class="text-red-500">*</span>
+              </label>
+              <input
                 type="tel"
                 id="no_hp"
                 name="no_hp"
+                required
                 class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
+              <p class="text-red-500 text-xs mt-1 hidden" id="no_hp-error">No. HP harus diisi</p>
             </div>
             <div>
-              <label for="email" class="block text-sm font-medium text-gray-700"
-                >Email</label
-              ><input
+              <label for="email" class="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
                 type="email"
                 id="email"
                 name="email"
@@ -186,51 +274,64 @@
         <!-- PEMERIKSAAN BB, TB, DAN TEKANAN DARAH -->
         <section class="bg-blue-50 rounded-xl p-6 border border-blue-200">
           <h2 class="text-2xl font-bold text-blue-800 mb-6">
-            PEMERIKSAAN BB, TB, DAN TEKANAN DARAH (DIISI OLEH PETUGAS)
+            PEMERIKSAAN BB, TB, DAN TEKANAN DARAH 
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label
                 for="berat_badan"
                 class="block text-sm font-medium text-gray-700"
-                >Berat Badan (kg)</label
-              ><input
+              >
+                Berat Badan (kg) <span class="text-red-500">*</span>
+              </label>
+              <input
                 type="number"
                 id="berat_badan"
                 name="berat_badan"
                 step="0.1"
+                required
                 class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
+              <p class="text-red-500 text-xs mt-1 hidden" id="berat_badan-error">Berat badan harus diisi</p>
             </div>
             <div>
               <label
                 for="tinggi_badan"
                 class="block text-sm font-medium text-gray-700"
-                >Tinggi Badan (cm)</label
-              ><input
+              >
+                Tinggi Badan (cm) <span class="text-red-500">*</span>
+              </label>
+              <input
                 type="number"
                 id="tinggi_badan"
                 name="tinggi_badan"
+                required
                 class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
+              <p class="text-red-500 text-xs mt-1 hidden" id="tinggi_badan-error">Tinggi badan harus diisi</p>
             </div>
             <div>
               <label
                 for="tekanan_darah"
                 class="block text-sm font-medium text-gray-700"
-                >Tekanan Darah</label
-              ><input
+              >
+                Tekanan Darah <span class="text-red-500">*</span>
+              </label>
+              <input
                 type="text"
                 id="tekanan_darah"
                 name="tekanan_darah"
                 placeholder="120/80"
+                required
                 class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
+              <p class="text-red-500 text-xs mt-1 hidden" id="tekanan_darah-error">Tekanan darah harus diisi</p>
             </div>
             <div>
-              <label for="imt" class="block text-sm font-medium text-gray-700"
-                >IMT</label
-              ><input
+              <label for="imt" class="block text-sm font-medium text-gray-700">
+                IMT
+              </label>
+              <input
                 type="text"
                 id="imt"
                 name="imt"
@@ -239,256 +340,409 @@
               />
             </div>
           </div>
-        </section>
-
-        <!-- PEMERIKSAAN KONTAK -->
-        <section class="bg-yellow-50 rounded-xl p-6 border border-yellow-200">
-          <h2 class="text-2xl font-bold text-yellow-800 mb-6">
-            PEMERIKSAAN KONTAK (DIISI OLEH PETUGAS)
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2"
-                >Riwayat Kontak TBC</label
-              >
-              <div class="space-y-2">
-                <label class="flex items-center"
-                  ><input
-                    type="radio"
-                    name="riwayat_kontak_tbc"
-                    value="TBC"
-                    class="peer sr-only"
-                  /><span
-                    class="relative w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
-                  ></span
-                  ><span class="ml-2 text-sm text-gray-700">TBC</span></label
-                ><label class="flex items-center"
-                  ><input
-                    type="radio"
-                    name="riwayat_kontak_tbc"
-                    value="TBC RO"
-                    class="peer sr-only"
-                  /><span
-                    class="relative w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
-                  ></span
-                  ><span class="ml-2 text-sm text-gray-700">TBC RO</span></label
-                ><label class="flex items-center"
-                  ><input
-                    type="radio"
-                    name="riwayat_kontak_tbc"
-                    value="Tidak"
-                    class="peer sr-only"
-                  /><span
-                    class="relative w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
-                  ></span
-                  ><span class="ml-2 text-sm text-gray-700">Tidak</span></label
-                >
+          
+          <!-- Keterangan IMT -->
+          <div class="mt-6 bg-white rounded-lg p-4 shadow-sm">
+            <h4 class="font-semibold text-blue-800 mb-3">Kriteria IMT (Indeks Massa Tubuh)</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <h5 class="font-medium text-gray-700 mb-2">Untuk Perempuan:</h5>
+                <ul class="space-y-1 text-sm text-gray-600">
+                  <li>Kurus: &lt; 17 Kg/m²</li>
+                  <li>Normal: 17 - 23 Kg/m²</li>
+                  <li>Kegemukan: 23 - 27 Kg/m²</li>
+                  <li>Obesitas: &gt; 27 Kg/m²</li>
+                </ul>
               </div>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2"
-                >Pernah Terdiagnosa</label
-              >
-              <div class="space-y-2">
-                <label class="flex items-center"
-                  ><input
-                    type="radio"
-                    name="pernah_terdiagnosa_tbc"
-                    value="TBC"
-                    class="peer sr-only"
-                  /><span
-                    class="relative w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
-                  ></span
-                  ><span class="ml-2 text-sm text-gray-700">TBC</span></label
-                ><label class="flex items-center"
-                  ><input
-                    type="radio"
-                    name="pernah_terdiagnosa_tbc"
-                    value="TBC RO"
-                    class="peer sr-only"
-                  /><span
-                    class="relative w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
-                  ></span
-                  ><span class="ml-2 text-sm text-gray-700">TBC RO</span></label
-                ><label class="flex items-center"
-                  ><input
-                    type="radio"
-                    name="pernah_terdiagnosa_tbc"
-                    value="Tidak"
-                    class="peer sr-only"
-                  /><span
-                    class="relative w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
-                  ></span
-                  ><span class="ml-2 text-sm text-gray-700">Tidak</span></label
-                >
+              <div>
+                <h5 class="font-medium text-gray-700 mb-2">Untuk Laki-laki:</h5>
+                <ul class="space-y-1 text-sm text-gray-600">
+                  <li>Kurus: &lt; 18 Kg/m²</li>
+                  <li>Normal: 18 - 25 Kg/m²</li>
+                  <li>Kegemukan: 25 - 27 Kg/m²</li>
+                  <li>Obesitas: &gt; 27 Kg/m²</li>
+                </ul>
               </div>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2"
-                >Pernah Berobat TBC</label
-              >
-              <div class="space-y-2">
-                <label class="flex items-center"
-                  ><input
-                    type="radio"
-                    name="pernah_berobat_tbc"
-                    value="Ya"
-                    class="peer sr-only"
-                  /><span
-                    class="relative w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
-                  ></span
-                  ><span class="ml-2 text-sm text-gray-700">Ya</span></label
-                ><label class="flex items-center"
-                  ><input
-                    type="radio"
-                    name="pernah_berobat_tbc"
-                    value="Tidak"
-                    class="peer sr-only"
-                  /><span
-                    class="relative w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
-                  ></span
-                  ><span class="ml-2 text-sm text-gray-700">Tidak</span></label
-                >
-              </div>
-            </div>
-            <div class="md:col-span-2 lg:col-span-3">
-              <label
-                for="nama_obat"
-                class="block text-sm font-medium text-gray-700"
-                >Jika Ya, Nama obat:</label
-              ><input
-                type="text"
-                id="nama_obat"
-                name="nama_obat"
-                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-                disabled
-              />
             </div>
           </div>
         </section>
-
-        <!-- FORM PERTANYAAN GEJALA -->
-        <section class="bg-gray-50 rounded-xl p-6 border border-gray-200">
-          <h2 class="text-2xl font-bold text-gray-800 mb-6">FORM PERTANYAAN</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div
-              class="md:col-span-2 p-4 bg-yellow-50 border border-yellow-200 rounded-lg"
-            >
-              <h4 class="font-semibold text-yellow-800 mb-3">GEJALA UTAMA</h4>
-              <div class="flex items-center justify-between">
-                <span class="text-gray-700">Batuk lebih dari 2 minggu</span>
+        
+       <!-- SKRINING GEJALA -->
+        <section class="bg-green-50 rounded-xl p-6 border border-green-200">
+          <h2 class="text-2xl font-bold text-green-800 mb-6">
+            SKRINING GEJALA
+          </h2>
+          
+          <div class="space-y-6">
+            <!-- GEJALA UTAMA -->
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+              <h4 class="font-semibold text-green-800 mb-4">GEJALA UTAMA</h4>
+              
+              <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                <span class="text-gray-700">Batuk (semua bentuk batuk tanpa melihat durasi)</span>
                 <div class="flex space-x-4">
-                  <label class="flex items-center cursor-pointer"
-                    ><input
+                  <label class="flex items-center cursor-pointer">
+                    <input
                       type="radio"
-                      name="gejala_utama_batuk"
+                      name="skrining_gejala_utama_batuk"
                       value="Ya"
+                      required
                       class="peer sr-only"
-                    /><span
+                    />
+                    <span
                       class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
-                    ></span
-                    ><span class="ml-2 font-medium text-gray-700"
-                      >Ya</span
-                    ></label
-                  ><label class="flex items-center cursor-pointer"
-                    ><input
+                    ></span>
+                    <span class="ml-2 font-medium text-gray-700">Ya</span>
+                  </label>
+                  <label class="flex items-center cursor-pointer">
+                    <input
                       type="radio"
-                      name="gejala_utama_batuk"
+                      name="skrining_gejala_utama_batuk"
                       value="Tidak"
+                      required
                       class="peer sr-only"
-                    /><span
+                    />
+                    <span
                       class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
-                    ></span
-                    ><span class="ml-2 font-medium text-gray-700"
-                      >Tidak</span
-                    ></label
-                  >
+                    ></span>
+                    <span class="ml-2 font-medium text-gray-700">Tidak</span>
+                  </label>
+                </div>
+              </div>
+              <p class="text-red-500 text-xs mt-1 hidden" id="skrining_gejala_utama_batuk-error">Pilihan harus dipilih</p>
+            </div>
+            
+            <!-- GEJALA TAMBAHAN -->
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+              <h4 class="font-semibold text-green-800 mb-4">GEJALA TAMBAHAN</h4>
+              
+              <div class="space-y-3">
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <span class="text-gray-700">BB turun tanpa penyebab jelas/BB tidak naik/nafsu makan turun</span>
+                  <div class="flex space-x-4">
+                    <label class="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="skrining_gejala_tambahan_bb"
+                        value="Ya"
+                        required
+                        class="peer sr-only"
+                      />
+                      <span
+                        class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                      ></span>
+                      <span class="ml-2 font-medium text-gray-700">Ya</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="skrining_gejala_tambahan_bb"
+                        value="Tidak"
+                        required
+                        class="peer sr-only"
+                      />
+                      <span
+                        class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                      ></span>
+                      <span class="ml-2 font-medium text-gray-700">Tidak</span>
+                    </label>
+                  </div>
+                </div>
+                <p class="text-red-500 text-xs mt-1 hidden" id="skrining_gejala_tambahan_bb-error">Pilihan harus dipilih</p>
+                
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <span class="text-gray-700">Demam yang tidak diketahui penyebabnya</span>
+                  <div class="flex space-x-4">
+                    <label class="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="skrining_gejala_tambahan_demam"
+                        value="Ya"
+                        required
+                        class="peer sr-only"
+                      />
+                      <span
+                        class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                      ></span>
+                      <span class="ml-2 font-medium text-gray-700">Ya</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="skrining_gejala_tambahan_demam"
+                        value="Tidak"
+                        required
+                        class="peer sr-only"
+                      />
+                      <span
+                        class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                      ></span>
+                      <span class="ml-2 font-medium text-gray-700">Tidak</span>
+                    </label>
+                  </div>
+                </div>
+                <p class="text-red-500 text-xs mt-1 hidden" id="skrining_gejala_tambahan_demam-error">Pilihan harus dipilih</p>
+                
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <span class="text-gray-700">Badan lemas/lesu</span>
+                  <div class="flex space-x-4">
+                    <label class="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="skrining_gejala_tambahan_lemas"
+                        value="Ya"
+                        required
+                        class="peer sr-only"
+                      />
+                      <span
+                        class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                      ></span>
+                      <span class="ml-2 font-medium text-gray-700">Ya</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="skrining_gejala_tambahan_lemas"
+                        value="Tidak"
+                        required
+                        class="peer sr-only"
+                      />
+                      <span
+                        class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                      ></span>
+                      <span class="ml-2 font-medium text-gray-700">Tidak</span>
+                    </label>
+                  </div>
+                </div>
+                <p class="text-red-500 text-xs mt-1 hidden" id="skrining_gejala_tambahan_lemas-error">Pilihan harus dipilih</p>
+                
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <span class="text-gray-700">Berkeringat malam hari tanpa kegiatan</span>
+                  <div class="flex space-x-4">
+                    <label class="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="skrining_gejala_tambahan_keringat"
+                        value="Ya"
+                        required
+                        class="peer sr-only"
+                      />
+                      <span
+                        class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                      ></span>
+                      <span class="ml-2 font-medium text-gray-700">Ya</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="skrining_gejala_tambahan_keringat"
+                        value="Tidak"
+                        required
+                        class="peer sr-only"
+                      />
+                      <span
+                        class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                      ></span>
+                      <span class="ml-2 font-medium text-gray-700">Tidak</span>
+                    </label>
+                  </div>
+                </div>
+                <p class="text-red-500 text-xs mt-1 hidden" id="skrining_gejala_tambahan_keringat-error">Pilihan harus dipilih</p>
+                
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <span class="text-gray-700">Sesak napas tanpa nyeri dada</span>
+                  <div class="flex space-x-4">
+                    <label class="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="skrining_gejala_tambahan_sesak"
+                        value="Ya"
+                        required
+                        class="peer sr-only"
+                      />
+                      <span
+                        class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                      ></span>
+                      <span class="ml-2 font-medium text-gray-700">Ya</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="skrining_gejala_tambahan_sesak"
+                        value="Tidak"
+                        required
+                        class="peer sr-only"
+                      />
+                      <span
+                        class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                      ></span>
+                      <span class="ml-2 font-medium text-gray-700">Tidak</span>
+                    </label>
+                  </div>
+                </div>
+                <p class="text-red-500 text-xs mt-1 hidden" id="skrining_gejala_tambahan_sesak-error">Pilihan harus dipilih</p>
+                
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <span class="text-gray-700">Ada pembesaran getah bening di leher atau diketiak</span>
+                  <div class="flex space-x-4">
+                    <label class="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="skrining_gejala_tambahan_getah_bening"
+                        value="Ya"
+                        required
+                        class="peer sr-only"
+                      />
+                      <span
+                        class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                      ></span>
+                      <span class="ml-2 font-medium text-gray-700">Ya</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="skrining_gejala_tambahan_getah_bening"
+                        value="Tidak"
+                        required
+                        class="peer sr-only"
+                      />
+                      <span
+                        class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                      ></span>
+                      <span class="ml-2 font-medium text-gray-700">Tidak</span>
+                    </label>
+                  </div>
+                </div>
+                <p class="text-red-500 text-xs mt-1 hidden" id="skrining_gejala_tambahan_getah_bening-error">Pilihan harus dipilih</p>
+                
+                <div class="py-3">
+                  <div class="flex items-start justify-between">
+                    <span class="text-gray-700 mt-2">Lainnya (sebutkan)</span>
+                    <div class="flex items-center space-x-4">
+                      <label class="flex items-center cursor-pointer">
+                        <input
+                          type="radio"
+                          name="skrining_gejala_tambahan_lainnya"
+                          value="Ya"
+                          required
+                          class="peer sr-only"
+                          id="lainnyaYa"
+                        />
+                        <span
+                          class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                        ></span>
+                        <span class="ml-2 font-medium text-gray-700">Ya</span>
+                      </label>
+                      <label class="flex items-center cursor-pointer">
+                        <input
+                          type="radio"
+                          name="skrining_gejala_tambahan_lainnya"
+                          value="Tidak"
+                          required
+                          class="peer sr-only"
+                          id="lainnyaTidak"
+                        />
+                        <span
+                          class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                        ></span>
+                        <span class="ml-2 font-medium text-gray-700">Tidak</span>
+                      </label>
+                    </div>
+                  </div>
+                  <p class="text-red-500 text-xs mt-1 hidden" id="skrining_gejala_tambahan_lainnya-error">Pilihan harus dipilih</p>
+                  <textarea
+                    id="skrining_gejala_lainnya_detail"
+                    name="skrining_gejala_lainnya_detail"
+                    rows="3"
+                    placeholder="Jelaskan gejala lainnya..."
+                    class="mt-3 w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm disabled:bg-gray-100 disabled:text-gray-500 transition resize-none"
+                    disabled
+                  ></textarea>
                 </div>
               </div>
             </div>
-            <div class="md:col-span-2">
-              <h4 class="font-semibold text-gray-800 mb-3">GEJALA TAMBAHAN</h4>
+          </div>
+        </section>
+        
+        <!-- PEMERIKSAAN KONTAK -->
+        <section class="bg-yellow-50 rounded-xl p-6 border border-yellow-200">
+          <h2 class="text-2xl font-bold text-yellow-800 mb-6">
+            PEMERIKSAAN KONTAK TBC
+          </h2>
+          
+          <div class="space-y-4">
+            <!-- Pertanyaan Riwayat Kontak TBC -->
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+              <h4 class="font-semibold text-yellow-800 mb-3">Riwayat Kontak TBC</h4>
+              <div class="flex items-center justify-between">
+                <span class="text-gray-700">Apakah memiliki riwayat kontak dengan pasien TBC?</span>
+                <div class="flex space-x-4">
+                  <label class="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="riwayat_kontak_tbc"
+                      value="Ya"
+                      required
+                      class="peer sr-only"
+                      id="kontakYa"
+                    />
+                    <span
+                      class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                    ></span>
+                    <span class="ml-2 font-medium text-gray-700">Ya</span>
+                  </label>
+                  <label class="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="riwayat_kontak_tbc"
+                      value="Tidak"
+                      required
+                      class="peer sr-only"
+                      id="kontakTidak"
+                    />
+                    <span
+                      class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition"
+                    ></span>
+                    <span class="ml-2 font-medium text-gray-700">Tidak</span>
+                  </label>
+                </div>
+              </div>
+              <p class="text-red-500 text-xs mt-1 hidden" id="riwayat_kontak_tbc-error">Pilihan harus dipilih</p>
             </div>
-            <label
-              class="flex items-center justify-between cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
-              ><span class="text-gray-700">BB turun tanpa penyebab jelas</span
-              ><input
-                type="checkbox"
-                name="gejala_bb_turun"
-                value="Ya"
-                class="peer sr-only" /><span
-                class="relative w-5 h-5 border-2 border-gray-400 rounded peer-checked:border-green-500 peer-checked:bg-green-500 transition"
-              ></span
-            ></label>
-            <label
-              class="flex items-center justify-between cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
-              ><span class="text-gray-700"
-                >Demam yang tidak diketahui penyebabnya</span
-              ><input
-                type="checkbox"
-                name="gejala_demam"
-                value="Ya"
-                class="peer sr-only" /><span
-                class="relative w-5 h-5 border-2 border-gray-400 rounded peer-checked:border-green-500 peer-checked:bg-green-500 transition"
-              ></span
-            ></label>
-            <label
-              class="flex items-center justify-between cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
-              ><span class="text-gray-700">Badan lemas/lesu</span
-              ><input
-                type="checkbox"
-                name="gejala_lemas"
-                value="Ya"
-                class="peer sr-only" /><span
-                class="relative w-5 h-5 border-2 border-gray-400 rounded peer-checked:border-green-500 peer-checked:bg-green-500 transition"
-              ></span
-            ></label>
-            <label
-              class="flex items-center justify-between cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
-              ><span class="text-gray-700"
-                >Berkeringat malam hari tanpa kegiatan</span
-              ><input
-                type="checkbox"
-                name="gejala_keringat_malam"
-                value="Ya"
-                class="peer sr-only" /><span
-                class="relative w-5 h-5 border-2 border-gray-400 rounded peer-checked:border-green-500 peer-checked:bg-green-500 transition"
-              ></span
-            ></label>
-            <label
-              class="flex items-center justify-between cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
-              ><span class="text-gray-700">Sesak napas tanpa nyeri dada</span
-              ><input
-                type="checkbox"
-                name="gejala_sesak"
-                value="Ya"
-                class="peer sr-only" /><span
-                class="relative w-5 h-5 border-2 border-gray-400 rounded peer-checked:border-green-500 peer-checked:bg-green-500 transition"
-              ></span
-            ></label>
-            <label
-              class="flex items-center justify-between cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
-              ><span class="text-gray-700"
-                >Pembesaran getah bening di leher atau ketiak</span
-              ><input
-                type="checkbox"
-                name="gejala_kelenjar"
-                value="Ya"
-                class="peer sr-only" /><span
-                class="relative w-5 h-5 border-2 border-gray-400 rounded peer-checked:border-green-500 peer-checked:bg-green-500 transition"
-              ></span
-            ></label>
-            <div class="md:col-span-2">
-              <label
-                for="gejala_lainnya"
-                class="block text-sm font-medium text-gray-700"
-                >Lainnya (sebutkan)</label
-              ><textarea
-                id="gejala_lainnya"
-                name="gejala_lainnya"
-                rows="3"
-                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-              ></textarea>
+            
+            <!-- Field tambahan jika Ya -->
+            <div id="detailKontak" class="bg-white rounded-lg p-4 shadow-sm transition-all duration-300 opacity-50">
+              <h4 class="font-semibold text-yellow-800 mb-3">Detail Kontak</h4>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <span class="text-gray-700">Siapa yang menjadi sumber kontak?</span>
+                  <input
+                    type="text"
+                    id="nama_kontak_tbc"
+                    name="nama_kontak_tbc"
+                    placeholder="Contoh: Ayah, Ibu, Kakak"
+                    class="w-1/3 px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm disabled:bg-gray-100 disabled:text-gray-500 transition"
+                    disabled
+                  />
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <span class="text-gray-700">Hubungan dengan pasien</span>
+                  <select
+                    id="hubungan_kontak"
+                    name="hubungan_kontak"
+                    class="w-1/3 px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm disabled:bg-gray-100 disabled:text-gray-500 transition"
+                    disabled
+                  >
+                    <option value="">Pilih Hubungan</option>
+                    <option value="Orang Tua">Orang Tua</option>
+                    <option value="Saudara Kandung">Saudara Kandung</option>
+                    <option value="Pengasuh">Pengasuh</option>
+                    <option value="Tetangga">Tetangga</option>
+                    <option value="Lainnya">Lainnya</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -498,9 +752,10 @@
       <div class="px-8 pb-8">
         <button
           id="submitBtn"
-          class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 transition-all duration-300 transform hover:scale-105"
+          class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 transition-all duration-300 transform hover:scale-105 btn-hover flex items-center justify-center"
         >
-          Lihat Hasil Skrining
+          <span id="btnText">Lihat Hasil Skrining</span>
+          <div id="btnSpinner" class="spinner ml-2 hidden"></div>
         </button>
       </div>
     </div>
@@ -511,7 +766,7 @@
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50 transition-opacity"
     >
       <div
-        class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 relative transform transition-transform scale-95 opacity-0"
+        class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 relative modal-transition"
         id="modalContent"
       >
         <!-- Tombol Close (dinonaktifkan saat sukses) -->
@@ -603,12 +858,15 @@
           "https://script.google.com/macros/s/AKfycbwlI9BTFcV3rkaVwQXKhxPAKkhp283G1kERqqDM8GgNB7al1Rw6P848mWoQjEG-xSnDVw/exec";
         const form = document.getElementById("tbcForm");
         const submitBtn = document.getElementById("submitBtn");
+        const btnText = document.getElementById("btnText");
+        const btnSpinner = document.getElementById("btnSpinner");
         const resultModal = document.getElementById("resultModal");
         const modalContent = document.getElementById("modalContent");
         const closeModalBtn = document.getElementById("closeModalBtn");
-        const okModalBtn = document.getElementById("okModalBtn"); // Tombol OK baru
+        const okModalBtn = document.getElementById("okModalBtn");
         const saveStatusEl = document.getElementById("saveStatus");
-
+        
+        // Set tanggal skrining otomatis
         const today = new Date();
         const todayStr =
           today.getFullYear() +
@@ -616,6 +874,7 @@
           String(today.getMonth() + 1).padStart(2, "0") +
           "-" +
           String(today.getDate()).padStart(2, "0");
+        document.getElementById("tanggal_skrining").value = todayStr;
 
         // --- ELEMEN UNTUK PERHITUNGAN DAN RESET ---
         const tanggalLahirEl = document.getElementById("tanggal_lahir");
@@ -623,14 +882,18 @@
         const beratBadanEl = document.getElementById("berat_badan");
         const tinggiBadanEl = document.getElementById("tinggi_badan");
         const imtEl = document.getElementById("imt");
-        const namaObatEl = document.getElementById("nama_obat");
-        const pernahBerobatRadios = document.querySelectorAll(
-          'input[name="pernah_berobat_tbc"]'
-        );
+        const kontakYa = document.getElementById("kontakYa");
+        const kontakTidak = document.getElementById("kontakTidak");
+        const namaKontakInput = document.getElementById("nama_kontak_tbc");
+        const hubunganKontak = document.getElementById("hubungan_kontak");
+        const detailKontak = document.getElementById("detailKontak");
+        const lainnyaYa = document.getElementById("lainnyaYa");
+        const lainnyaTidak = document.getElementById("lainnyaTidak");
+        const gejalaLainnyaDetail = document.getElementById("skrining_gejala_lainnya_detail");
 
         // --- LOGIKA PERHITUNGAN OTOMATIS ---
         function hitungUsia() {
-          /* ... */ if (tanggalLahirEl.value) {
+          if (tanggalLahirEl.value) {
             const birthDate = new Date(tanggalLahirEl.value);
             const age = Math.floor(
               (today - birthDate) / (365.25 * 24 * 60 * 60 * 1000)
@@ -640,8 +903,9 @@
             usiaEl.value = "";
           }
         }
+        
         function hitungIMT() {
-          /* ... */ const berat = parseFloat(beratBadanEl.value);
+          const berat = parseFloat(beratBadanEl.value);
           const tinggi = parseFloat(tinggiBadanEl.value) / 100;
           if (!isNaN(berat) && !isNaN(tinggi) && berat > 0 && tinggi > 0) {
             const imt = (berat / (tinggi * tinggi)).toFixed(1);
@@ -650,21 +914,105 @@
             imtEl.value = "";
           }
         }
-        function toggleNamaObat() {
-          /* ... */ const yaRadio = document.querySelector(
-            'input[name="pernah_berobat_tbc"][value="Ya"]'
-          );
-          namaObatEl.disabled = !yaRadio.checked;
-          if (namaObatEl.disabled) {
-            namaObatEl.value = "";
+        
+        function toggleDetailKontak() {
+          if (kontakYa.checked) {
+            namaKontakInput.disabled = false;
+            hubunganKontak.disabled = false;
+            detailKontak.classList.remove('opacity-50');
+            detailKontak.classList.add('opacity-100');
+          } else {
+            namaKontakInput.disabled = true;
+            hubunganKontak.disabled = true;
+            detailKontak.classList.remove('opacity-100');
+            detailKontak.classList.add('opacity-50');
+            namaKontakInput.value = '';
+            hubunganKontak.value = '';
           }
         }
+        
+        function toggleGejalaLainnya() {
+          if (lainnyaYa.checked) {
+            gejalaLainnyaDetail.disabled = false;
+            gejalaLainnyaDetail.focus();
+          } else {
+            gejalaLainnyaDetail.disabled = true;
+            gejalaLainnyaDetail.value = '';
+          }
+        }
+        
+        // Event listeners
         tanggalLahirEl.addEventListener("change", hitungUsia);
         beratBadanEl.addEventListener("input", hitungIMT);
         tinggiBadanEl.addEventListener("input", hitungIMT);
-        pernahBerobatRadios.forEach((radio) =>
-          radio.addEventListener("change", toggleNamaObat)
-        );
+        kontakYa.addEventListener("change", toggleDetailKontak);
+        kontakTidak.addEventListener("change", toggleDetailKontak);
+        lainnyaYa.addEventListener("change", toggleGejalaLainnya);
+        lainnyaTidak.addEventListener("change", toggleGejalaLainnya);
+        
+        // Inisialisasi status awal
+        toggleDetailKontak();
+        toggleGejalaLainnya();
+
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, type) {
+          const notification = document.getElementById("notification");
+          notification.textContent = message;
+          notification.className = `notification ${type}`;
+          notification.classList.add("show");
+          
+          setTimeout(() => {
+            notification.classList.remove("show");
+          }, 3000);
+        }
+
+        // Fungsi validasi form
+        function validateForm() {
+          let isValid = true;
+          
+          // Validasi field wajib diisi
+          const requiredFields = [
+            'nama', 'alamat', 'nik', 'pekerjaan', 'tanggal_lahir', 
+            'berat_badan', 'tinggi_badan', 'tekanan_darah', 'no_hp'
+          ];
+          
+          requiredFields.forEach(fieldName => {
+            const field = document.getElementById(fieldName);
+            const errorEl = document.getElementById(`${fieldName}-error`);
+            
+            if (!field.value.trim()) {
+              field.classList.add('error-input');
+              if (errorEl) errorEl.classList.remove('hidden');
+              isValid = false;
+            } else {
+              field.classList.remove('error-input');
+              if (errorEl) errorEl.classList.add('hidden');
+            }
+          });
+          
+          // Validasi radio button
+          const radioFields = [
+            'jenis_kelamin', 'riwayat_kontak_tbc',
+            'skrining_gejala_utama_batuk', 'skrining_gejala_tambahan_bb',
+            'skrining_gejala_tambahan_demam', 'skrining_gejala_tambahan_lemas',
+            'skrining_gejala_tambahan_keringat', 'skrining_gejala_tambahan_sesak',
+            'skrining_gejala_tambahan_getah_bening', 'skrining_gejala_tambahan_lainnya'
+          ];
+          
+          radioFields.forEach(fieldName => {
+            const radio = document.querySelector(`input[name="${fieldName}"]:checked`);
+            const errorEl = document.getElementById(`${fieldName}-error`);
+            
+            if (!radio) {
+              if (errorEl) errorEl.classList.remove('hidden');
+              isValid = false;
+            } else {
+              if (errorEl) errorEl.classList.add('hidden');
+            }
+          });
+          
+          return isValid;
+        }
 
         // --- LOGIKA MODAL & RESET ---
         function showModal() {
@@ -691,75 +1039,81 @@
           // Reset field khusus yang tidak ter-reset otomatis
           usiaEl.value = "";
           imtEl.value = "";
-          namaObatEl.value = "";
-          namaObatEl.disabled = true;
+          namaKontakInput.value = "";
+          hubunganKontak.value = "";
+          gejalaLainnyaDetail.value = "";
+          namaKontakInput.disabled = true;
+          hubunganKontak.disabled = true;
+          gejalaLainnyaDetail.disabled = true;
+          detailKontak.classList.remove('opacity-100');
+          detailKontak.classList.add('opacity-50');
           // Reset status modal ke kondisi awal
           saveStatusEl.textContent = "";
           okModalBtn.classList.add("hidden");
           closeModalBtn.disabled = false;
           closeModalBtn.classList.remove("opacity-50", "cursor-not-allowed");
+          showNotification("Form telah direset", "success");
         }
 
         function evaluateForm() {
+          if (!validateForm()) {
+            showNotification("Mohon lengkapi semua field yang wajib diisi", "error");
+            return;
+          }
+          
+          // Tampilkan loading state
+          btnText.textContent = "Memproses...";
+          btnSpinner.classList.remove("hidden");
+          submitBtn.disabled = true;
+          
           const formData = new FormData(form);
           const data = Object.fromEntries(formData.entries());
+          
+          // Tambahkan tanggal skrining
           data.tanggal_skrining = todayStr;
           data.targetSheet = "TBCDataDewasa";
-
-          // ... (Logika klasifikasi tetap sama) ...
-          const gejalaUtama = getCheckboxValue("gejala_utama_batuk") === "Ya";
+          
+          // Logika klasifikasi
+          const gejalaUtama = data.skrining_gejala_utama_batuk === "Ya";
           const gejalaTambahan = [
-            "gejala_bb_turun",
-            "gejala_demam",
-            "gejala_lemas",
-            "gejala_keringat_malam",
-            "gejala_sesak",
-            "gejala_kelenjar",
-          ].some((name) => getCheckboxValue(name) === "Ya");
-          const adaGejalaLainnya =
-            data.gejala_lainnya && data.gejala_lainnya.trim() !== "";
-          const riwayatKontak = ["TBC", "TBC RO"].includes(
-            getValue("riwayat_kontak_tbc")
-          );
-          const pernahTerdiagnosa = ["TBC", "TBC RO"].includes(
-            getValue("pernah_terdiagnosa_tbc")
-          );
-          const pernahBerobat = getValue("pernah_berobat_tbc") === "Ya";
+            "skrining_gejala_tambahan_bb", "skrining_gejala_tambahan_demam",
+            "skrining_gejala_tambahan_lemas", "skrining_gejala_tambahan_keringat",
+            "skrining_gejala_tambahan_sesak", "skrining_gejala_tambahan_getah_bening"
+          ].some(name => data[name] === "Ya");
+          const adaGejalaLainnya = data.skrining_gejala_tambahan_lainnya === "Ya" && 
+                                  data.skrining_gejala_lainnya_detail && 
+                                  data.skrining_gejala_lainnya_detail.trim() !== "";
+          const riwayatKontak = data.riwayat_kontak_tbc === "Ya";
+          
           let klasifikasi = "Bukan Terduga TBC",
-            tindakLanjut = "Tidak ada";
+              tindakLanjut = "Tidak ada";
+              
           if (gejalaUtama || adaGejalaLainnya) {
             klasifikasi = "Terduga TBC";
             tindakLanjut = "Rujuk ke Puskesmas";
-          } else if (
-            (riwayatKontak || pernahTerdiagnosa || pernahBerobat) &&
-            (gejalaTambahan || adaGejalaLainnya)
-          ) {
+          } else if (riwayatKontak && (gejalaTambahan || adaGejalaLainnya)) {
             klasifikasi = "Terduga TBC";
             tindakLanjut = "Rujuk ke Puskesmas";
-          } else if (riwayatKontak || pernahTerdiagnosa || pernahBerobat) {
+          } else if (riwayatKontak) {
             klasifikasi = "Kontak Erat";
             tindakLanjut = "Rujuk ke Puskesmas";
           }
+          
           data.klasifikasi = klasifikasi;
           data.tindak_lanjut = tindakLanjut;
 
           // Update Modal
-          document.getElementById("modalNama").textContent =
-            data.nama || "Tidak diisi";
-          document.getElementById("modalUsia").textContent = data.usia
-            ? data.usia + " Tahun"
-            : "Tidak diisi";
-          document.getElementById("modalTgl").textContent =
-            data.tanggal_skrining;
+          document.getElementById("modalNama").textContent = data.nama || "Tidak diisi";
+          document.getElementById("modalUsia").textContent = data.usia ? data.usia + " Tahun" : "Tidak diisi";
+          document.getElementById("modalTgl").textContent = data.tanggal_skrining;
           document.getElementById("hasilKlasifikasi").textContent = klasifikasi;
-          document.getElementById("hasilTindakLanjut").textContent =
-            tindakLanjut;
+          document.getElementById("hasilTindakLanjut").textContent = tindakLanjut;
 
           // Set status modal ke kondisi "loading"
-          saveStatusEl.textContent = "Menyimpan data...";
+          saveStatusEl.textContent = "⏳ Menyimpan data, mohon tunggu...";
           saveStatusEl.className = "text-sm text-yellow-600 font-semibold mt-4";
           okModalBtn.classList.add("hidden");
-          closeModalBtn.disabled = false; // Boleh ditutup saat loading
+          closeModalBtn.disabled = false;
           closeModalBtn.classList.remove("opacity-50", "cursor-not-allowed");
 
           showModal(); // Tampilkan modal
@@ -772,10 +1126,9 @@
             .then((r) => r.json())
             .then((d) => {
               if (d.status === "success") {
-                saveStatusEl.textContent = "✅ " + d.message;
-                saveStatusEl.className =
-                  "text-sm text-green-600 font-semibold mt-4";
-                // PERUBAHAN: Tampilkan tombol OK dan nonaktifkan tombol Close
+                saveStatusEl.textContent = "✅ Data berhasil disimpan";
+                saveStatusEl.className = "text-sm text-green-600 font-semibold mt-4";
+                // Tampilkan tombol OK dan nonaktifkan tombol Close
                 okModalBtn.classList.remove("hidden");
                 closeModalBtn.disabled = true;
                 closeModalBtn.classList.add("opacity-50", "cursor-not-allowed");
@@ -786,15 +1139,17 @@
             .catch((e) => {
               console.error("Error:", e);
               saveStatusEl.textContent = "❌ Gagal menyimpan data.";
-              saveStatusEl.className =
-                "text-sm text-red-600 font-semibold mt-4";
+              saveStatusEl.className = "text-sm text-red-600 font-semibold mt-4";
               // Pastikan tombol OK tetap tersembunyi dan tombol Close aktif saat error
               okModalBtn.classList.add("hidden");
               closeModalBtn.disabled = false;
-              closeModalBtn.classList.remove(
-                "opacity-50",
-                "cursor-not-allowed"
-              );
+              closeModalBtn.classList.remove("opacity-50", "cursor-not-allowed");
+            })
+            .finally(() => {
+              // Kembalikan tombol submit ke keadaan normal
+              btnText.textContent = "Lihat Hasil Skrining";
+              btnSpinner.classList.add("hidden");
+              submitBtn.disabled = false;
             });
         }
 
@@ -807,22 +1162,14 @@
             )
             .join("&");
         }
-        function getValue(name) {
-          const el = document.querySelector(`input[name="${name}"]:checked`);
-          return el ? el.value : "Tidak";
-        }
-        function getCheckboxValue(name) {
-          const el = document.querySelector(`input[name="${name}"]:checked`);
-          return el ? el.value : "Tidak";
-        }
 
         // Event Listeners
         submitBtn.addEventListener("click", (e) => {
           e.preventDefault();
           evaluateForm();
         });
-        okModalBtn.addEventListener("click", resetFormAndModal); // TOMBOL OK MENJALANKAN RESET
-        closeModalBtn.addEventListener("click", hideModal); // TOMBOL X HANYA MENUTUP MODAL
+        okModalBtn.addEventListener("click", resetFormAndModal);
+        closeModalBtn.addEventListener("click", hideModal);
         resultModal.addEventListener("click", (e) => {
           if (e.target === resultModal) hideModal();
         });

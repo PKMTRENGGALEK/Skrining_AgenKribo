@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kuesioner Skrining TBC Anak</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Custom style untuk radio dan checkbox */
+      input[type="radio"]:checked + span::before {
+        background-color: #3b82f6;
+        border-color: #3b82f6;
+      }
+      input[type="radio"]:checked + span::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 0.5rem;
+        height: 0.5rem;
+        background-color: white;
+        border-radius: 50%;
+      }
+      input[type="checkbox"]:checked + span::before {
+        background-color: #3b82f6;
+        border-color: #3b82f6;
+        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m12.207 4.793a1 1 0 0 0-1.414 0L6.5 9.086 4.707 7.293a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l5.5-5.5a1 1 0 0 0 0-1.414z'/%3e%3c/svg%3e");
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-blue-50 to-indigo-100 font-sans min-h-screen flex items-center justify-center p-4"
+  >
+    <div
+      class="w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden"
+    >
+      <!-- Header -->
+      <header class="bg-gradient-to-r from-blue-500 to-indigo-600 p-8">
+        <div
+          class="flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
+          <img
+            src="https://pkmtrenggalek.github.io/SIPP/Assets/pkmtglk.jpeg"
+            alt="Logo PKM Trenggalek"
+            class="h-16 w-auto bg-white p-1 rounded-lg shadow-md"
+          />
+          <div class="text-center sm:text-left">
+            <h1 class="text-3xl font-bold text-white">
+              LEMBAR SKRINING TBC ANAK
+            </h1>
+            <p class="text-blue-100 mt-2">Posyandu & Puskesmas</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Form Container -->
+      <div class="p-8 space-y-8">
+        <form id="tbcForm" class="space-y-8">
+          <!-- Data Diri Anak -->
+          <section class="bg-blue-50 rounded-xl p-5 border border-blue-200">
+            <h2 class="text-xl font-bold text-blue-800 mb-5">
+              Data Diri Pasien
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  for="nama"
+                  class="block text-sm font-medium text-gray-700"
+                  >Nama Lengkap</label
+                >
+                <input
+                  type="text"
+                  id="nama"
+                  name="nama"
+                  class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700"
+                  >Jenis Kelamin</label
+                >
+                <div class="mt-2 flex space-x-4">
+                  <label class="flex items-center">
+                    <input
+                      type="radio"
+                      name="jenis_kelamin"
+                      value="Laki-laki"
+                      class="peer sr-only"
+                    />
+                    <span
+                      class="relative w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-blue-500 transition"
+                    ></span>
+                    <span class="ml-2 text-sm text-gray-700">Laki-laki</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input
+                      type="radio"
+                      name="jenis_kelamin"
+                      value="Perempuan"
+                      class="peer sr-only"
+                    />
+                    <span
+                      class="relative w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-blue-500 transition"
+                    ></span>
+                    <span class="ml-2 text-sm text-gray-700">Perempuan</span>
+                  </label>
+                </div>
+              </div>
+              <div>
+                <label
+                  for="tanggal_lahir"
+                  class="block text-sm font-medium text-gray-700"
+                  >Tanggal Lahir</label
+                >
+                <input
+                  type="date"
+                  id="tanggal_lahir"
+                  name="tanggal_lahir"
+                  class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label
+                  for="posyandu"
+                  class="block text-sm font-medium text-gray-700"
+                  >Posyandu</label
+                >
+                <input
+                  type="text"
+                  id="posyandu"
+                  name="posyandu"
+                  class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label
+                  for="tanggal_skrining"
+                  class="block text-sm font-medium text-gray-700 hidden"
+                  >Tanggal Skrining</label
+                >
+                <input
+                  type="date"
+                  id="tanggal_skrining"
+                  name="tanggal_skrining"
+                  class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm hidden"
+                  readonly
+                />
+              </div>
+            </div>
+          </section>
+
+          <!-- Kuesioner Anak -->
+          <section class="space-y-6">
+            <div class="bg-gray-50 rounded-xl p-5 border border-gray-200">
+              <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                A. Apakah tinggal serumah dengan pasien TBC?
+              </h3>
+              <div class="space-y-3">
+                <label
+                  class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
+                >
+                  <input
+                    type="radio"
+                    name="q_a"
+                    value="ya"
+                    class="peer sr-only"
+                  />
+                  <span
+                    class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-blue-500 transition"
+                  ></span>
+                  <span class="font-medium text-gray-700">Ya</span>
+                </label>
+                <label
+                  class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
+                >
+                  <input
+                    type="radio"
+                    name="q_a"
+                    value="tidak"
+                    class="peer sr-only"
+                  />
+                  <span
+                    class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-blue-500 transition"
+                  ></span>
+                  <span class="font-medium text-gray-700">Tidak</span>
+                </label>
+              </div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-5 border border-gray-200">
+              <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                B. Apakah kontak erat dengan pasien TBC?
+              </h3>
+              <div class="space-y-3">
+                <label
+                  class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
+                >
+                  <input
+                    type="radio"
+                    name="q_b"
+                    value="ya"
+                    class="peer sr-only"
+                  />
+                  <span
+                    class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-blue-500 transition"
+                  ></span>
+                  <span class="font-medium text-gray-700">Ya</span>
+                </label>
+                <label
+                  class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
+                >
+                  <input
+                    type="radio"
+                    name="q_b"
+                    value="tidak"
+                    class="peer sr-only"
+                  />
+                  <span
+                    class="relative w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-blue-500 transition"
+                  ></span>
+                  <span class="font-medium text-gray-700">Tidak</span>
+                </label>
+              </div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-5 border border-gray-200">
+              <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                C. Apakah memiliki gejala-gejala TBC berikut?
+              </h3>
+              <div class="space-y-3">
+                <label
+                  class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
+                >
+                  <input
+                    type="checkbox"
+                    name="gejala"
+                    value="batuk"
+                    class="peer sr-only"
+                  />
+                  <span
+                    class="relative w-5 h-5 border-2 border-gray-400 rounded peer-checked:border-blue-500 peer-checked:bg-blue-500 transition"
+                  ></span>
+                  <span class="text-gray-700">Batuk lebih dari 2 minggu</span>
+                </label>
+                <label
+                  class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
+                >
+                  <input
+                    type="checkbox"
+                    name="gejala"
+                    value="demam"
+                    class="peer sr-only"
+                  />
+                  <span
+                    class="relative w-5 h-5 border-2 border-gray-400 rounded peer-checked:border-blue-500 peer-checked:bg-blue-500 transition"
+                  ></span>
+                  <span class="text-gray-700">Demam lebih dari 2 minggu</span>
+                </label>
+                <label
+                  class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
+                >
+                  <input
+                    type="checkbox"
+                    name="gejala"
+                    value="bb_turun"
+                    class="peer sr-only"
+                  />
+                  <span
+                    class="relative w-5 h-5 border-2 border-gray-400 rounded peer-checked:border-blue-500 peer-checked:bg-blue-500 transition"
+                  ></span>
+                  <span class="text-gray-700"
+                    >Berat badan tidak naik atau turun dalam 2 bulan
+                    berturut-turut meskipun sudah diberikan asupan gizi yang
+                    adekuat</span
+                  >
+                </label>
+                <label
+                  class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-white transition border border-transparent hover:border-gray-300"
+                >
+                  <input
+                    type="checkbox"
+                    name="gejala"
+                    value="gizi_buruk"
+                    class="peer sr-only"
+                  />
+                  <span
+                    class="relative w-5 h-5 border-2 border-gray-400 rounded peer-checked:border-blue-500 peer-checked:bg-blue-500 transition"
+                  ></span>
+                  <span class="text-gray-700">Gizi buruk</span>
+                </label>
+              </div>
+            </div>
+          </section>
+        </form>
+      </div>
+
+      <!-- Tombol Submit -->
+      <div class="px-8 pb-8">
+        <button
+          id="submitBtn"
+          class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition-all duration-300 transform hover:scale-105"
+        >
+          Lihat Hasil Skrining
+        </button>
+      </div>
+    </div>
+
+    <!-- Popup Modal Hasil -->
+    <div
+      id="resultModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50 transition-opacity"
+    >
+      <div
+        class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 relative transform transition-transform scale-95 opacity-0"
+        id="modalContent"
+      >
+        <button
+          id="closeModalBtn"
+          class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
+        <div class="text-center">
+          <div
+            class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4"
+          >
+            <svg
+              class="h-8 w-8 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+          </div>
+          <h2 class="text-2xl font-bold text-gray-800 mb-2">
+            Hasil Skrining TBC
+          </h2>
+          <div class="mt-6 text-left bg-gray-50 rounded-lg p-4">
+            <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
+              <p class="font-semibold text-gray-600">Nama:</p>
+              <p id="modalNama" class="text-gray-800"></p>
+              <p class="font-semibold text-gray-600">Jenis Kelamin:</p>
+              <p id="modalJk" class="text-gray-800"></p>
+              <p class="font-semibold text-gray-600">Tanggal Lahir:</p>
+              <p id="modalTtl" class="text-gray-800"></p>
+              <p class="font-semibold text-gray-600">Posyandu:</p>
+              <p id="modalPosyandu" class="text-gray-800"></p>
+              <p class="font-semibold text-gray-600">Tanggal Skrining:</p>
+              <p id="modalTgl" class="text-gray-800"></p>
+            </div>
+          </div>
+          <div
+            class="mt-6 text-left bg-blue-50 border border-blue-200 rounded-lg p-4"
+          >
+            <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
+              <p class="font-semibold text-gray-700">Klasifikasi:</p>
+              <p
+                id="hasilKlasifikasi"
+                class="text-lg font-bold text-blue-700"
+              ></p>
+              <p class="font-semibold text-gray-700">Tindak Lanjut:</p>
+              <p
+                id="hasilTindakLanjut"
+                class="text-lg font-bold text-blue-700"
+              ></p>
+            </div>
+          </div>
+          <p
+            id="saveStatus"
+            class="text-sm text-yellow-600 font-semibold mt-4"
+          ></p>
+          <button
+            id="okBtn"
+            class="hidden bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-2 px-6 rounded-xl mt-6 hover:scale-105 transition"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const GAS_WEB_APP_URL =
+          "https://script.google.com/macros/s/AKfycbwlI9BTFcV3rkaVwQXKhxPAKkhp283G1kERqqDM8GgNB7al1Rw6P848mWoQjEG-xSnDVw/exec";
+
+        const submitBtn = document.getElementById("submitBtn");
+        const resultModal = document.getElementById("resultModal");
+        const modalContent = document.getElementById("modalContent");
+        const saveStatusEl = document.getElementById("saveStatus");
+        const okBtn = document.getElementById("okBtn");
+        const form = document.getElementById("tbcForm");
+
+        // SET tanggal hari ini
+        document.getElementById("tanggal_skrining").value = new Date()
+          .toISOString()
+          .split("T")[0];
+
+        function urlEncodeData(obj) {
+          return Object.keys(obj)
+            .map(
+              (k) => encodeURIComponent(k) + "=" + encodeURIComponent(obj[k])
+            )
+            .join("&");
+        }
+
+        function evaluateForm() {
+          okBtn.classList.add("hidden"); // jangan muncul dulu
+          saveStatusEl.textContent = "⏳ Menyimpan data, mohon tunggu...";
+          resultModal.classList.remove("hidden");
+          modalContent.classList.add("scale-100", "opacity-100");
+
+          const nama = document.getElementById("nama").value || "Tidak diisi";
+          const jkEl = document.querySelector(
+            'input[name="jenis_kelamin"]:checked'
+          );
+          const jk = jkEl ? jkEl.value : "Tidak diisi";
+          const ttl =
+            document.getElementById("tanggal_lahir").value || "Tidak diisi";
+          const pos =
+            document.getElementById("posyandu").value || "Tidak diisi";
+          const tgl = document.getElementById("tanggal_skrining").value;
+
+          const kontakA = document.querySelector('input[name="q_a"]:checked');
+          const kontakB = document.querySelector('input[name="q_b"]:checked');
+          const gejala = document.querySelectorAll(
+            'input[name="gejala"]:checked'
+          );
+
+          let klasifikasi = "";
+          let tindak = "";
+
+          if (gejala.length > 0) {
+            klasifikasi = "Terduga TBC";
+            tindak = "Rujuk ke Puskesmas";
+          } else if (
+            (kontakA && kontakA.value === "ya") ||
+            (kontakB && kontakB.value === "ya")
+          ) {
+            klasifikasi = "Kontak Erat";
+            tindak = "Rujuk ke Puskesmas";
+          } else {
+            klasifikasi = "Bukan Terduga TBC";
+            tindak = "Tidak perlu tindakan";
+          }
+
+          modalNama.textContent = nama;
+          modalJk.textContent = jk;
+          modalTtl.textContent = ttl;
+          modalPosyandu.textContent = pos;
+          modalTgl.textContent = tgl;
+          hasilKlasifikasi.textContent = klasifikasi;
+          hasilTindakLanjut.textContent = tindak;
+
+          const data = {
+            targetSheet: "TBCDataAnak",
+            nama: nama,
+            jenis_kelamin: jk,
+            tanggal_lahir: ttl,
+            posyandu: pos,
+            tanggal_skrining: tgl,
+            klasifikasi: klasifikasi,
+            tindak_lanjut: tindak,
+          };
+
+          fetch(GAS_WEB_APP_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: urlEncodeData(data),
+          })
+            .then((res) => res.json())
+            .then((d) => {
+              if (d.status === "success") {
+                saveStatusEl.textContent = "✅ Data berhasil disimpan";
+                saveStatusEl.className =
+                  "text-sm text-green-600 font-semibold mt-4";
+                okBtn.classList.remove("hidden");
+              } else {
+                throw new Error();
+              }
+            })
+            .catch(() => {
+              saveStatusEl.textContent = "❌ Gagal menyimpan data, coba ulangi";
+              saveStatusEl.className =
+                "text-sm text-red-600 font-semibold mt-4";
+            });
+        }
+
+        submitBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          evaluateForm();
+        });
+
+        // klik OK → modal tutup + reset form
+        okBtn.addEventListener("click", () => {
+          resultModal.classList.add("hidden");
+          form.reset();
+        });
+      });
+    </script>
+  </body>
+</html>

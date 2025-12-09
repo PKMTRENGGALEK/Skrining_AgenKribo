@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kuesioner Skrining TBC Anak</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
       /* Custom style untuk radio dan checkbox */
       input[type="radio"]:checked + span::before {
@@ -30,17 +33,17 @@
         background-position: center;
         background-repeat: no-repeat;
       }
-      
+
       /* Animasi untuk modal */
       .modal-transition {
         transition: all 0.3s ease;
       }
-      
+
       /* Animasi untuk tombol */
       .btn-hover {
         transition: all 0.2s ease;
       }
-      
+
       /* Animasi untuk loading spinner */
       .spinner {
         border: 3px solid rgba(255, 255, 255, 0.3);
@@ -50,17 +53,21 @@
         height: 20px;
         animation: spin 1s linear infinite;
       }
-      
+
       @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
-      
+
       /* Tooltip style */
       .tooltip {
         position: relative;
       }
-      
+
       .tooltip .tooltiptext {
         visibility: hidden;
         width: 200px;
@@ -78,18 +85,18 @@
         transition: opacity 0.3s;
         font-size: 12px;
       }
-      
+
       .tooltip:hover .tooltiptext {
         visibility: visible;
         opacity: 1;
       }
-      
+
       /* Validasi error style */
       .error-input {
         border-color: #ef4444 !important;
         box-shadow: 0 0 0 1px #ef4444 !important;
       }
-      
+
       /* Success notification */
       .notification {
         position: fixed;
@@ -103,15 +110,15 @@
         transform: translateX(120%);
         transition: transform 0.3s ease;
       }
-      
+
       .notification.show {
         transform: translateX(0);
       }
-      
+
       .notification.success {
         background-color: #10b981;
       }
-      
+
       .notification.error {
         background-color: #ef4444;
       }
@@ -122,7 +129,7 @@
   >
     <!-- Notification Container -->
     <div id="notification" class="notification"></div>
-    
+
     <div
       class="w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden"
     >
@@ -167,7 +174,26 @@
                   required
                   class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
-                <p class="text-red-500 text-xs mt-1 hidden" id="nama-error">Nama harus diisi</p>
+                <p class="text-red-500 text-xs mt-1 hidden" id="nama-error">
+                  Nama harus diisi
+                </p>
+              </div>
+              <div>
+                <label for="nik" class="block text-sm font-medium text-gray-700"
+                  >NIK <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="text"
+                  id="nik"
+                  name="nik"
+                  required
+                  maxlength="16"
+                  pattern="[0-9]{16}"
+                  class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+                <p class="text-red-500 text-xs mt-1 hidden" id="nik-error">
+                  NIK harus diisi (16 digit angka)
+                </p>
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700">
@@ -201,7 +227,9 @@
                     <span class="ml-2 text-sm text-gray-700">Perempuan</span>
                   </label>
                 </div>
-                <p class="text-red-500 text-xs mt-1 hidden" id="jk-error">Jenis kelamin harus dipilih</p>
+                <p class="text-red-500 text-xs mt-1 hidden" id="jk-error">
+                  Jenis kelamin harus dipilih
+                </p>
               </div>
               <div>
                 <label
@@ -216,7 +244,67 @@
                   required
                   class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
-                <p class="text-red-500 text-xs mt-1 hidden" id="ttl-error">Tanggal lahir harus diisi</p>
+                <p class="text-red-500 text-xs mt-1 hidden" id="ttl-error">
+                  Tanggal lahir harus diisi
+                </p>
+              </div>
+              <div>
+                <label
+                  for="nama_orangtua"
+                  class="block text-sm font-medium text-gray-700"
+                  >Nama Orangtua <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="text"
+                  id="nama_orangtua"
+                  name="nama_orangtua"
+                  required
+                  class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+                <p
+                  class="text-red-500 text-xs mt-1 hidden"
+                  id="nama_orangtua-error"
+                >
+                  Nama orangtua harus diisi
+                </p>
+              </div>
+              <div>
+                <label
+                  for="nomor_telepon"
+                  class="block text-sm font-medium text-gray-700"
+                  >Nomor Telepon <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="tel"
+                  id="nomor_telepon"
+                  name="nomor_telepon"
+                  required
+                  pattern="[0-9]{10,13}"
+                  class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+                <p
+                  class="text-red-500 text-xs mt-1 hidden"
+                  id="nomor_telepon-error"
+                >
+                  Nomor telepon harus diisi (10-13 digit angka)
+                </p>
+              </div>
+              <div class="md:col-span-2">
+                <label
+                  for="alamat"
+                  class="block text-sm font-medium text-gray-700"
+                  >Alamat <span class="text-red-500">*</span></label
+                >
+                <textarea
+                  id="alamat"
+                  name="alamat"
+                  required
+                  rows="2"
+                  class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                ></textarea>
+                <p class="text-red-500 text-xs mt-1 hidden" id="alamat-error">
+                  Alamat harus diisi
+                </p>
               </div>
               <div>
                 <label
@@ -231,7 +319,9 @@
                   required
                   class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
-                <p class="text-red-500 text-xs mt-1 hidden" id="posyandu-error">Posyandu harus diisi</p>
+                <p class="text-red-500 text-xs mt-1 hidden" id="posyandu-error">
+                  Posyandu harus diisi
+                </p>
               </div>
               <div class="md:col-span-2">
                 <label
@@ -257,7 +347,10 @@
                 A. Apakah tinggal serumah dengan pasien TBC?
                 <span class="tooltip ml-2">
                   <i class="fas fa-info-circle text-blue-500 text-sm"></i>
-                  <span class="tooltiptext">Pilih Ya jika anak tinggal dalam rumah yang sama dengan penderita TBC</span>
+                  <span class="tooltiptext"
+                    >Pilih Ya jika anak tinggal dalam rumah yang sama dengan
+                    penderita TBC</span
+                  >
                 </span>
               </h3>
               <div class="space-y-3">
@@ -292,14 +385,19 @@
                   <span class="font-medium text-gray-700">Tidak</span>
                 </label>
               </div>
-              <p class="text-red-500 text-xs mt-1 hidden" id="q_a-error">Pilihan harus dipilih</p>
+              <p class="text-red-500 text-xs mt-1 hidden" id="q_a-error">
+                Pilihan harus dipilih
+              </p>
             </div>
             <div class="bg-gray-50 rounded-xl p-5 border border-gray-200">
               <h3 class="text-lg font-semibold text-gray-800 mb-4">
                 B. Apakah kontak erat dengan pasien TBC?
                 <span class="tooltip ml-2">
                   <i class="fas fa-info-circle text-blue-500 text-sm"></i>
-                  <span class="tooltiptext">Pilih Ya jika anak sering berinteraksi dekat dengan penderita TBC</span>
+                  <span class="tooltiptext"
+                    >Pilih Ya jika anak sering berinteraksi dekat dengan
+                    penderita TBC</span
+                  >
                 </span>
               </h3>
               <div class="space-y-3">
@@ -334,14 +432,18 @@
                   <span class="font-medium text-gray-700">Tidak</span>
                 </label>
               </div>
-              <p class="text-red-500 text-xs mt-1 hidden" id="q_b-error">Pilihan harus dipilih</p>
+              <p class="text-red-500 text-xs mt-1 hidden" id="q_b-error">
+                Pilihan harus dipilih
+              </p>
             </div>
             <div class="bg-gray-50 rounded-xl p-5 border border-gray-200">
               <h3 class="text-lg font-semibold text-gray-800 mb-4">
                 C. Apakah memiliki gejala-gejala TBC berikut?
                 <span class="tooltip ml-2">
                   <i class="fas fa-info-circle text-blue-500 text-sm"></i>
-                  <span class="tooltiptext">Pilih semua gejala yang dialami anak</span>
+                  <span class="tooltiptext"
+                    >Pilih semua gejala yang dialami anak</span
+                  >
                 </span>
               </h3>
               <div class="space-y-3">
@@ -386,9 +488,9 @@
                     class="relative w-5 h-5 border-2 border-gray-400 rounded peer-checked:border-blue-500 peer-checked:bg-blue-500 transition"
                   ></span>
                   <span class="text-gray-700"
-                    >Berat badan tidak naik atau turun dalam 2 bulan 
-                    berturut-turut <br> meskipun sudah diberikan asupan gizi yang
-                    adekuat</span
+                    >Berat badan tidak naik atau turun dalam 2 bulan
+                    berturut-turut <br />
+                    meskipun sudah diberikan asupan gizi yang adekuat</span
                   >
                 </label>
                 <label
@@ -475,10 +577,18 @@
             <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
               <p class="font-semibold text-gray-600">Nama:</p>
               <p id="modalNama" class="text-gray-800"></p>
+              <p class="font-semibold text-gray-600">NIK:</p>
+              <p id="modalNIK" class="text-gray-800"></p>
               <p class="font-semibold text-gray-600">Jenis Kelamin:</p>
               <p id="modalJk" class="text-gray-800"></p>
               <p class="font-semibold text-gray-600">Tanggal Lahir:</p>
               <p id="modalTtl" class="text-gray-800"></p>
+              <p class="font-semibold text-gray-600">Nama Orangtua:</p>
+              <p id="modalOrangtua" class="text-gray-800"></p>
+              <p class="font-semibold text-gray-600">Nomor Telepon:</p>
+              <p id="modalTelepon" class="text-gray-800"></p>
+              <p class="font-semibold text-gray-600">Alamat:</p>
+              <p id="modalAlamat" class="text-gray-800"></p>
               <p class="font-semibold text-gray-600">Posyandu:</p>
               <p id="modalPosyandu" class="text-gray-800"></p>
               <p class="font-semibold text-gray-600">Tanggal Skrining:</p>
@@ -529,9 +639,7 @@
           >
             <i class="fas fa-exclamation-triangle text-yellow-600"></i>
           </div>
-          <h3 class="text-lg font-bold text-gray-800 mb-2">
-            Konfirmasi
-          </h3>
+          <h3 class="text-lg font-bold text-gray-800 mb-2">Konfirmasi</h3>
           <p class="text-gray-600 mb-6">
             Data sedang disimpan. Apakah Anda yakin ingin menutup jendela ini?
           </p>
@@ -570,7 +678,7 @@
         const cancelCloseBtn = document.getElementById("cancelCloseBtn");
         const confirmCloseBtn = document.getElementById("confirmCloseBtn");
         const form = document.getElementById("tbcForm");
-        
+
         let isDataSaving = false;
 
         // SET tanggal hari ini
@@ -584,7 +692,7 @@
           notification.textContent = message;
           notification.className = `notification ${type}`;
           notification.classList.add("show");
-          
+
           setTimeout(() => {
             notification.classList.remove("show");
           }, 3000);
@@ -593,7 +701,7 @@
         // Fungsi validasi form
         function validateForm() {
           let isValid = true;
-          
+
           // Validasi nama
           const nama = document.getElementById("nama");
           const namaError = document.getElementById("nama-error");
@@ -605,9 +713,23 @@
             nama.classList.remove("error-input");
             namaError.classList.add("hidden");
           }
-          
+
+          // Validasi NIK
+          const nik = document.getElementById("nik");
+          const nikError = document.getElementById("nik-error");
+          if (!nik.value.trim() || !/^[0-9]{16}$/.test(nik.value)) {
+            nik.classList.add("error-input");
+            nikError.classList.remove("hidden");
+            isValid = false;
+          } else {
+            nik.classList.remove("error-input");
+            nikError.classList.add("hidden");
+          }
+
           // Validasi jenis kelamin
-          const jk = document.querySelector('input[name="jenis_kelamin"]:checked');
+          const jk = document.querySelector(
+            'input[name="jenis_kelamin"]:checked'
+          );
           const jkError = document.getElementById("jk-error");
           if (!jk) {
             jkError.classList.remove("hidden");
@@ -615,7 +737,7 @@
           } else {
             jkError.classList.add("hidden");
           }
-          
+
           // Validasi tanggal lahir
           const ttl = document.getElementById("tanggal_lahir");
           const ttlError = document.getElementById("ttl-error");
@@ -627,7 +749,50 @@
             ttl.classList.remove("error-input");
             ttlError.classList.add("hidden");
           }
-          
+
+          // Validasi nama orangtua
+          const namaOrangtua = document.getElementById("nama_orangtua");
+          const namaOrangtuaError = document.getElementById(
+            "nama_orangtua-error"
+          );
+          if (!namaOrangtua.value.trim()) {
+            namaOrangtua.classList.add("error-input");
+            namaOrangtuaError.classList.remove("hidden");
+            isValid = false;
+          } else {
+            namaOrangtua.classList.remove("error-input");
+            namaOrangtuaError.classList.add("hidden");
+          }
+
+          // Validasi nomor telepon
+          const nomorTelepon = document.getElementById("nomor_telepon");
+          const nomorTeleponError = document.getElementById(
+            "nomor_telepon-error"
+          );
+          if (
+            !nomorTelepon.value.trim() ||
+            !/^[0-9]{10,13}$/.test(nomorTelepon.value)
+          ) {
+            nomorTelepon.classList.add("error-input");
+            nomorTeleponError.classList.remove("hidden");
+            isValid = false;
+          } else {
+            nomorTelepon.classList.remove("error-input");
+            nomorTeleponError.classList.add("hidden");
+          }
+
+          // Validasi alamat
+          const alamat = document.getElementById("alamat");
+          const alamatError = document.getElementById("alamat-error");
+          if (!alamat.value.trim()) {
+            alamat.classList.add("error-input");
+            alamatError.classList.remove("hidden");
+            isValid = false;
+          } else {
+            alamat.classList.remove("error-input");
+            alamatError.classList.add("hidden");
+          }
+
           // Validasi posyandu
           const posyandu = document.getElementById("posyandu");
           const posyanduError = document.getElementById("posyandu-error");
@@ -639,7 +804,7 @@
             posyandu.classList.remove("error-input");
             posyanduError.classList.add("hidden");
           }
-          
+
           // Validasi pertanyaan A
           const qA = document.querySelector('input[name="q_a"]:checked');
           const qAError = document.getElementById("q_a-error");
@@ -649,7 +814,7 @@
           } else {
             qAError.classList.add("hidden");
           }
-          
+
           // Validasi pertanyaan B
           const qB = document.querySelector('input[name="q_b"]:checked');
           const qBError = document.getElementById("q_b-error");
@@ -659,7 +824,7 @@
           } else {
             qBError.classList.add("hidden");
           }
-          
+
           return isValid;
         }
 
@@ -673,15 +838,18 @@
 
         function evaluateForm() {
           if (!validateForm()) {
-            showNotification("Mohon lengkapi semua field yang wajib diisi", "error");
+            showNotification(
+              "Mohon lengkapi semua field yang wajib diisi",
+              "error"
+            );
             return;
           }
-          
+
           // Tampilkan loading state
           btnText.textContent = "Memproses...";
           btnSpinner.classList.remove("hidden");
           submitBtn.disabled = true;
-          
+
           // Tampilkan modal dengan status loading
           okBtn.classList.add("hidden");
           saveStatusEl.textContent = "⏳ Menyimpan data, mohon tunggu...";
@@ -690,12 +858,19 @@
           isDataSaving = true;
 
           const nama = document.getElementById("nama").value || "Tidak diisi";
+          const nik = document.getElementById("nik").value || "Tidak diisi";
           const jkEl = document.querySelector(
             'input[name="jenis_kelamin"]:checked'
           );
           const jk = jkEl ? jkEl.value : "Tidak diisi";
           const ttl =
             document.getElementById("tanggal_lahir").value || "Tidak diisi";
+          const namaOrangtua =
+            document.getElementById("nama_orangtua").value || "Tidak diisi";
+          const nomorTelepon =
+            document.getElementById("nomor_telepon").value || "Tidak diisi";
+          const alamat =
+            document.getElementById("alamat").value || "Tidak diisi";
           const pos =
             document.getElementById("posyandu").value || "Tidak diisi";
           const tgl = document.getElementById("tanggal_skrining").value;
@@ -724,8 +899,12 @@
           }
 
           document.getElementById("modalNama").textContent = nama;
+          document.getElementById("modalNIK").textContent = nik;
           document.getElementById("modalJk").textContent = jk;
           document.getElementById("modalTtl").textContent = ttl;
+          document.getElementById("modalOrangtua").textContent = namaOrangtua;
+          document.getElementById("modalTelepon").textContent = nomorTelepon;
+          document.getElementById("modalAlamat").textContent = alamat;
           document.getElementById("modalPosyandu").textContent = pos;
           document.getElementById("modalTgl").textContent = tgl;
           document.getElementById("hasilKlasifikasi").textContent = klasifikasi;
@@ -734,8 +913,12 @@
           const data = {
             targetSheet: "TBCDataAnak",
             nama: nama,
+            nik: nik,
             jenis_kelamin: jk,
             tanggal_lahir: ttl,
+            nama_orangtua: namaOrangtua,
+            nomor_telepon: nomorTelepon,
+            alamat: alamat,
             posyandu: pos,
             tanggal_skrining: tgl,
             klasifikasi: klasifikasi,

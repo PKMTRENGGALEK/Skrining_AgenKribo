@@ -4,52 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard Skrining TBC</title>
-    <!-- Menggunakan CSS kustom sebagai pengganti Tailwind CDN -->
     <style>
-      /* iOS-style design dengan tampilan yang lebih menarik */
       :root {
-        --primary-color: #007aff;
-        --primary-hover: #0066cc;
-        --success-color: #34c759;
-        --warning-color: #ff9500;
-        --danger-color: #ff3b30;
-        --gray-50: #f2f2f7;
-        --gray-100: #e5e5ea;
-        --gray-200: #d1d1d6;
-        --gray-300: #c7c7cc;
-        --gray-400: #8e8e93;
-        --gray-500: #636366;
-        --gray-600: #48484a;
-        --gray-700: #3a3a3c;
-        --gray-800: #2c2c2e;
-        --gray-900: #1c1c1e;
-        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-          0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-          0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-          0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --gradient-success: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
-        --gradient-danger: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --success: #16a34a;
+        --success-light: #dcfce7;
+        --warning: #d97706;
+        --warning-light: #fef3c7;
+        --danger: #dc2626;
+        --danger-light: #fee2e2;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2937;
+        --gray-900: #111827;
+        --radius-sm: 6px;
+        --radius: 8px;
+        --radius-lg: 12px;
       }
 
       * {
         box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           Helvetica, Arial, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        background-attachment: fixed;
+        background: #f3f4f6;
         color: var(--gray-900);
-        margin: 0;
-        padding: 0;
         line-height: 1.5;
         min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
       }
 
       .container {
@@ -59,922 +52,679 @@
       }
 
       @media (min-width: 640px) {
-        .container {
-          padding: 0 1.5rem;
-        }
+        .container { padding: 0 1.5rem; }
       }
-
       @media (min-width: 1024px) {
-        .container {
-          padding: 0 2rem;
-        }
+        .container { padding: 0 2rem; }
       }
 
-      .flex {
+      /* Header */
+      .header {
+        background: #ffffff;
+        border-bottom: 1px solid var(--gray-200);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+
+      .header-inner {
         display: flex;
-      }
-
-      .items-center {
         align-items: center;
-      }
-
-      .justify-between {
         justify-content: space-between;
+        padding: 0.875rem 0;
       }
 
-      .justify-center {
-        justify-content: center;
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
       }
 
-      .text-center {
-        text-align: center;
+      .header-logo {
+        height: 40px;
+        width: auto;
+        border-radius: var(--radius);
       }
 
-      .text-left {
-        text-align: left;
+      .header-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: var(--gray-900);
       }
 
-      .space-x-2 > * + * {
-        margin-left: 0.5rem;
+      .header-subtitle {
+        font-size: 0.75rem;
+        color: var(--gray-500);
+        margin-top: 2px;
       }
 
-      .space-x-3 > * + * {
-        margin-left: 0.75rem;
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
       }
 
-      .space-x-4 > * + * {
-        margin-left: 1rem;
+      /* Main */
+      .main {
+        padding: 2rem 0 3rem;
       }
 
-      .space-y-2 > * + * {
-        margin-top: 0.5rem;
+      .section {
+        margin-bottom: 2.5rem;
       }
 
-      .space-y-3 > * + * {
-        margin-top: 0.75rem;
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.25rem;
       }
 
-      .space-y-4 > * + * {
-        margin-top: 1rem;
+      .section-title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--gray-900);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
       }
 
-      .space-y-6 > * + * {
-        margin-top: 1.5rem;
+      .section-title::before {
+        content: "";
+        width: 3px;
+        height: 1.125rem;
+        background: var(--primary);
+        border-radius: 2px;
       }
 
+      .section-desc {
+        font-size: 0.875rem;
+        color: var(--gray-500);
+        margin-top: 0.25rem;
+      }
+
+      /* Grid */
       .grid {
         display: grid;
+        gap: 1rem;
       }
 
-      .grid-cols-1 {
-        grid-template-columns: repeat(1, minmax(0, 1fr));
+      .grid-cols-2 {
+        grid-template-columns: 1fr;
       }
 
       @media (min-width: 768px) {
-        .md\:grid-cols-2 {
+        .grid-cols-2 {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
 
-      .rounded-lg {
-        border-radius: 0.5rem;
+      .grid-cols-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .rounded-xl {
-        border-radius: 0.75rem;
+      @media (min-width: 1024px) {
+        .grid-cols-4 {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
       }
 
-      .rounded-full {
-        border-radius: 9999px;
-      }
-
-      .bg-white {
-        background-color: white;
-      }
-
-      .bg-gray-50 {
-        background-color: var(--gray-50);
-      }
-
-      .bg-blue-50 {
-        background-color: rgba(0, 122, 255, 0.1);
-      }
-
-      .bg-green-50 {
-        background-color: rgba(52, 199, 89, 0.1);
-      }
-
-      .text-white {
-        color: white;
-      }
-
-      .text-gray-500 {
-        color: var(--gray-400);
-      }
-
-      .text-gray-600 {
-        color: var(--gray-500);
-      }
-
-      .text-gray-700 {
-        color: var(--gray-600);
-      }
-
-      .text-gray-800 {
-        color: var(--gray-700);
-      }
-
-      .text-gray-900 {
-        color: var(--gray-900);
-      }
-
-      .text-blue-600 {
-        color: var(--primary-color);
-      }
-
-      .text-green-600 {
-        color: var(--success-color);
-      }
-
-      .text-sm {
-        font-size: 0.875rem;
-      }
-
-      .text-lg {
-        font-size: 1.125rem;
-      }
-
-      .text-xl {
-        font-size: 1.25rem;
-      }
-
-      .text-2xl {
-        font-size: 1.5rem;
-      }
-
-      .text-4xl {
-        font-size: 2.25rem;
-      }
-
-      .font-semibold {
-        font-weight: 600;
-      }
-
-      .font-bold {
-        font-weight: 700;
-      }
-
-      .p-4 {
-        padding: 1rem;
-      }
-
-      .p-6 {
+      /* Card */
+      .card {
+        background: #ffffff;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-lg);
         padding: 1.5rem;
       }
 
-      .p-8 {
-        padding: 2rem;
-      }
-
-      .px-3 {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-      }
-
-      .px-4 {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-
-      .px-6 {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-      }
-
-      .py-2 {
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-      }
-
-      .py-3 {
-        padding-top: 0.75rem;
-        padding-bottom: 0.75rem;
-      }
-
-      .py-4 {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-      }
-
-      .py-8 {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-      }
-
-      .mb-2 {
-        margin-bottom: 0.5rem;
-      }
-
-      .mb-4 {
-        margin-bottom: 1rem;
-      }
-
-      .mb-6 {
-        margin-bottom: 1.5rem;
-      }
-
-      .mb-8 {
-        margin-bottom: 2rem;
-      }
-
-      .mb-12 {
-        margin-bottom: 3rem;
-      }
-
-      .mt-2 {
-        margin-top: 0.5rem;
-      }
-
-      .mt-4 {
-        margin-top: 1rem;
-      }
-
-      .mt-6 {
-        margin-top: 1.5rem;
-      }
-
-      .mr-2 {
-        margin-right: 0.5rem;
-      }
-
-      .mr-3 {
-        margin-right: 0.75rem;
-      }
-
-      .ml-2 {
-        margin-left: 0.5rem;
-      }
-
-      .ml-4 {
-        margin-left: 1rem;
-      }
-
-      .h-8 {
-        height: 2rem;
-      }
-
-      .h-10 {
-        height: 2.5rem;
-      }
-
-      .h-16 {
-        height: 4rem;
-      }
-
-      .w-8 {
-        width: 2rem;
-      }
-
-      .w-10 {
-        width: 2.5rem;
-      }
-
-      .w-16 {
-        width: 4rem;
-      }
-
-      .w-auto {
-        width: auto;
-      }
-
-      .w-full {
-        width: 100%;
-      }
-
-      .max-w-7xl {
-        max-width: 80rem;
-      }
-
-      .max-w-500 {
-        max-width: 500px;
-      }
-
-      .overflow-hidden {
-        overflow: hidden;
-      }
-
-      .overflow-x-auto {
-        overflow-x: auto;
-      }
-
-      .overflow-y-auto {
-        overflow-y: auto;
-      }
-
-      .shadow-sm {
-        box-shadow: var(--shadow-sm);
-      }
-
-      .shadow {
-        box-shadow: var(--shadow);
-      }
-
-      .shadow-md {
-        box-shadow: var(--shadow-md);
-      }
-
-      .shadow-lg {
-        box-shadow: var(--shadow-lg);
-      }
-
-      .shadow-xl {
-        box-shadow: var(--shadow-xl);
-      }
-
-      .border-b {
-        border-bottom: 1px solid var(--gray-200);
-      }
-
-      .hidden {
-        display: none;
-      }
-
-      .block {
-        display: block;
-      }
-
-      .relative {
-        position: relative;
-      }
-
-      .absolute {
-        position: absolute;
-      }
-
-      .fixed {
-        position: fixed;
-      }
-
-      .top-0 {
-        top: 0;
-      }
-
-      .left-0 {
-        left: 0;
-      }
-
-      .right-0 {
-        right: 0;
-      }
-
-      .bottom-0 {
-        bottom: 0;
-      }
-
-      .z-50 {
-        z-index: 50;
-      }
-
-      .z-1000 {
-        z-index: 1000;
-      }
-
-      .transition {
-        transition: all 0.3s ease;
-      }
-
-      .card {
-        background: linear-gradient(145deg, #ffffff, #f8f9fa);
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1),
-          0 1px 8px rgba(0, 0, 0, 0.06);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(
-          90deg,
-          var(--primary-color),
-          var(--success-color)
-        );
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .card:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15),
-          0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      .card:hover::before {
-        opacity: 1;
-      }
-
-      .tab-button {
-        position: relative;
-        transition: all 0.3s ease;
-        background: transparent;
-        border: none;
-        outline: none;
-      }
-
-      .tab-button.active::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(
-          90deg,
-          var(--primary-color),
-          var(--success-color)
-        );
-        border-radius: 4px 4px 0 0;
-        animation: slideIn 0.3s ease;
-      }
-
-      @keyframes slideIn {
-        from {
-          transform: scaleX(0);
-        }
-        to {
-          transform: scaleX(1);
-        }
-      }
-
-      .ios-button {
-        background: linear-gradient(
-          135deg,
-          var(--primary-color),
-          var(--primary-hover)
-        );
-        color: white;
-        border-radius: 12px;
-        padding: 12px 24px;
-        font-weight: 600;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        box-shadow: 0 4px 15px rgba(0, 122, 255, 0.4);
-        border: none;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .ios-button::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.2),
-          transparent
-        );
-        transition: left 0.5s;
-      }
-
-      .ios-button:hover::before {
-        left: 100%;
-      }
-
-      .ios-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 122, 255, 0.5);
-      }
-
-      .ios-button-secondary {
-        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-        color: var(--primary-color);
-        border-radius: 12px;
-        padding: 8px 16px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        border: 1px solid var(--gray-200);
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .ios-button-secondary:hover {
-        background: linear-gradient(135deg, #e9ecef, #dee2e6);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      }
-
-      .status-badge {
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      .status-terduga {
-        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-        color: white;
-      }
-
-      .status-kontak {
-        background: linear-gradient(135deg, #feca57, #ff9ff3);
-        color: #2c2c2e;
-      }
-
-      .status-bukan {
-        background: linear-gradient(135deg, #48dbfb, #0abde3);
-        color: white;
-      }
-
-      /* Animasi sederhana untuk loader */
-      .loader {
-        border-top-color: var(--primary-color);
-        animation: spin 1s linear infinite;
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      /* Smooth transitions */
-      .fade-in {
-        animation: fadeIn 0.6s ease-in-out;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* Table styling */
-      .ios-table {
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      }
-
-      .ios-table th {
-        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-        color: var(--gray-600);
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 12px;
-        letter-spacing: 0.5px;
-        padding: 16px;
-        border-bottom: 2px solid var(--gray-200);
-      }
-
-      .ios-table td {
-        padding: 16px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        background: white;
-      }
-
-      .ios-table tr:last-child td {
-        border-bottom: none;
-      }
-
-      .ios-table tr:hover td {
-        background: linear-gradient(135deg, #f8f9fa, #ffffff);
-      }
-
-      /* Modal styling */
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(5px);
-        z-index: 1000;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .modal.active {
+      .card-action {
+        text-align: center;
         display: flex;
-        animation: fadeIn 0.3s ease;
+        flex-direction: column;
+        align-items: center;
       }
 
-      .modal-content {
-        background: white;
-        border-radius: 20px;
-        width: 90%;
-        max-width: 500px;
-        max-height: 80%;
-        overflow-y: auto;
-        padding: 24px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      .action-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
       }
 
-      @keyframes slideUp {
-        from {
-          transform: translateY(100px) scale(0.9);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0) scale(1);
-          opacity: 1;
-        }
+      .action-icon.blue {
+        background: #eff6ff;
+        color: var(--primary);
       }
 
-      .border-gray-200 {
-        border-bottom: 1px solid var(--gray-200);
+      .action-icon.green {
+        background: #f0fdf4;
+        color: var(--success);
       }
 
-      .last\:border-0:last-child {
-        border-bottom: none;
+      .card-title {
+        font-size: 1.0625rem;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 0.375rem;
       }
 
-      .whitespace-nowrap {
-        white-space: nowrap;
+      .card-desc {
+        font-size: 0.875rem;
+        color: var(--gray-500);
+        margin-bottom: 1.25rem;
+        max-width: 320px;
       }
 
-      .fa-spin {
-        animation: spin 1s linear infinite;
-      }
-
-      .error-message {
-        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-        color: white;
-        padding: 16px 20px;
-        border-radius: 12px;
-        margin-bottom: 16px;
-        box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
-        animation: shake 0.5s ease;
-      }
-
-      @keyframes shake {
-        0%,
-        100% {
-          transform: translateX(0);
-        }
-        25% {
-          transform: translateX(-10px);
-        }
-        75% {
-          transform: translateX(10px);
-        }
-      }
-
-      .success-message {
-        background: linear-gradient(135deg, #48dbfb, #0abde3);
-        color: white;
-        padding: 16px 20px;
-        border-radius: 12px;
-        margin-bottom: 16px;
-        box-shadow: 0 4px 12px rgba(72, 219, 251, 0.3);
-      }
-
-      /* Glassmorphism effect */
-      .glass {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-      }
-
-      /* Pulse animation for refresh button */
-      @keyframes pulse {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.05);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      .pulse {
-        animation: pulse 2s infinite;
-      }
-
-      /* Animasi untuk counter */
-      .counter {
-        display: inline-block;
-        position: relative;
-      }
-
-      .counter-value {
-        display: inline-block;
-        transition: all 0.5s ease;
-      }
-
-      .counter-value.animate {
-        animation: countUp 1s ease-out;
-      }
-
-      @keyframes countUp {
-        0% {
-          transform: translateY(20px);
-          opacity: 0;
-        }
-        100% {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-
-      /* Perbaikan jarak antar card */
-      .grid-gap-6 {
-        gap: 2rem;
-      }
-
-      /* Animasi untuk card kasus terduga */
+      /* Stat Card */
       .stat-card {
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .stat-card::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.1),
-          rgba(255, 255, 255, 0)
-        );
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-      }
-
-      .stat-card:hover::after {
-        opacity: 1;
+        background: #ffffff;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-lg);
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
       }
 
       .stat-icon {
-        transition: all 0.3s ease;
-      }
-
-      .stat-card:hover .stat-icon {
-        transform: scale(1.1);
-      }
-
-      /* Animasi untuk angka kasus */
-      .stat-number {
-        position: relative;
-        display: inline-block;
-      }
-
-      .stat-number.animate {
-        animation: numberPulse 1.5s ease-out;
-      }
-
-      @keyframes numberPulse {
-        0% {
-          transform: scale(0.8);
-          opacity: 0;
-        }
-        50% {
-          transform: scale(1.1);
-        }
-        100% {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-
-      /* Card untuk data anak */
-      .data-card {
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        padding: 20px;
-        margin-bottom: 16px;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .data-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 6px;
-        height: 100%;
-        background: linear-gradient(
-          180deg,
-          var(--primary-color),
-          var(--success-color)
-        );
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .data-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      }
-
-      .data-card:hover::before {
-        opacity: 1;
-      }
-
-      .data-card-header {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 12px;
+        justify-content: center;
+        font-size: 1.125rem;
+        flex-shrink: 0;
       }
 
-      .data-card-title {
-        font-size: 18px;
-        font-weight: 600;
-        color: var(--gray-800);
-        margin: 0;
+      .stat-icon.blue { background: #eff6ff; color: var(--primary); }
+      .stat-icon.green { background: #f0fdf4; color: var(--success); }
+      .stat-icon.orange { background: #fff7ed; color: var(--warning); }
+      .stat-icon.red { background: #fef2f2; color: var(--danger); }
+
+      .stat-content {
+        flex: 1;
+        min-width: 0;
       }
 
-      .data-card-date {
-        font-size: 14px;
+      .stat-label {
+        font-size: 0.75rem;
         color: var(--gray-500);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
       }
 
-      .data-card-body {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 12px;
+      .stat-value {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        line-height: 1.2;
+        margin-top: 2px;
       }
 
-      .data-card-field {
+      .stat-meta {
+        font-size: 0.75rem;
+        color: var(--gray-400);
+        margin-top: 2px;
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.625rem 1.125rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border-radius: var(--radius);
+        border: 1px solid transparent;
+        cursor: pointer;
+        font-family: inherit;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: #ffffff;
+        border-color: var(--primary);
+      }
+
+      .btn-primary:hover {
+        background: var(--primary-dark);
+        border-color: var(--primary-dark);
+      }
+
+      .btn-secondary {
+        background: #ffffff;
+        color: var(--gray-700);
+        border-color: var(--gray-300);
+      }
+
+      .btn-secondary:hover {
+        background: var(--gray-50);
+        border-color: var(--gray-400);
+      }
+
+      .btn-sm {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.8125rem;
+      }
+
+      .btn-icon {
+        padding: 0.5rem;
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Badge */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.625rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border: 1px solid transparent;
+      }
+
+      .badge-danger {
+        background: var(--danger-light);
+        color: var(--danger);
+        border-color: #fecaca;
+      }
+
+      .badge-warning {
+        background: var(--warning-light);
+        color: var(--warning);
+        border-color: #fde68a;
+      }
+
+      .badge-success {
+        background: var(--success-light);
+        color: var(--success);
+        border-color: #bbf7d0;
+      }
+
+      .badge-gray {
+        background: var(--gray-100);
+        color: var(--gray-600);
+        border-color: var(--gray-200);
+      }
+
+      /* Tabs */
+      .tabs {
+        display: flex;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 0 0.5rem;
+        background: #ffffff;
+      }
+
+      .tab {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--gray-500);
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+      .tab.active {
+        color: var(--primary);
+        border-bottom-color: var(--primary);
+      }
+
+      .tab-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
+        border-radius: 9999px;
+        background: var(--gray-100);
+        color: var(--gray-600);
+        font-size: 0.6875rem;
+        font-weight: 600;
+        margin-left: 0.375rem;
+      }
+
+      .tab.active .tab-count {
+        background: #dbeafe;
+        color: var(--primary);
+      }
+
+      /* Table */
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+      }
+
+      thead th {
+        background: var(--gray-50);
+        color: var(--gray-600);
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        text-align: left;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--gray-200);
+        white-space: nowrap;
+      }
+
+      tbody td {
+        padding: 0.875rem 1rem;
+        border-bottom: 1px solid var(--gray-100);
+        color: var(--gray-700);
+        vertical-align: middle;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      tbody tr:hover {
+        background: var(--gray-50);
+      }
+
+      .cell-name {
+        font-weight: 600;
+        color: var(--gray-900);
+      }
+
+      .action-group {
+        display: inline-flex;
+        gap: 0.375rem;
+      }
+
+      /* Data card for Anak */
+      .data-card {
+        background: #ffffff;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-lg);
+        padding: 1.25rem;
         display: flex;
         flex-direction: column;
       }
 
-      .data-card-label {
-        font-size: 12px;
+      .data-card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.875rem;
+        border-bottom: 1px solid var(--gray-100);
+      }
+
+      .data-card-name {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--gray-900);
+      }
+
+      .data-card-date {
+        font-size: 0.75rem;
         color: var(--gray-500);
-        margin-bottom: 4px;
+        margin-top: 2px;
       }
 
-      .data-card-value {
-        font-size: 14px;
+      .data-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.875rem;
+        margin-bottom: 1rem;
+      }
+
+      .data-field {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .data-label {
+        font-size: 0.6875rem;
+        color: var(--gray-500);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-weight: 500;
+        margin-bottom: 2px;
+      }
+
+      .data-value {
+        font-size: 0.875rem;
         color: var(--gray-800);
+        font-weight: 500;
       }
 
-      .data-card-footer {
+      .data-card-foot {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 16px;
-        padding-top: 12px;
+        padding-top: 0.875rem;
+        border-top: 1px solid var(--gray-100);
+        margin-top: auto;
+      }
+
+      /* Alert */
+      .alert {
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid;
+      }
+
+      .alert-error {
+        background: var(--danger-light);
+        color: var(--danger);
+        border-color: #fecaca;
+      }
+
+      .alert-success {
+        background: var(--success-light);
+        color: var(--success);
+        border-color: #bbf7d0;
+      }
+
+      /* Loader */
+      .loader-wrap {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--gray-500);
+        font-size: 0.875rem;
+      }
+
+      .spinner {
+        width: 28px;
+        height: 28px;
+        border: 3px solid var(--gray-200);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        margin: 0 auto 0.75rem;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      /* Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(17, 24, 39, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .modal-content {
+        background: #ffffff;
+        border-radius: var(--radius-lg);
+        width: 100%;
+        max-width: 560px;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 1.5rem;
+      }
+
+      .modal-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--gray-200);
+        margin-bottom: 1.25rem;
+      }
+
+      .modal-title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--gray-900);
+      }
+
+      .modal-close {
+        background: transparent;
+        border: none;
+        color: var(--gray-500);
+        cursor: pointer;
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-close:hover {
+        background: var(--gray-100);
+        color: var(--gray-700);
+      }
+
+      .modal-section {
+        margin-bottom: 1.5rem;
+      }
+
+      .modal-section-title {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--gray-500);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 0.625rem;
+      }
+
+      .modal-fields {
+        background: var(--gray-50);
+        border-radius: var(--radius);
+        padding: 0.875rem 1rem;
+      }
+
+      .modal-field {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--gray-200);
+        gap: 1rem;
+      }
+
+      .modal-field:last-child {
+        border-bottom: none;
+      }
+
+      .modal-field-label {
+        font-size: 0.8125rem;
+        color: var(--gray-500);
+        flex-shrink: 0;
+      }
+
+      .modal-field-value {
+        font-size: 0.8125rem;
+        color: var(--gray-900);
+        font-weight: 500;
+        text-align: right;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.625rem;
+        padding-top: 1rem;
         border-top: 1px solid var(--gray-200);
       }
 
-      .data-card-status {
-        display: flex;
-        align-items: center;
+      /* Empty state */
+      .empty {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--gray-500);
       }
 
-      .data-card-actions {
+      .empty-icon {
+        font-size: 2rem;
+        color: var(--gray-300);
+        margin-bottom: 0.5rem;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      /* Summary row */
+      .summary-bar {
+        background: #ffffff;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-lg);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem;
         display: flex;
-        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .summary-info {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        font-size: 0.875rem;
+        color: var(--gray-700);
+      }
+
+      .summary-info strong {
+        color: var(--gray-900);
       }
     </style>
-    <!-- TAMBAHKAN LIBRARY JSPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <link
@@ -982,203 +732,200 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
   </head>
-  <body class="bg-gray-50 min-h-screen font-sans">
+  <body>
     <!-- Header -->
-    <header class="glass shadow-lg">
-      <div class="container py-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-4">
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <div class="header-left">
             <img
               src="https://pkmtrenggalek.github.io/SIPP/Assets/pkmtglk.jpeg"
               alt="Logo"
-              class="h-10 w-auto rounded-lg shadow-md"
+              class="header-logo"
             />
-            <h1 class="text-xl font-bold text-gray-900">
-              Dashboard Skrining TBC
-            </h1>
+            <div>
+              <div class="header-title">Dashboard Skrining TBC</div>
+              <div class="header-subtitle">Puskesmas Trenggalek</div>
+            </div>
           </div>
-          <div class="flex items-center space-x-4">
-            <button id="refreshButton" class="ios-button-secondary">
-              <i class="fas fa-sync-alt mr-2"></i>Refresh
+          <div class="header-right">
+            <button id="refreshButton" class="btn btn-secondary btn-sm">
+              <i class="fas fa-rotate-right"></i>
+              <span>Refresh</span>
             </button>
-            <a href="https://docs.google.com/spreadsheets/d/1nIWcAn0_dJXR2mGEWiEDd1Bv02zJXxMr6WikvqLIwRU/edit?gid=1987044404#gid=1987044404"target="_blank"class="text-sm text-gray-500">PKM Trenggalek</a>
+            <a
+              href="https://docs.google.com/spreadsheets/d/1nIWcAn0_dJXR2mGEWiEDd1Bv02zJXxMr6WikvqLIwRU/edit?gid=1987044404#gid=1987044404"
+              target="_blank"
+              class="btn btn-secondary btn-sm"
+            >
+              <i class="fas fa-table"></i>
+              <span>Spreadsheet</span>
+            </a>
           </div>
         </div>
       </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="container py-8">
-      <!-- Aksi Section -->
-      <section class="mb-12 fade-in">
-        <h2 class="text-2xl font-bold text-white mb-6">Pilih Aksi</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 grid-gap-6">
-          <!-- Card Skrining Anak -->
-          <div class="card p-8 text-center">
-            <div class="flex justify-center mb-4">
-              <div
-                class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center shadow-lg"
-              >
-                <i class="fas fa-child text-blue-600 text-2xl"></i>
-              </div>
+    <!-- Main -->
+    <main class="container main">
+      <!-- Aksi -->
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Mulai Skrining</div>
+            <div class="section-desc">
+              Pilih jenis formulir skrining TBC sesuai kelompok pasien
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">
-              Skrining TBC Anak
-            </h3>
-            <p class="text-gray-600 mb-6">
-              Isi kuesioner skrining untuk pasien anak.
+          </div>
+        </div>
+        <div class="grid grid-cols-2">
+          <div class="card card-action">
+            <div class="action-icon blue">
+              <i class="fas fa-child"></i>
+            </div>
+            <h3 class="card-title">Skrining TBC Anak</h3>
+            <p class="card-desc">
+              Formulir skrining untuk pasien anak (0-14 tahun)
             </p>
-            <a href="Anak.html" class="ios-button">
-              <i class="fas fa-arrow-right mr-2"></i>
-              Mulai Skrining
+            <a href="Anak.html" class="btn btn-primary">
+              <i class="fas fa-arrow-right"></i>
+              <span>Mulai Skrining</span>
             </a>
           </div>
-          <!-- Card Skrining Dewasa -->
-          <div class="card p-8 text-center">
-            <div class="flex justify-center mb-4">
-              <div
-                class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center shadow-lg"
-              >
-                <i class="fas fa-user text-green-600 text-2xl"></i>
-              </div>
+          <div class="card card-action">
+            <div class="action-icon green">
+              <i class="fas fa-user"></i>
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">
-              Skrining TBC Dewasa
-            </h3>
-            <p class="text-gray-600 mb-6">
-              Isi kuesioner skrining untuk pasien dewasa.
+            <h3 class="card-title">Skrining TBC Dewasa</h3>
+            <p class="card-desc">
+              Formulir skrining untuk pasien dewasa (15 tahun ke atas)
             </p>
-            <a href="dewasa.html" class="ios-button">
-              <i class="fas fa-arrow-right mr-2"></i>
-              Mulai Skrining
+            <a href="dewasa.html" class="btn btn-primary">
+              <i class="fas fa-arrow-right"></i>
+              <span>Mulai Skrining</span>
             </a>
           </div>
         </div>
       </section>
 
-      <!-- RINGKASAN TERDUGA TBC -->
-      <section class="mb-12 fade-in">
-        <h2 class="text-2xl font-bold text-white mb-6">
-          Ringkasan Kasus Terduga TBC
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 grid-gap-6">
-          <div class="card stat-card p-6 text-center">
-            <div class="flex justify-center mb-4">
-              <div
-                class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center shadow-lg stat-icon"
-              >
-                <i class="fas fa-child text-blue-600 text-2xl"></i>
-              </div>
+      <!-- Ringkasan -->
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Ringkasan Hasil Skrining</div>
+            <div class="section-desc">
+              Rekap kasus terduga TBC berdasarkan kelompok pasien
             </div>
-            <h3 class="text-lg font-semibold text-gray-800 mb-2">
-              Jumlah Kasus Anak
-            </h3>
-            <p
-              class="text-4xl font-bold text-blue-600 stat-number"
-              id="countAnak"
-            >
-              0
-            </p>
           </div>
-          <div class="card stat-card p-6 text-center">
-            <div class="flex justify-center mb-4">
-              <div
-                class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center shadow-lg stat-icon"
-              >
-                <i class="fas fa-user text-green-600 text-2xl"></i>
-              </div>
+        </div>
+        <div class="grid grid-cols-4">
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <i class="fas fa-child"></i>
             </div>
-            <h3 class="text-lg font-semibold text-gray-800 mb-2">
-              Jumlah Kasus Dewasa
-            </h3>
-            <p
-              class="text-4xl font-bold text-green-600 stat-number"
-              id="countDewasa"
-            >
-              0
-            </p>
+            <div class="stat-content">
+              <div class="stat-label">Total Anak</div>
+              <div class="stat-value" id="totalAnak">0</div>
+              <div class="stat-meta">pasien anak terskrining</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Total Dewasa</div>
+              <div class="stat-value" id="totalDewasa">0</div>
+              <div class="stat-meta">pasien dewasa terskrining</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon red">
+              <i class="fas fa-triangle-exclamation"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Terduga TBC Anak</div>
+              <div class="stat-value" id="countAnak">0</div>
+              <div class="stat-meta">kasus anak</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">
+              <i class="fas fa-triangle-exclamation"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Terduga TBC Dewasa</div>
+              <div class="stat-value" id="countDewasa">0</div>
+              <div class="stat-meta">kasus dewasa</div>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- Results Section -->
-      <section class="fade-in">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-white">Data Hasil Skrining</h2>
-          <div class="flex space-x-2">
-            <button id="exportButton" class="ios-button-secondary">
-              <i class="fas fa-download mr-2"></i>Export Data
-            </button>
+      <!-- Data Hasil Skrining -->
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Data Hasil Skrining</div>
+            <div class="section-desc">
+              Daftar pasien yang telah menjalani skrining TBC
+            </div>
           </div>
+          <button id="exportButton" class="btn btn-secondary btn-sm">
+            <i class="fas fa-download"></i>
+            <span>Export CSV</span>
+          </button>
         </div>
 
-        <div class="card overflow-hidden">
-          <!-- Tab Navigation -->
-          <div class="flex border-b">
-            <button
-              id="tabAnak"
-              onclick="switchTabAndFetch('Anak')"
-              class="tab-button active flex-1 px-6 py-4 text-center font-semibold text-blue-600 focus:outline-none transition"
-            >
+        <div class="card" style="padding: 0;">
+          <!-- Tabs -->
+          <div class="tabs">
+            <button id="tabAnak" class="tab active">
               Data Anak
+              <span class="tab-count" id="tabCountAnak">0</span>
             </button>
-            <button
-              id="tabDewasa"
-              onclick="switchTabAndFetch('Dewasa')"
-              class="tab-button flex-1 px-6 py-4 text-center font-semibold text-gray-500 focus:outline-none transition"
-            >
+            <button id="tabDewasa" class="tab">
               Data Dewasa
+              <span class="tab-count" id="tabCountDewasa">0</span>
             </button>
           </div>
 
-          <!-- Tab Content -->
-          <div class="p-6">
-            <!-- Error Message -->
-            <div id="errorMessage" class="error-message hidden">
-              <i class="fas fa-exclamation-triangle mr-2"></i>
-              <span id="errorText"
-                >Gagal memuat data. Pastikan Anda memiliki izin akses ke
-                spreadsheet.</span
-              >
+          <!-- Body -->
+          <div style="padding: 1.25rem;">
+            <div id="errorMessage" class="alert alert-error hidden">
+              <i class="fas fa-circle-exclamation"></i>
+              <span id="errorText">Gagal memuat data.</span>
             </div>
 
-            <!-- Success Message -->
-            <div id="successMessage" class="success-message hidden">
-              <i class="fas fa-check-circle mr-2"></i>
+            <div id="successMessage" class="alert alert-success hidden">
+              <i class="fas fa-circle-check"></i>
               <span id="successText">Data berhasil dimuat.</span>
             </div>
 
-            <!-- Loader -->
-            <div id="loader" class="hidden text-center py-8">
-              <div
-                class="loader border-4 border-gray-200 rounded-full w-8 h-8 mx-auto mb-4"
-              ></div>
-              <p class="text-gray-500">Memuat data...</p>
+            <div id="loader" class="loader-wrap hidden">
+              <div class="spinner"></div>
+              <p>Memuat data...</p>
             </div>
 
-            <!-- Data Anak Cards -->
-            <div id="contentAnak" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <!-- Data cards akan dimuat di sini oleh JavaScript -->
-            </div>
+            <!-- Data Anak -->
+            <div id="contentAnak" class="grid grid-cols-2"></div>
 
-            <!-- Data Dewasa Table -->
+            <!-- Data Dewasa -->
             <div id="contentDewasa" class="hidden">
-              <div class="overflow-x-auto">
-                <table class="ios-table min-w-full">
+              <div class="table-wrap">
+                <table>
                   <thead>
                     <tr>
-                      <th class="px-6 py-3 text-left">Tanggal</th>
-                      <th class="px-6 py-3 text-left">Nama</th>
-                      <th class="px-6 py-3 text-left">Usia</th>
-                      <th class="px-6 py-3 text-left">Pekerjaan</th>
-                      <th class="px-6 py-3 text-left">Klasifikasi</th>
-                      <th class="px-6 py-3 text-left">Tindak Lanjut</th>
-                      <th class="px-6 py-3 text-center">Aksi</th>
+                      <th>Tanggal</th>
+                      <th>Nama</th>
+                      <th>Usia</th>
+                      <th>Pekerjaan</th>
+                      <th>Klasifikasi</th>
+                      <th>Tindak Lanjut</th>
+                      <th style="text-align: center;">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody id="tableBodyDewasa">
-                    <!-- Data akan dimuat di sini oleh JavaScript -->
-                  </tbody>
+                  <tbody id="tableBodyDewasa"></tbody>
                 </table>
               </div>
             </div>
@@ -1187,34 +934,34 @@
       </section>
     </main>
 
-    <!-- Detail Modal -->
+    <!-- Modal Detail -->
     <div id="detailModal" class="modal">
       <div class="modal-content">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold text-gray-900">Detail Pasien</h3>
-          <button id="closeModal" class="text-gray-500 hover:text-gray-700">
-            <i class="fas fa-times text-xl"></i>
+        <div class="modal-head">
+          <div class="modal-title">Detail Pasien</div>
+          <button id="closeModal" class="modal-close" aria-label="Tutup">
+            <i class="fas fa-times"></i>
           </button>
         </div>
-        <div id="modalContent">
-          <!-- Detail akan dimuat di sini -->
-        </div>
+        <div id="modalContent"></div>
       </div>
     </div>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // GANTI DENGAN URL WEB APP ANDA
         const GAS_WEB_APP_URL =
           "https://script.google.com/macros/s/AKfycbwlI9BTFcV3rkaVwQXKhxPAKkhp283G1kERqqDM8GgNB7al1Rw6P848mWoQjEG-xSnDVw/exec";
 
-        // Elemen-elemen DOM
         const loader = document.getElementById("loader");
         const contentAnak = document.getElementById("contentAnak");
         const contentDewasa = document.getElementById("contentDewasa");
         const tableBodyDewasa = document.getElementById("tableBodyDewasa");
+        const totalAnakEl = document.getElementById("totalAnak");
+        const totalDewasaEl = document.getElementById("totalDewasa");
         const countAnakEl = document.getElementById("countAnak");
         const countDewasaEl = document.getElementById("countDewasa");
+        const tabCountAnak = document.getElementById("tabCountAnak");
+        const tabCountDewasa = document.getElementById("tabCountDewasa");
         const refreshButton = document.getElementById("refreshButton");
         const exportButton = document.getElementById("exportButton");
         const detailModal = document.getElementById("detailModal");
@@ -1225,24 +972,25 @@
         const successMessage = document.getElementById("successMessage");
         const successText = document.getElementById("successText");
 
-        // Variabel global untuk menyimpan data
         let dataAnak = [];
         let dataDewasa = [];
         let currentTab = "Anak";
 
-        // FUNGSI: Format Tanggal
         function formatDate(dateString) {
           if (!dateString || dateString === "-") return "-";
-          const options = { day: "numeric", month: "numeric", year: "numeric" };
-          return new Date(dateString).toLocaleDateString("id-ID", options);
+          const date = new Date(dateString);
+          if (isNaN(date)) return dateString;
+          return date.toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          });
         }
 
-        // FUNGSI: Generate PDF
         window.generatePDFForRow = function (rowData) {
           const { jsPDF } = window.jspdf;
           const doc = new jsPDF();
 
-          // Header
           doc.addImage(
             "https://pkmtrenggalek.github.io/SIPP/Assets/pkmtglk.jpeg",
             "JPEG",
@@ -1251,36 +999,29 @@
             30,
             30
           );
-          doc.setFontSize(20);
+          doc.setFontSize(18);
           doc.text("LEMBAR SKRINING TBC DEWASA", 105, 20, { align: "center" });
-          doc.setFontSize(12);
-          doc.text("Posyandu & Puskesmas", 105, 27, { align: "center" });
+          doc.setFontSize(11);
+          doc.text("Puskesmas Trenggalek", 105, 27, { align: "center" });
           doc.setLineWidth(0.5);
           doc.line(10, 35, 200, 35);
 
-          let yPosition = 45;
-
-          // Fungsi Helper untuk Membuat Section
+          let y = 45;
           function addSection(title, data) {
-            doc.setFontSize(14);
+            doc.setFontSize(13);
             doc.setFont(undefined, "bold");
-            doc.text(title, 15, yPosition);
-            yPosition += 7;
+            doc.text(title, 15, y);
+            y += 7;
             doc.setFont(undefined, "normal");
             doc.setFontSize(11);
-
-            Object.entries(data).forEach(([key, value]) => {
-              const label = key
-                .replace(/_/g, " ")
-                .replace(/\b\w/g, (l) => l.toUpperCase());
-              const text = `${label}: ${value || "-"}`;
-              doc.text(text, 15, yPosition);
-              yPosition += 6;
+            Object.entries(data).forEach(([k, v]) => {
+              const label = k.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+              doc.text(`${label}: ${v || "-"}`, 15, y);
+              y += 6;
             });
-            yPosition += 5; // Jarak antar section
+            y += 5;
           }
 
-          // Data Identitas
           addSection("IDENTITAS", {
             nama: rowData.nama,
             alamat: rowData.alamat,
@@ -1292,62 +1033,52 @@
             "no hp": rowData.no_hp,
             email: rowData.email,
           });
-
-          // Data Pemeriksaan
           addSection("PEMERIKSAAN FISIK", {
             "berat badan": rowData.berat_badan + " kg",
             "tinggi badan": rowData.tinggi_badan + " cm",
             "tekanan darah": rowData.tekanan_darah,
             imt: rowData.imt,
           });
-
-          // Data Riwayat Kontak
           addSection("RIWAYAT KONTAK", {
             "riwayat kontak tbc": rowData.riwayat_kontak_tbc,
             "nama kontak": rowData.nama_kontak_tbc,
             hubungan: rowData.hubungan_kontak,
           });
-
-          // Data Gejala
-          const gejala = {
+          addSection("GEJALA", {
             "gejala utama (batuk)": rowData.skrining_gejala_utama_batuk,
             "bb turun": rowData.skrining_gejala_tambahan_bb,
             demam: rowData.skrining_gejala_tambahan_demam,
             "badan lemas": rowData.skrining_gejala_tambahan_lemas,
             "berkeringat malam": rowData.skrining_gejala_tambahan_keringat,
             "sesak napas": rowData.skrining_gejala_tambahan_sesak,
-            "pembesaran kelenjar":
-              rowData.skrining_gejala_tambahan_getah_bening,
+            "pembesaran kelenjar": rowData.skrining_gejala_tambahan_getah_bening,
             lainnya: rowData.skrining_gejala_tambahan_lainnya,
             "detail gejala": rowData.skrining_gejala_lainnya_detail,
-          };
-          addSection("GEJALA", gejala);
-
-          // Hasil Skrining
+          });
           doc.setLineWidth(0.5);
-          doc.line(10, yPosition - 5, 200, yPosition - 5);
+          doc.line(10, y - 5, 200, y - 5);
           addSection("HASIL SKRINING", {
             klasifikasi: rowData.klasifikasi,
             "tindak lanjut": rowData.tindak_lanjut,
           });
 
-          // Footer
           const tanggalCetak = new Date().toLocaleDateString("id-ID");
           doc.setFontSize(10);
-          doc.text(`Dicetak pada: ${tanggalCetak}`, 105, 285, {
-            align: "center",
-          });
-
-          // Simpan PDF
+          doc.text(`Dicetak pada: ${tanggalCetak}`, 105, 285, { align: "center" });
           const fileName = `Skrining_TBC_Dewasa_${rowData.nama}_${rowData.tanggal_skrining}.pdf`;
           doc.save(fileName);
         };
 
-        // FUNGSI: Show detail modal
+        function getBadgeClass(klasifikasi) {
+          if (klasifikasi === "Terduga TBC") return "badge-danger";
+          if (klasifikasi === "Kontak Erat") return "badge-warning";
+          if (klasifikasi && klasifikasi.toLowerCase().includes("bukan"))
+            return "badge-success";
+          return "badge-gray";
+        }
+
         window.showDetailModal = function (rowData, type) {
           modalContent.innerHTML = "";
-
-          // Create detail sections
           const sections = [
             {
               title: "Informasi Dasar",
@@ -1356,33 +1087,21 @@
                   ? [
                       { label: "Nama", value: rowData.nama },
                       { label: "NIK", value: rowData.nik },
-                      {
-                        label: "Tanggal Lahir",
-                        value: formatDate(rowData.tanggal_lahir),
-                      },
+                      { label: "Tanggal Lahir", value: formatDate(rowData.tanggal_lahir) },
                       { label: "Jenis Kelamin", value: rowData.jenis_kelamin },
                       { label: "Nama Orangtua", value: rowData.nama_orangtua },
                       { label: "Nomor Telepon", value: rowData.nomor_telepon },
                       { label: "Alamat", value: rowData.alamat },
                       { label: "Posyandu", value: rowData.posyandu },
-                      {
-                        label: "Tanggal Skrining",
-                        value: formatDate(rowData.tanggal_skrining),
-                      },
+                      { label: "Tanggal Skrining", value: formatDate(rowData.tanggal_skrining) },
                     ]
                   : [
                       { label: "Nama", value: rowData.nama },
-                      {
-                        label: "Tanggal Lahir",
-                        value: formatDate(rowData.tanggal_lahir),
-                      },
-                      { label: "Usia", value: rowData.usia + " Tahun" },
+                      { label: "Tanggal Lahir", value: formatDate(rowData.tanggal_lahir) },
+                      { label: "Usia", value: rowData.usia ? rowData.usia + " Tahun" : "-" },
                       { label: "Jenis Kelamin", value: rowData.jenis_kelamin },
                       { label: "Pekerjaan", value: rowData.pekerjaan },
-                      {
-                        label: "Tanggal Skrining",
-                        value: formatDate(rowData.tanggal_skrining),
-                      },
+                      { label: "Tanggal Skrining", value: formatDate(rowData.tanggal_skrining) },
                     ],
             },
             {
@@ -1394,528 +1113,340 @@
             },
           ];
 
-          // Add additional sections for Dewasa
           if (type === "Dewasa") {
             sections.splice(1, 0, {
               title: "Pemeriksaan Fisik",
               fields: [
-                { label: "Berat Badan", value: rowData.berat_badan + " kg" },
-                { label: "Tinggi Badan", value: rowData.tinggi_badan + " cm" },
+                { label: "Berat Badan", value: rowData.berat_badan ? rowData.berat_badan + " kg" : "-" },
+                { label: "Tinggi Badan", value: rowData.tinggi_badan ? rowData.tinggi_badan + " cm" : "-" },
                 { label: "IMT", value: rowData.imt },
                 { label: "Tekanan Darah", value: rowData.tekanan_darah },
               ],
             });
-
             sections.push({
               title: "Riwayat Kontak",
               fields: [
-                {
-                  label: "Riwayat Kontak TBC",
-                  value: rowData.riwayat_kontak_tbc,
-                },
+                { label: "Riwayat Kontak TBC", value: rowData.riwayat_kontak_tbc },
                 { label: "Nama Kontak", value: rowData.nama_kontak_tbc },
                 { label: "Hubungan", value: rowData.hubungan_kontak },
               ],
             });
-
             sections.push({
               title: "Gejala",
               fields: [
                 { label: "Batuk", value: rowData.skrining_gejala_utama_batuk },
-                {
-                  label: "BB Turun",
-                  value: rowData.skrining_gejala_tambahan_bb,
-                },
-                {
-                  label: "Demam",
-                  value: rowData.skrining_gejala_tambahan_demam,
-                },
-                {
-                  label: "Badan Lemas",
-                  value: rowData.skrining_gejala_tambahan_lemas,
-                },
-                {
-                  label: "Berkeringat Malam",
-                  value: rowData.skrining_gejala_tambahan_keringat,
-                },
-                {
-                  label: "Sesak Napas",
-                  value: rowData.skrining_gejala_tambahan_sesak,
-                },
-                {
-                  label: "Pembesaran Kelenjar",
-                  value: rowData.skrining_gejala_tambahan_getah_bening,
-                },
-                {
-                  label: "Gejala Lainnya",
-                  value: rowData.skrining_gejala_tambahan_lainnya,
-                },
-                {
-                  label: "Detail Gejala",
-                  value: rowData.skrining_gejala_lainnya_detail,
-                },
+                { label: "BB Turun", value: rowData.skrining_gejala_tambahan_bb },
+                { label: "Demam", value: rowData.skrining_gejala_tambahan_demam },
+                { label: "Badan Lemas", value: rowData.skrining_gejala_tambahan_lemas },
+                { label: "Berkeringat Malam", value: rowData.skrining_gejala_tambahan_keringat },
+                { label: "Sesak Napas", value: rowData.skrining_gejala_tambahan_sesak },
+                { label: "Pembesaran Kelenjar", value: rowData.skrining_gejala_tambahan_getah_bening },
+                { label: "Gejala Lainnya", value: rowData.skrining_gejala_tambahan_lainnya },
+                { label: "Detail Gejala", value: rowData.skrining_gejala_lainnya_detail },
               ],
             });
           }
 
-          // Build modal content
           sections.forEach((section) => {
-            const sectionEl = document.createElement("div");
-            sectionEl.className = "mb-6";
+            const secEl = document.createElement("div");
+            secEl.className = "modal-section";
 
-            const titleEl = document.createElement("h4");
-            titleEl.className = "text-lg font-semibold text-gray-900 mb-3";
+            const titleEl = document.createElement("div");
+            titleEl.className = "modal-section-title";
             titleEl.textContent = section.title;
-            sectionEl.appendChild(titleEl);
+            secEl.appendChild(titleEl);
 
             const fieldsEl = document.createElement("div");
-            fieldsEl.className = "bg-gray-50 rounded-lg p-4";
+            fieldsEl.className = "modal-fields";
 
-            section.fields.forEach((field) => {
-              const fieldEl = document.createElement("div");
-              fieldEl.className =
-                "flex justify-between py-2 border-gray-200 last:border-0";
-
-              const labelEl = document.createElement("span");
-              labelEl.className = "text-sm font-medium text-gray-600";
-              labelEl.textContent = field.label + ":";
-
-              const valueEl = document.createElement("span");
-              valueEl.className = "text-sm text-gray-900";
-              valueEl.textContent = field.value || "-";
-
-              fieldEl.appendChild(labelEl);
-              fieldEl.appendChild(valueEl);
-              fieldsEl.appendChild(fieldEl);
+            section.fields.forEach((f) => {
+              const row = document.createElement("div");
+              row.className = "modal-field";
+              const lbl = document.createElement("span");
+              lbl.className = "modal-field-label";
+              lbl.textContent = f.label;
+              const val = document.createElement("span");
+              val.className = "modal-field-value";
+              val.textContent = f.value || "-";
+              row.appendChild(lbl);
+              row.appendChild(val);
+              fieldsEl.appendChild(row);
             });
 
-            sectionEl.appendChild(fieldsEl);
-            modalContent.appendChild(sectionEl);
+            secEl.appendChild(fieldsEl);
+            modalContent.appendChild(secEl);
           });
 
-          // Add action buttons
           const actionsEl = document.createElement("div");
-          actionsEl.className = "flex justify-end space-x-3 mt-6";
+          actionsEl.className = "modal-actions";
 
           if (type === "Dewasa") {
             const pdfButton = document.createElement("button");
-            pdfButton.className = "ios-button-secondary";
-            pdfButton.innerHTML =
-              '<i class="fas fa-file-pdf mr-2"></i>Cetak PDF';
+            pdfButton.className = "btn btn-secondary btn-sm";
+            pdfButton.innerHTML = '<i class="fas fa-file-pdf"></i><span>Cetak PDF</span>';
             pdfButton.onclick = () => generatePDFForRow(rowData);
             actionsEl.appendChild(pdfButton);
           }
 
           const closeButton = document.createElement("button");
-          closeButton.className = "ios-button";
+          closeButton.className = "btn btn-primary btn-sm";
           closeButton.textContent = "Tutup";
-          closeButton.onclick = () => {
-            detailModal.classList.remove("active");
-          };
+          closeButton.onclick = () => detailModal.classList.remove("active");
           actionsEl.appendChild(closeButton);
 
           modalContent.appendChild(actionsEl);
-
-          // Show modal
           detailModal.classList.add("active");
         };
 
-        // Fungsi untuk berpindah tab dan memuat data
         window.switchTabAndFetch = function (type) {
           const tabAnak = document.getElementById("tabAnak");
           const tabDewasa = document.getElementById("tabDewasa");
 
           if (type === "Anak") {
             tabAnak.classList.add("active");
-            tabAnak.classList.remove("text-gray-500");
-            tabAnak.classList.add("text-blue-600");
-
             tabDewasa.classList.remove("active");
-            tabDewasa.classList.add("text-gray-500");
-            tabDewasa.classList.remove("text-blue-600");
-
             contentAnak.classList.remove("hidden");
             contentDewasa.classList.add("hidden");
-
             currentTab = "Anak";
-            // Panggil fetch untuk data Anak
             fetchData("TBCDataAnak");
           } else {
             tabDewasa.classList.add("active");
-            tabDewasa.classList.remove("text-gray-500");
-            tabDewasa.classList.add("text-blue-600");
-
             tabAnak.classList.remove("active");
-            tabAnak.classList.add("text-gray-500");
-            tabAnak.classList.remove("text-blue-600");
-
             contentDewasa.classList.remove("hidden");
             contentAnak.classList.add("hidden");
-
             currentTab = "Dewasa";
-            // Panggil fetch untuk data Dewasa
             fetchData("TBCDataDewasa");
           }
         };
 
-        // Fungsi untuk memperbarui jumlah kasus dengan animasi
         function updateSummaryCounts() {
           const countAnak = dataAnak.filter(
-            (row) => row.klasifikasi === "Terduga TBC"
+            (r) => r.klasifikasi && r.klasifikasi === "Terduga TBC"
           ).length;
           const countDewasa = dataDewasa.filter(
-            (row) => row.klasifikasi === "Terduga TBC"
+            (r) => r.klasifikasi && r.klasifikasi === "Terduga TBC"
           ).length;
 
-          // Animasi counter untuk anak
-          animateCounter(countAnakEl, countAnak);
-
-          // Animasi counter untuk dewasa
-          animateCounter(countDewasaEl, countDewasa);
+          totalAnakEl.textContent = dataAnak.length;
+          totalDewasaEl.textContent = dataDewasa.length;
+          countAnakEl.textContent = countAnak;
+          countDewasaEl.textContent = countDewasa;
+          tabCountAnak.textContent = dataAnak.length;
+          tabCountDewasa.textContent = dataDewasa.length;
         }
 
-        // Fungsi untuk animasi counter
-        function animateCounter(element, targetValue) {
-          // Tambahkan kelas animasi
-          element.classList.add("animate");
-
-          // Hapus kelas animasi setelah selesai
-          setTimeout(() => {
-            element.classList.remove("animate");
-          }, 1500);
-
-          // Update nilai
-          element.textContent = targetValue;
-        }
-
-        // Fungsi untuk mengambil data dari Google Sheet menggunakan Google Apps Script
         function fetchData(sheetName) {
           loader.classList.remove("hidden");
           errorMessage.classList.add("hidden");
           successMessage.classList.add("hidden");
 
-          // Gunakan XMLHttpRequest dengan JSONP untuk menghindari masalah CORS
           const timestamp = new Date().getTime();
           const callbackName = `jsonpCallback_${sheetName}_${timestamp}`;
 
-          // Buat fungsi callback global
           window[callbackName] = function (result) {
             try {
-              // Hapus fungsi callback setelah digunakan
               delete window[callbackName];
-
-              // Proses hasil
               if (result.status === "success") {
-                // Simpan data ke variabel global
                 if (sheetName === "TBCDataAnak") {
                   dataAnak = result.data || [];
+                  renderDataCards(dataAnak);
                 } else {
                   dataDewasa = result.data || [];
+                  renderTable(dataDewasa);
                 }
-
-                if (sheetName === "TBCDataAnak") {
-                  renderDataCards(result.data || [], sheetName);
-                } else {
-                  renderTable(result.data || [], sheetName);
-                }
-
-                updateSummaryCounts(); // Perbarui ringkasan setelah data dimuat
-
-                // Tampilkan pesan sukses
+                updateSummaryCounts();
                 successText.textContent = `Data ${
                   sheetName === "TBCDataAnak" ? "Anak" : "Dewasa"
-                } berhasil dimuat.`;
+                } berhasil dimuat (${(result.data || []).length} record).`;
                 successMessage.classList.remove("hidden");
-
-                // Sembunyikan pesan sukses setelah 3 detik
-                setTimeout(() => {
-                  successMessage.classList.add("hidden");
-                }, 3000);
+                setTimeout(() => successMessage.classList.add("hidden"), 3000);
               } else {
                 throw new Error(result.message || "Unknown error");
               }
             } catch (error) {
-              console.error("Error processing data:", error);
-
               if (sheetName === "TBCDataAnak") {
-                contentAnak.innerHTML = `<div class="col-span-2 text-center text-red-500 p-4">Gagal memproses data. Coba refresh halaman.</div>`;
+                contentAnak.innerHTML = `<div class="empty"><div class="empty-icon"><i class="fas fa-circle-exclamation"></i></div>Gagal memproses data. Coba refresh halaman.</div>`;
               } else {
-                tableBodyDewasa.innerHTML = `<tr><td colspan="7" class="px-6 py-4 text-center text-red-500">Gagal memproses data. Coba refresh halaman.</td></tr>`;
+                tableBodyDewasa.innerHTML = `<tr><td colspan="7" class="empty">Gagal memproses data. Coba refresh halaman.</td></tr>`;
               }
-
-              // Tampilkan pesan error
-              errorText.textContent = `Gagal memproses data ${
-                sheetName === "TBCDataAnak" ? "Anak" : "Dewasa"
-              }: ${error.message}`;
+              errorText.textContent = `Gagal memproses data: ${error.message}`;
               errorMessage.classList.remove("hidden");
             } finally {
               loader.classList.add("hidden");
             }
           };
 
-          // Buat URL dengan parameter callback
           const url = `${GAS_WEB_APP_URL}?action=getData&sheet=${sheetName}&t=${timestamp}&callback=${callbackName}`;
-
-          // Buat elemen script untuk JSONP
           const script = document.createElement("script");
           script.src = url;
           script.onerror = function () {
-            // Hapus fungsi callback
             delete window[callbackName];
-
-            console.error("Error loading script");
-
             if (sheetName === "TBCDataAnak") {
-              contentAnak.innerHTML = `<div class="col-span-2 text-center text-red-500 p-4">Gagal memuat data. Coba refresh halaman.</div>`;
+              contentAnak.innerHTML = `<div class="empty"><div class="empty-icon"><i class="fas fa-wifi"></i></div>Gagal memuat data. Periksa koneksi internet.</div>`;
             } else {
-              tableBodyDewasa.innerHTML = `<tr><td colspan="7" class="px-6 py-4 text-center text-red-500">Gagal memuat data. Coba refresh halaman.</td></tr>`;
+              tableBodyDewasa.innerHTML = `<tr><td colspan="7" class="empty">Gagal memuat data. Periksa koneksi internet.</td></tr>`;
             }
-
-            // Tampilkan pesan error
-            errorText.textContent = `Gagal memuat data ${
-              sheetName === "TBCDataAnak" ? "Anak" : "Dewasa"
-            }. Pastikan Anda memiliki izin akses ke spreadsheet.`;
+            errorText.textContent = `Gagal memuat data. Pastikan Anda memiliki izin akses.`;
             errorMessage.classList.remove("hidden");
             loader.classList.add("hidden");
           };
-
-          // Tambahkan script ke halaman
           document.body.appendChild(script);
         }
 
-        // Fungsi untuk merender data anak ke dalam kartu
-        function renderDataCards(data, sheetName) {
-          contentAnak.innerHTML = ""; // Kosongkan konten sebelumnya
-
-          if (data.length === 0) {
-            contentAnak.innerHTML = `<div class="col-span-2 text-center text-gray-500 p-4">Belum ada data.</div>`;
+        function renderDataCards(data) {
+          contentAnak.innerHTML = "";
+          if (!data || data.length === 0) {
+            contentAnak.innerHTML = `<div class="empty" style="grid-column: 1/-1;"><div class="empty-icon"><i class="fas fa-folder-open"></i></div>Belum ada data skrining anak.</div>`;
             return;
           }
-
-          data.forEach((row, index) => {
-            // Status badge untuk klasifikasi
-            let statusClass = "status-bukan";
-            if (row.klasifikasi === "Terduga TBC")
-              statusClass = "status-terduga";
-            else if (row.klasifikasi === "Kontak Erat")
-              statusClass = "status-kontak";
-
-            // Buat elemen card
+          data.forEach((row) => {
             const card = document.createElement("div");
-            card.className = "data-card fade-in";
-            card.style.animationDelay = `${index * 0.05}s`;
+            card.className = "data-card";
 
-            // Buat header card
-            const header = document.createElement("div");
-            header.className = "data-card-header";
+            const head = document.createElement("div");
+            head.className = "data-card-head";
+            head.innerHTML = `
+              <div>
+                <div class="data-card-name">${row.nama || "-"}</div>
+                <div class="data-card-date">${formatDate(row.tanggal_skrining)}</div>
+              </div>
+              <span class="badge ${getBadgeClass(row.klasifikasi)}">${row.klasifikasi || "-"}</span>
+            `;
 
-            const title = document.createElement("h3");
-            title.className = "data-card-title";
-            title.textContent = row.nama || "-";
-
-            const date = document.createElement("span");
-            date.className = "data-card-date";
-            date.textContent = formatDate(row.tanggal_skrining);
-
-            header.appendChild(title);
-            header.appendChild(date);
-
-            // Buat body card
             const body = document.createElement("div");
-            body.className = "data-card-body";
-
-            // Tambahkan field-field
+            body.className = "data-grid";
             const fields = [
               { label: "NIK", value: row.nik },
               { label: "Jenis Kelamin", value: row.jenis_kelamin },
               { label: "Tanggal Lahir", value: formatDate(row.tanggal_lahir) },
               { label: "Nama Orangtua", value: row.nama_orangtua },
               { label: "Nomor Telepon", value: row.nomor_telepon },
-              { label: "Alamat", value: row.alamat },
               { label: "Posyandu", value: row.posyandu },
             ];
-
-            fields.forEach((field) => {
-              const fieldDiv = document.createElement("div");
-              fieldDiv.className = "data-card-field";
-
-              const label = document.createElement("span");
-              label.className = "data-card-label";
-              label.textContent = field.label;
-
-              const value = document.createElement("span");
-              value.className = "data-card-value";
-              value.textContent = field.value || "-";
-
-              fieldDiv.appendChild(label);
-              fieldDiv.appendChild(value);
-              body.appendChild(fieldDiv);
+            fields.forEach((f) => {
+              const d = document.createElement("div");
+              d.className = "data-field";
+              d.innerHTML = `
+                <span class="data-label">${f.label}</span>
+                <span class="data-value">${f.value || "-"}</span>
+              `;
+              body.appendChild(d);
             });
 
-            // Buat footer card
-            const footer = document.createElement("div");
-            footer.className = "data-card-footer";
+            // Full-width alamat
+            const alamatDiv = document.createElement("div");
+            alamatDiv.className = "data-field";
+            alamatDiv.style.gridColumn = "1 / -1";
+            alamatDiv.innerHTML = `
+              <span class="data-label">Alamat</span>
+              <span class="data-value">${row.alamat || "-"}</span>
+            `;
+            body.appendChild(alamatDiv);
 
-            const status = document.createElement("div");
-            status.className = "data-card-status";
+            const foot = document.createElement("div");
+            foot.className = "data-card-foot";
+            foot.innerHTML = `
+              <div style="font-size: 0.8125rem; color: var(--gray-500);">
+                <i class="fas fa-comment-medical" style="margin-right: 4px;"></i>
+                ${row.tindak_lanjut || "Tindak lanjut belum tersedia"}
+              </div>
+              <button class="btn btn-secondary btn-sm">
+                <i class="fas fa-eye"></i><span>Detail</span>
+              </button>
+            `;
+            foot.querySelector("button").onclick = () => showDetailModal(row, "Anak");
 
-            const statusBadge = document.createElement("span");
-            statusBadge.className = `status-badge ${statusClass}`;
-            statusBadge.textContent = row.klasifikasi || "-";
-
-            status.appendChild(statusBadge);
-
-            const actions = document.createElement("div");
-            actions.className = "data-card-actions";
-
-            const detailButton = document.createElement("button");
-            detailButton.className = "ios-button-secondary";
-            detailButton.innerHTML = '<i class="fas fa-eye"></i>';
-            detailButton.onclick = () => showDetailModal(row, "Anak");
-
-            actions.appendChild(detailButton);
-
-            footer.appendChild(status);
-            footer.appendChild(actions);
-
-            // Gabungkan semua bagian
-            card.appendChild(header);
+            card.appendChild(head);
             card.appendChild(body);
-            card.appendChild(footer);
-
-            // Tambahkan ke konten
+            card.appendChild(foot);
             contentAnak.appendChild(card);
           });
         }
 
-        // Fungsi untuk merender data dewasa ke dalam tabel
-        function renderTable(data, sheetName) {
-          const targetTableBody = tableBodyDewasa;
-          targetTableBody.innerHTML = ""; // Kosongkan tabel sebelumnya
-
-          if (data.length === 0) {
-            const colspan = "7";
-            targetTableBody.innerHTML = `<tr><td colspan="${colspan}" class="px-6 py-4 text-center text-gray-500">Belum ada data.</td></tr>`;
+        function renderTable(data) {
+          tableBodyDewasa.innerHTML = "";
+          if (!data || data.length === 0) {
+            tableBodyDewasa.innerHTML = `<tr><td colspan="7" class="empty">Belum ada data skrining dewasa.</td></tr>`;
             return;
           }
-
-          data.forEach((row, index) => {
+          data.forEach((row) => {
             const tr = document.createElement("tr");
-            tr.className = "hover:bg-gray-50 fade-in";
-            tr.style.animationDelay = `${index * 0.05}s`;
-
-            // Status badge untuk klasifikasi
-            let statusClass = "status-bukan";
-            if (row.klasifikasi === "Terduga TBC")
-              statusClass = "status-terduga";
-            else if (row.klasifikasi === "Kontak Erat")
-              statusClass = "status-kontak";
-
             tr.innerHTML = `
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatDate(
-                row.tanggal_skrining
-              )}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${
-                row.nama || "-"
-              }</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                row.usia ? row.usia + " Tahun" : "-"
-              }</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                row.pekerjaan || "-"
-              }</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm">
-                <span class="status-badge ${statusClass}">${
-              row.klasifikasi || "-"
-            }</span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                row.tindak_lanjut || "-"
-              }</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
-                <button onclick="showDetailModal(${JSON.stringify(row).replace(
-                  /"/g,
-                  "&quot;"
-                )}, 'Dewasa')" class="ios-button-secondary mr-2">
-                  <i class="fas fa-eye"></i>
-                </button>
-                <button onclick="generatePDFForRow(${JSON.stringify(
-                  row
-                ).replace(/"/g, "&quot;")})" class="ios-button-secondary">
-                  <i class="fas fa-file-pdf"></i>
-                </button>
+              <td>${formatDate(row.tanggal_skrining)}</td>
+              <td class="cell-name">${row.nama || "-"}</td>
+              <td>${row.usia ? row.usia + " Th" : "-"}</td>
+              <td>${row.pekerjaan || "-"}</td>
+              <td><span class="badge ${getBadgeClass(row.klasifikasi)}">${row.klasifikasi || "-"}</span></td>
+              <td>${row.tindak_lanjut || "-"}</td>
+              <td style="text-align: center;">
+                <div class="action-group">
+                  <button class="btn btn-secondary btn-icon" title="Lihat Detail"><i class="fas fa-eye"></i></button>
+                  <button class="btn btn-secondary btn-icon" title="Cetak PDF"><i class="fas fa-file-pdf"></i></button>
+                </div>
               </td>
             `;
-            targetTableBody.appendChild(tr);
+            const buttons = tr.querySelectorAll("button");
+            buttons[0].onclick = () => showDetailModal(row, "Dewasa");
+            buttons[1].onclick = () => generatePDFForRow(row);
+            tableBodyDewasa.appendChild(tr);
           });
         }
 
-        // Event listeners
+        // Tab listeners
+        document.getElementById("tabAnak").addEventListener("click", () => switchTabAndFetch("Anak"));
+        document.getElementById("tabDewasa").addEventListener("click", () => switchTabAndFetch("Dewasa"));
+
+        // Refresh
         refreshButton.addEventListener("click", function () {
-          this.querySelector("i").classList.add("fa-spin");
-          this.classList.add("pulse");
-          fetchData(
-            currentTab === "Anak" ? "TBCDataAnak" : "TBCDataDewasa"
-          ).finally(() => {
-            setTimeout(() => {
-              this.querySelector("i").classList.remove("fa-spin");
-              this.classList.remove("pulse");
-            }, 1000);
-          });
+          const icon = this.querySelector("i");
+          icon.classList.add("fa-spin");
+          fetchData(currentTab === "Anak" ? "TBCDataAnak" : "TBCDataDewasa");
+          setTimeout(() => icon.classList.remove("fa-spin"), 800);
         });
 
+        // Export CSV
         exportButton.addEventListener("click", function () {
           const data = currentTab === "Anak" ? dataAnak : dataDewasa;
-          const csvContent = generateCSV(data, currentTab);
-          downloadCSV(
-            csvContent,
-            `Data_TBC_${currentTab}_${
-              new Date().toISOString().split("T")[0]
-            }.csv`
-          );
+          if (!data || data.length === 0) {
+            successText.textContent = "Tidak ada data untuk diexport.";
+            successMessage.classList.remove("hidden");
+            setTimeout(() => successMessage.classList.add("hidden"), 2500);
+            return;
+          }
+          const csv = generateCSV(data, currentTab);
+          downloadCSV(csv, `Data_TBC_${currentTab}_${new Date().toISOString().split("T")[0]}.csv`);
         });
 
-        closeModal.addEventListener("click", function () {
-          detailModal.classList.remove("active");
+        closeModal.addEventListener("click", () => detailModal.classList.remove("active"));
+        detailModal.addEventListener("click", (e) => {
+          if (e.target === detailModal) detailModal.classList.remove("active");
         });
 
-        // Fungsi untuk generate CSV
         function generateCSV(data, type) {
           let csv = "";
-
-          // Header
           if (type === "Anak") {
-            csv =
-              "Tanggal,Nama,NIK,Jenis Kelamin,Tanggal Lahir,Nama Orangtua,Nomor Telepon,Alamat,Posyandu,Klasifikasi,Tindak Lanjut\n";
+            csv = "Tanggal,Nama,NIK,Jenis Kelamin,Tanggal Lahir,Nama Orangtua,Nomor Telepon,Alamat,Posyandu,Klasifikasi,Tindak Lanjut\n";
+            data.forEach((r) => {
+              csv += [
+                formatDate(r.tanggal_skrining), r.nama, r.nik, r.jenis_kelamin,
+                formatDate(r.tanggal_lahir), r.nama_orangtua, r.nomor_telepon,
+                (r.alamat || "").replace(/,/g, ";"), r.posyandu, r.klasifikasi, r.tindak_lanjut
+              ].map((v) => `"${(v || "").toString().replace(/"/g, '""')}"`).join(",") + "\n";
+            });
           } else {
             csv = "Tanggal,Nama,Usia,Pekerjaan,Klasifikasi,Tindak Lanjut\n";
+            data.forEach((r) => {
+              csv += [
+                formatDate(r.tanggal_skrining), r.nama, r.usia,
+                r.pekerjaan, r.klasifikasi, r.tindak_lanjut
+              ].map((v) => `"${(v || "").toString().replace(/"/g, '""')}"`).join(",") + "\n";
+            });
           }
-
-          // Data rows
-          data.forEach((row) => {
-            if (type === "Anak") {
-              csv += `${formatDate(row.tanggal_skrining)},${row.nama},${
-                row.nik
-              },${row.jenis_kelamin},${formatDate(row.tanggal_lahir)},${
-                row.nama_orangtua
-              },${row.nomor_telepon},${row.alamat},${row.posyandu},${
-                row.klasifikasi
-              },${row.tindak_lanjut}\n`;
-            } else {
-              csv += `${formatDate(row.tanggal_skrining)},${row.nama},${
-                row.usia
-              },${row.pekerjaan},${row.klasifikasi},${row.tindak_lanjut}\n`;
-            }
-          });
-
           return csv;
         }
 
-        // Fungsi untuk download CSV
         function downloadCSV(csvContent, fileName) {
-          const blob = new Blob([csvContent], {
-            type: "text/csv;charset=utf-8;",
-          });
+          const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
           const link = document.createElement("a");
           const url = URL.createObjectURL(blob);
           link.setAttribute("href", url);
@@ -1926,19 +1457,9 @@
           document.body.removeChild(link);
         }
 
-        // Jalankan semua fungsi saat halaman dimuat
-        function initializeApp() {
-          // Muat data untuk tab Anak
-          fetchData("TBCDataAnak");
-
-          // Setelah 500ms, muat data Dewasa juga
-          setTimeout(() => {
-            fetchData("TBCDataDewasa");
-          }, 500);
-        }
-
-        // Jalankan inisialisasi
-        initializeApp();
+        // Init
+        fetchData("TBCDataAnak");
+        setTimeout(() => fetchData("TBCDataDewasa"), 400);
       });
     </script>
   </body>
